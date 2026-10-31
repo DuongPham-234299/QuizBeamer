@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc Nghiệm An Toàn & Kỷ Luật Học Đường</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .quiz-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 650px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .quiz-header {
+            background: linear-gradient(135deg, #4f46e5, #3b82f6);
+            color: white;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .quiz-header h1 {
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quiz-header p {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+
+        .quiz-body {
+            padding: 24px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .progress-bg {
+            width: 100%;
+            background-color: #e2e8f0;
+            height: 10px;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #4f46e5;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-title {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1e293b;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            width: 100%;
+            text-align: left;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 2px solid #cbd5e1;
+            background-color: #ffffff;
+            color: #334155;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: #818cf8;
+            background-color: #f8fafc;
+        }
+
+        /* Khi chọn SAI -> Báo đỏ + Rung */
+        .option-btn.wrong {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b !important;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Khi chọn ĐÚNG -> Báo xanh */
+        .option-btn.correct {
+            border-color: #10b981 !important;
+            background-color: #ecfdf5 !important;
+            color: #065f46 !important;
+            font-weight: 700;
+            animation: bounce 0.3s ease-in-out;
+        }
+
+        .feedback-box {
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            display: none;
+        }
+
+        .feedback-box.error {
+            display: block;
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .feedback-box.success {
+            display: block;
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .next-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            background-color: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: none;
+        }
+
+        .next-btn:hover {
+            background-color: #4338ca;
+        }
+
+        .result-screen {
+            text-align: center;
+            padding: 30px 10px;
+            display: none;
+        }
+
+        .trophy {
+            font-size: 60px;
+            margin-bottom: 12px;
+        }
+
+        .result-screen h2 {
+            font-size: 24px;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .result-screen p {
+            color: #64748b;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="confetti-canvas"></canvas>
+
+    <div class="quiz-card">
+        <div class="quiz-header">
+            <h1>TRẮC NGHIỆM KỶ LUẬT & AN TOÀN HỌC ĐƯỜNG</h1>
+            <p>Chọn đúng đáp án để hoàn thành từng câu hỏi!</p>
+        </div>
+
+        <div class="quiz-body">
+            <!-- Màn hình làm bài -->
+            <div id="quiz-screen">
+                <div class="status-bar">
+                    <span id="question-count">Câu hỏi 1/6</span>
+                    <span id="score-text">Điểm: 0</span>
+                </div>
+                <div class="progress-bg">
+                    <div id="progress-bar" class="progress-fill"></div>
+                </div>
+
+                <div id="question-title" class="question-title">Loading...</div>
+
+                <div id="options-container" class="options-list"></div>
+
+                <div id="feedback" class="feedback-box"></div>
+
+                <button id="next-btn" class="next-btn" onclick="nextQuestion()">Câu tiếp theo ➔</button>
+            </div>
+
+            <!-- Màn hình kết quả -->
+            <div id="result-screen" class="result-screen">
+                <div class="trophy">🏆</div>
+                <h2>Hoàn Thành Xuất Sắc!</h2>
+                <p>Em đã trả lời chính xác <strong style="color: #4f46e5;">6/6</strong> câu hỏi.</p>
+                <button class="next-btn" style="display:inline-block; width:auto; padding: 12px 30px;" onclick="restartQuiz()">🔄 Làm lại bài thi</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "1. Theo nội dung nhắc nhở về kỷ luật, hành vi nào sau đây tuyệt đối không được thực hiện liên quan đến bạo lực học đường?",
+                options: [
+                    "A. Chỉ theo dõi nhưng không trực tiếp tham gia",
+                    "B. Tham gia hoặc cổ vũ bạo lực học đường dưới mọi hình thức, kể cả trên mạng xã hội",
+                    "C. Chỉ nhắn tin hòa giải trên mạng xã hội",
+                    "D. Khuyên ngăn bạn bè khi thấy mâu thuẫn"
+                ],
+                correct: 1
+            },
+            {
+                question: "2. Đối với các chất gây nghiện và ma túy, học sinh cần tuân thủ quy định nào sau đây?",
+                options: [
+                    "A. Được phép giữ hộ nếu người khác nhờ",
+                    "B. Chỉ dùng thử một lần để biết",
+                    "C. Tuyệt đối không thử, không sử dụng, không giữ hộ, không mang hộ",
+                    "D. Được mang hộ nếu người gửi là bạn thân"
+                ],
+                correct: 2
+            },
+            {
+                question: "3. Quy định về việc sử dụng thuốc lá, thuốc lá điện tử đối với học sinh là gì?",
+                options: [
+                    "A. Chỉ cấm sử dụng trong phạm vi nhà trường",
+                    "B. Cho phép sử dụng ngoài nhà trường",
+                    "C. Không sử dụng thuốc lá, thuốc lá điện tử trong và ngoài nhà trường",
+                    "D. Đang nghiên cứu bổ sung quy định"
+                ],
+                correct: 2
+            },
+            {
+                question: "4. Khi tham gia giao thông, học sinh cần chấp hành tốt văn bản pháp luật nào?",
+                options: [
+                    "A. Luật An ninh mạng",
+                    "B. Luật Giao thông đường bộ",
+                    "C. Luật Bảo vệ môi trường",
+                    "D. Luật Giáo dục"
+                ],
+                correct: 1
+            },
+            {
+                question: "5. Việc sử dụng mạng xã hội của học sinh được yêu cầu phải đảm bảo tiêu chí nào?",
+                options: [
+                    "A. Tự do đăng tải nội dung theo ý thích",
+                    "B. Sử dụng an toàn, văn minh",
+                    "C. Chỉ sử dụng vào buổi tối",
+                    "D. Không cần chú ý đến quy định"
+                ],
+                correct: 1
+            },
+            {
+                question: "6. Nội dung nhắc nhở bao gồm các quy định nào về ứng xử và kỷ luật học sinh?",
+                options: [
+                    "A. Không gây gổ, đánh nhau; không ma túy, thuốc lá; chấp hành Luật Giao thông và sử dụng mạng xã hội an toàn",
+                    "B. Được phép mang thuốc lá điện tử nếu ở ngoài nhà trường",
+                    "C. Chỉ cấm bạo lực học đường ở ngoài đời thực, không tính trên mạng xã hội",
+                    "D. Có thể giữ hộ ma túy nếu không sử dụng"
+                ],
+                correct: 0
+            }
+        ];
+
+        let currentIndex = 0;
+        let score = 0;
+        let isCorrectChosen = false;
+
+        function loadQuestion() {
+            isCorrectChosen = false;
+            const currentQuiz = quizData[currentIndex];
+
+            // Update Header & Progress
+            document.getElementById('question-count').innerText = `Câu hỏi ${currentIndex + 1}/${quizData.length}`;
+            document.getElementById('score-text').innerText = `Điểm: ${score}`;
+            document.getElementById('progress-bar').style.width = `${(currentIndex / quizData.length) * 100}%`;
+
+            // Reset Feedback & Next Button
+            const feedback = document.getElementById('feedback');
+            feedback.className = 'feedback-box';
+            feedback.innerText = '';
+            document.getElementById('next-btn').style.display = 'none';
+
+            // Set Title
+            document.getElementById('question-title').innerText = currentQuiz.question;
+
+            // Render Options
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+
+            currentQuiz.options.forEach((optText, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.id = `opt-${idx}`;
+                btn.innerHTML = `<span>${optText}</span><span id="icon-${idx}"></span>`;
+                btn.onclick = () => checkAnswer(idx);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selectedIdx) {
+            if (isCorrectChosen) return;
+
+            const currentQuiz = quizData[currentIndex];
+            const selectedBtn = document.getElementById(`opt-${selectedIdx}`);
+            const iconSpan = document.getElementById(`icon-${selectedIdx}`);
+            const feedback = document.getElementById('feedback');
+
+            if (selectedIdx === currentQuiz.correct) {
+                // ĐÚNG
+                isCorrectChosen = true;
+                score += 10;
+                document.getElementById('score-text').innerText = `Điểm: ${score}`;
+
+                selectedBtn.classList.add('correct');
+                iconSpan.innerText = '✓';
+
+                feedback.className = 'feedback-box success';
+                feedback.innerText = '🎉 Chính xác! Em giỏi lắm!';
+
+                // Vô hiệu hóa các nút còn lại
+                disableOptions(currentQuiz.correct);
+
+                // Show Next Button
+                const nextBtn = document.getElementById('next-btn');
+                if (currentIndex === quizData.length - 1) {
+                    nextBtn.innerText = 'Xem kết quả 🏆';
+                } else {
+                    nextBtn.innerText = 'Câu tiếp theo ➔';
+                }
+                nextBtn.style.display = 'block';
+
+            } else {
+                // SAI -> Đổi đỏ + Rung + Yêu cầu chọn lại
+                selectedBtn.classList.add('wrong');
+                iconSpan.innerText = '✗';
+                selectedBtn.disabled = true;
+
+                feedback.className = 'feedback-box error';
+                feedback.innerText = '❌ Chưa đúng rồi, em hãy thử chọn lại đáp án khác nhé!';
+            }
+        }
+
+        function disableOptions(correctIdx) {
+            quizData[currentIndex].options.forEach((_, idx) => {
+                const btn = document.getElementById(`opt-${idx}`);
+                btn.disabled = true;
+                if (idx !== correctIdx) {
+                    btn.style.opacity = '0.5';
+                }
+            });
+        }
+
+        function nextQuestion() {
+            if (currentIndex < quizData.length - 1) {
+                currentIndex++;
+                loadQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-screen').style.display = 'none';
+            document.getElementById('result-screen').style.display = 'block';
+            document.getElementById('progress-bar').style.width = '100%';
+            fireConfetti();
+        }
+
+        function restartQuiz() {
+            currentIndex = 0;
+            score = 0;
+            document.getElementById('quiz-screen').style.display = 'block';
+            document.getElementById('result-screen').style.display = 'none';
+            loadQuestion();
+        }
+
+        // Tự tạo hiệu ứng Pháo hoa bằng Canvas Pure JavaScript
+        function fireConfetti() {
+            const canvas = document.getElementById('confetti-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            const particles = [];
+            const colors = ['#f43f5e', '#8b5cf6', '#0ea5e9', '#10b981', '#f59e0b'];
+
+            for (let i = 0; i < 80; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 12,
+                    vy: (Math.random() - 0.7) * 12,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    gravity: 0.2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let alive = false;
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += p.gravity;
+                    if (p.y < canvas.height) alive = true;
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                });
+                if (alive) requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // Khởi chạy khi load trang
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>

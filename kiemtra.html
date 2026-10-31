@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bài Kiểm Tra Trắc Nghiệm</title>
+  <!-- Nhúng MathJax hỗ trợ hiển thị công thức Toán LaTeX -->
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 700px; margin: 20px auto; padding: 20px; line-height: 1.6; }
+    .form-group { margin-bottom: 15px; }
+    label { font-weight: bold; display: block; margin-bottom: 5px; }
+    input[type="text"] { width: 100%; padding: 8px; box-sizing: border-box; }
+    .question { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
+    button { background-color: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-size: 16px; }
+    button:hover { background-color: #0056b3; }
+    #status { margin-top: 15px; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <h2>BÀI KIỂM TRA TRẮC NGHIỆM</h2>
+
+  <form id="quizForm">
+    <!-- Thông tin học sinh -->
+    <div class="form-group">
+      <label for="name">Họ và tên học sinh:</label>
+      <input type="text" id="name" required placeholder="Nhập họ và tên">
+    </div>
+
+    <div class="form-group">
+      <label for="className">Lớp:</label>
+      <input type="text" id="className" required placeholder="Ví dụ: 12T1">
+    </div>
+
+    <hr>
+
+    <!-- Nội dung các câu hỏi -->
+    <div class="question">
+      <p><strong>Câu 1:</strong> Tính giá trị của biểu thức \( A = \int_{0}^{1} x dx \).</p>
+      <label><input type="radio" name="q1" value="0.5"> A. \( \frac{1}{2} \)</label><br>
+      <label><input type="radio" name="q1" value="0"> B. \( 1 \)</label><br>
+      <label><input type="radio" name="q1" value="0"> C. \( 2 \)</label><br>
+      <label><input type="radio" name="q1" value="0"> D. \( 0 \)</label>
+    </div>
+
+    <button type="button" onclick="submitQuiz()">Nộp Bài</button>
+  </form>
+
+  <div id="status"></div>
+
+  <script>
+    // Dán đường dẫn GAS URL (kết thúc bằng /exec) thầy đã sao chép ở Mục 6.4 vào đây
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbygpTOw2DJAek_GdH94PuHoQi9xS1dzns3UUZcMTIpTth6MRwSeAxwy48M2eFKwImPJ9Q/exec";
+
+    function submitQuiz() {
+      const name = document.getElementById('name').value.trim();
+      const className = document.getElementById('className').value.trim();
+      const statusDiv = document.getElementById('status');
+
+      if (!name || !className) {
+        alert("Vui lòng điền đầy đủ Họ tên và Lớp!");
+        return;
+      }
+
+      // Tính điểm sơ bộ (Ví dụ câu 1)
+      let score = 0;
+      const q1 = document.querySelector('input[name="q1"]:checked');
+      if (q1 && q1.value === "0.5") {
+        score = 10; // Giả sử tính thang điểm 10
+      }
+
+      statusDiv.style.color = "blue";
+      statusDiv.innerText = "Đang gửi kết quả...";
+
+      // Gửi dữ liệu về Google Sheets thông qua Web App (doPost)
+      const formData = new URLSearchParams();
+      formData.append("name", name);
+      formData.append("className", className);
+      formData.append("score", score.toString());
+
+      fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors", // Bỏ qua hạn chế CORS khi gửi từ GitHub Pages về Google Apps Script
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
+      })
+      .then(() => {
+        statusDiv.style.color = "green";
+        statusDiv.innerText = " Nộp bài thành công! Điểm của bạn đã được ghi nhận.";
+      })
+      .catch(err => {
+        statusDiv.style.color = "red";
+        statusDiv.innerText = " Lỗi khi nộp bài: " + err;
+      });
+    }
+  </script>
+</body>
+</html>
