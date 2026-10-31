@@ -3,77 +3,709 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bài Kiểm Tra Trắc Nghiệm</title>
-  <!-- Nhúng MathJax hỗ trợ hiển thị công thức Toán LaTeX -->
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <title>Đề Kiểm Tra Trắc Nghiệm - Đề 01 (Ôn tập Giữa kỳ 1 - Chân Trời Sáng Tạo)</title>
+  <!-- Nhúng MathJax hỗ trợ công thức Toán LaTeX -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 700px; margin: 20px auto; padding: 20px; line-height: 1.6; }
-    .form-group { margin-bottom: 15px; }
-    label { font-weight: bold; display: block; margin-bottom: 5px; }
-    input[type="text"] { width: 100%; padding: 8px; box-sizing: border-box; }
-    .question { background: #f9f9f9; border: 1px solid #ddd; padding: 15px; border-radius: 5px; margin-bottom: 15px; }
-    button { background-color: #007bff; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; font-size: 16px; }
-    button:hover { background-color: #0056b3; }
-    #status { margin-top: 15px; font-weight: bold; }
+    body { font-family: "Segoe UI", Arial, sans-serif; max-width: 850px; margin: 20px auto; padding: 20px; line-height: 1.6; background-color: #f4f6f9; color: #333; }
+    .quiz-card { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    h1, h2 { text-align: center; color: #1a73e8; }
+    .info-group { display: flex; gap: 15px; margin-bottom: 20px; }
+    .info-group input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; }
+    .question-box { background: #fafafa; border: 1px solid #e0e0e0; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; position: relative; }
+    .question-title { font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
+    .options { display: flex; flex-direction: column; gap: 8px; margin-left: 10px; }
+    .options label { cursor: pointer; padding: 5px 8px; border-radius: 4px; transition: background 0.2s; }
+    .options label:hover { background-color: #eef5ff; }
+    .tf-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tf-table th, .tf-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    .tf-table td:nth-child(2) { text-align: left; }
+    input[type="text"].short-ans { width: 200px; padding: 6px; font-size: 15px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    button.submit-btn { display: block; width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 20px; }
+    button.submit-btn:hover { background-color: #218838; }
+    #result-summary { display: none; background: #e8f4ea; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 6px; font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+    .explanation { display: none; margin-top: 12px; padding: 12px; background-color: #f8f9fa; border-left: 4px solid #1a73e8; font-size: 14.5px; }
+    .correct-ans { color: #28a745; font-weight: bold; margin-top: 5px; display: none; }
+    .svg-container { text-align: center; margin: 15px 0; }
   </style>
 </head>
 <body>
 
-  <h2>BÀI KIỂM TRA TRẮC NGHIỆM</h2>
+<div class="quiz-card">
+  <h1>BÀI KIỂM TRA TRẮC NGHIỆM - ĐỀ 01</h1>
+  <div class="info-group">
+    <input type="text" id="studentName" placeholder="Họ và tên học sinh (*)" required>
+    <input type="text" id="className" placeholder="Lớp (*)" required>
+  </div>
+  <div id="result-summary"></div>
+</div>
 
-  <form id="quizForm">
-    <!-- Thông tin học sinh -->
-    <div class="form-group">
-      <label for="name">Họ và tên học sinh:</label>
-      <input type="text" id="name" required placeholder="Nhập họ và tên">
+<form id="quizForm">
+
+  <!-- PHẦN 1: TRẮC NGHIỆM 4 LỰA CHỌN -->
+  <div class="quiz-card">
+    <h2>PHẦN I. TRẮC NGHIỆM 4 LỰA CHỌN</h2>
+
+    <!-- Câu 1 -->
+    <div class="question-box" id="q1">
+      <div class="question-title">Câu 1: Cho dãy số \((u_n)\) xác định bởi \(\left\{\begin{array}{l}{u_1}=3\\{u_{n+1}}=u_n-2\end{array}\right.\) với \(n\ge 1\). Số hạng thứ hai của dãy số bằng</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="A"> A. \(u_2=-1\)</label>
+        <label><input type="radio" name="q1" value="B"> B. \(u_2=2\)</label>
+        <label><input type="radio" name="q1" value="C"> C. \(u_2=-2\)</label>
+        <label><input type="radio" name="q1" value="D"> D. \(u_2=1\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: D</div>
+      <div class="explanation"><b>Lời giải:</b> Ta có \(u_2 = u_1 - 2 = 3 - 2 = 1\).</div>
     </div>
 
-    <div class="form-group">
-      <label for="className">Lớp:</label>
-      <input type="text" id="className" required placeholder="Ví dụ: 12T1">
+    <!-- Câu 2 -->
+    <div class="question-box" id="q2">
+      <div class="question-title">Câu 2: Cho dãy số \(\left(u_n\right)\) có số hạng tổng quát \(u_n\) được xác định bởi công thức \(u_n=n^2+1\) với \(n\ge 1\). Khẳng định nào sau đây đúng?</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="A"> A. \(\left(u_n\right)\) là dãy giảm</label>
+        <label><input type="radio" name="q2" value="B"> B. \(\left(u_n\right)\) là dãy không tăng không giảm</label>
+        <label><input type="radio" name="q2" value="C"> C. \(\left(u_n\right)\) là dãy tăng</label>
+        <label><input type="radio" name="q2" value="D"> D. \(u_1=4\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: C</div>
+      <div class="explanation"><b>Lời giải:</b> Xét hiệu \(u_{n+1} - u_n = (n+1)^2 + 1 - (n^2 + 1) = 2n + 1 > 0\) với mọi \(n \ge 1\). Do đó \((u_n)\) là dãy số tăng.</div>
     </div>
 
-    <hr>
-
-    <!-- Nội dung các câu hỏi -->
-    <div class="question">
-      <p><strong>Câu 1:</strong> Tính giá trị của biểu thức \( A = \int_{0}^{1} x dx \).</p>
-      <label><input type="radio" name="q1" value="0.5"> A. \( \frac{1}{2} \)</label><br>
-      <label><input type="radio" name="q1" value="0"> B. \( 1 \)</label><br>
-      <label><input type="radio" name="q1" value="0"> C. \( 2 \)</label><br>
-      <label><input type="radio" name="q1" value="0"> D. \( 0 \)</label>
+    <!-- Câu 3 -->
+    <div class="question-box" id="q3">
+      <div class="question-title">Câu 3: Cho cấp số cộng \(\left(u_n\right)\) có \(u_1=-1,\,u_6=39\). Công sai \(d\) của cấp số cộng là</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="A"> A. \(d=8\)</label>
+        <label><input type="radio" name="q3" value="B"> B. \(d=10\)</label>
+        <label><input type="radio" name="q3" value="C"> C. \(d=6\)</label>
+        <label><input type="radio" name="q3" value="D"> D. \(d=\dfrac{20}{3}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation"><b>Lời giải:</b> Ta có: \(u_6=u_1+5d\Leftrightarrow d=\dfrac{u_6-u_1}{5}=\dfrac{39-\left(-1\right)}{5}=8\).</div>
     </div>
 
-    <button type="button" onclick="submitQuiz()">Nộp Bài</button>
-  </form>
+    <!-- Câu 4 -->
+    <div class="question-box" id="q4">
+      <div class="question-title">Câu 4: Cho \(a,b,c\) theo thứ tự lập thành cấp số cộng, đẳng thức nào sau đây là đúng?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="A"> A. \(a^2+c^2=2ab+2bc\)</label>
+        <label><input type="radio" name="q4" value="B"> B. \(a^2-c^2=2ab-2bc\)</label>
+        <label><input type="radio" name="q4" value="C"> C. \(a^2+c^2=2ab-2bc\)</label>
+        <label><input type="radio" name="q4" value="D"> D. \(a^2-c^2=ab-bc\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> \(a,b,c\) theo thứ tự lập thành CSC khi \(b-a=c-b\Leftrightarrow{\left(b-a\right)^2}=\left(c-b\right)^2\Leftrightarrow{a^2}-c^2=2ab-2bc\).</div>
+    </div>
 
-  <div id="status"></div>
+    <!-- Câu 5 -->
+    <div class="question-box" id="q5">
+      <div class="question-title">Câu 5: Nếu cấp số nhân \(\left(u_n\right)\) có số hạng đầu \(u_1\) và công bội \(q\) thì số hạng tổng quát \(u_n\) được xác định bởi công thức</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="A"> A. \(u_n=u_1q^n\)</label>
+        <label><input type="radio" name="q5" value="B"> B. \(u_n=u_1q^{n-1}\)</label>
+        <label><input type="radio" name="q5" value="C"> C. \(u_n=u_1+\left(n-1\right)q\)</label>
+        <label><input type="radio" name="q5" value="D"> D. \(u_n=u_1+q^{n-1}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> Công thức số hạng tổng quát của cấp số nhân là \(u_n=u_1 q^{n-1}\).</div>
+    </div>
 
-  <script>
-    // Dán đường dẫn GAS URL (kết thúc bằng /exec) thầy đã sao chép ở Mục 6.4 vào đây
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbygpTOw2DJAek_GdH94PuHoQi9xS1dzns3UUZcMTIpTth6MRwSeAxwy48M2eFKwImPJ9Q/exec";
+    <!-- Câu 6 -->
+    <div class="question-box" id="q6">
+      <div class="question-title">Câu 6: Một loại vi khuẩn sau mỗi phút số lượng tăng gấp đôi biết rằng sau \(5\) phút người ta đếm được có \(64000\) con hỏi sau bao nhiêu phút thì có được \(2048000\) con.</div>
+      <div class="options">
+        <label><input type="radio" name="q6" value="A"> A. \(10\)</label>
+        <label><input type="radio" name="q6" value="B"> B. \(11\)</label>
+        <label><input type="radio" name="q6" value="C"> C. \(26\)</label>
+        <label><input type="radio" name="q6" value="D"> D. \(50\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation"><b>Lời giải:</b> Số lượng vi khuẩn tăng lên là cấp số nhân \(\left(u_n\right)\) với công bội \(q=2\).<br>
+      \(u_6=64000\Rightarrow{u_1}\cdot q^5=64000\Rightarrow{u_1}=2000\).<br>
+      Sau \(n\) phút thì số lượng vi khuẩn là \(u_{n+1}\).<br>
+      \(u_{n+1}=2048000\Rightarrow{u_1}\cdot q^n=2048000\Rightarrow{2000\cdot2^n}=2048000\Rightarrow n=10\).<br>
+      Vậy sau \(10\) phút thì có được \(2048000\) con.</div>
+    </div>
 
-    function submitQuiz() {
-      const name = document.getElementById('name').value.trim();
-      const className = document.getElementById('className').value.trim();
-      const statusDiv = document.getElementById('status');
+    <!-- Câu 7 -->
+    <div class="question-box" id="q7">
+      <div class="question-title">Câu 7: Cho dãy số \(\left(u_n\right)\), \(\left(v_n\right)\) thỏa mãn \(\lim\limits{u_n}=-4\) và \(\lim\limits{v_n}=+\infty\). Giá trị của \(\lim\limits(u_n\cdot v_n)\) bằng</div>
+      <div class="options">
+        <label><input type="radio" name="q7" value="A"> A. \(-\infty\)</label>
+        <label><input type="radio" name="q7" value="B"> B. \(+\infty\)</label>
+        <label><input type="radio" name="q7" value="C"> C. \(0\)</label>
+        <label><input type="radio" name="q7" value="D"> D. \(2\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation"><b>Lời giải:</b> Áp dụng quy tắc giới hạn của tích: \((-4) \cdot (+\infty) = -\infty\).</div>
+    </div>
 
-      if (!name || !className) {
-        alert("Vui lòng điền đầy đủ Họ tên và Lớp!");
-        return;
+    <!-- Câu 8 -->
+    <div class="question-box" id="q8">
+      <div class="question-title">Câu 8: Tính \(\lim\dfrac{6n+2021}{3n-1}\).</div>
+      <div class="options">
+        <label><input type="radio" name="q8" value="A"> A. \(-2021\)</label>
+        <label><input type="radio" name="q8" value="B"> B. \(2\)</label>
+        <label><input type="radio" name="q8" value="C"> C. \(-6\)</label>
+        <label><input type="radio" name="q8" value="D"> D. \(\dfrac{2021}{3}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> \(\lim\dfrac{6n+2021}{3n-1} = \lim\dfrac{6+\dfrac{2021}{n}}{3-\dfrac{1}{n}} = \dfrac{6}{3} = 2\).</div>
+    </div>
+
+    <!-- Câu 9 -->
+    <div class="question-box" id="q9">
+      <div class="question-title">Câu 9: \(\lim\dfrac{2^n+7^n}{10-2\cdot7^n}\) bằng</div>
+      <div class="options">
+        <label><input type="radio" name="q9" value="A"> A. \(\dfrac{1}{2}\)</label>
+        <label><input type="radio" name="q9" value="B"> B. \(-\dfrac{1}{2}\)</label>
+        <label><input type="radio" name="q9" value="C"> C. \(0\)</label>
+        <label><input type="radio" name="q9" value="D"> D. \(-1\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> Chia cả tử và mẫu cho \(7^n\): \(\lim\dfrac{\left(\dfrac{2}{7}\right)^n+1}{\dfrac{10}{7^n}-2} = \dfrac{0+1}{0-2} = -\dfrac{1}{2}\).</div>
+    </div>
+
+    <!-- Câu 10 -->
+    <div class="question-box" id="q10">
+      <div class="question-title">Câu 10: Biết \(\lim\dfrac{2n^3+n^2-4}{a{n^3}+2}=2\) với \(a\) là tham số. Khi đó \(a-a^2\) bằng</div>
+      <div class="options">
+        <label><input type="radio" name="q10" value="A"> A. \(\dfrac{1}{2}\)</label>
+        <label><input type="radio" name="q10" value="B"> B. \(1\)</label>
+        <label><input type="radio" name="q10" value="C"> C. \(0\)</label>
+        <label><input type="radio" name="q10" value="D"> D. \(\dfrac{1}{4}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: C</div>
+      <div class="explanation"><b>Lời giải:</b> Ta có \(\lim\dfrac{2n^3+n^2-4}{a{n^3}+2}=2 \Leftrightarrow \dfrac{2}{a}=2 \Leftrightarrow a=1\). Khi đó \(a-a^2=1-1^2=0\).</div>
+    </div>
+
+    <!-- Câu 11 -->
+    <div class="question-box" id="q11">
+      <div class="question-title">Câu 11: Cho các số thực \(a,b,c\) thỏa mãn \(c^2+a=18\) và \(\lim\left(\sqrt{a{n^2}+bn}-cn\right)=2\). Tính \(P=a-2b+3c\)</div>
+      <div class="options">
+        <label><input type="radio" name="q11" value="A"> A. \(-24\)</label>
+        <label><input type="radio" name="q11" value="B"> B. \(6\)</label>
+        <label><input type="radio" name="q11" value="C"> C. \(12\)</label>
+        <label><input type="radio" name="q11" value="D"> D. \(-6\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: D</div>
+      <div class="explanation"><b>Lời giải:</b> Nhân lượng liên hợp ta có: \(\lim\dfrac{(a-c^2)n^2+bn}{\sqrt{an^2+bn}+cn} = 2 \Rightarrow a-c^2=0\) và \(\dfrac{b}{\sqrt{a}+c}=2\). Kết hợp \(c^2+a=18 \Rightarrow a=c^2=9 \Rightarrow c=3, a=9\). Thay vào được \(b=12\). Vậy \(P=9-2(12)+3(3)=-6\).</div>
+    </div>
+
+    <!-- Câu 12 -->
+    <div class="question-box" id="q12">
+      <div class="question-title">Câu 12: \(\lim\limits_{x\to-3}\left(2x^3\,+\,5x^2\,-3\right)\) bằng</div>
+      <div class="options">
+        <label><input type="radio" name="q12" value="A"> A. \(85\)</label>
+        <label><input type="radio" name="q12" value="B"> B. \(12\)</label>
+        <label><input type="radio" name="q12" value="C"> C. \(-12\)</label>
+        <label><input type="radio" name="q12" value="D"> D. \(96\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: C</div>
+      <div class="explanation"><b>Lời giải:</b> Thay \(x=-3\) vào ta được \(2(-3)^3 + 5(-3)^2 - 3 = -54 + 45 - 3 = -12\).</div>
+    </div>
+
+    <!-- Câu 13 -->
+    <div class="question-box" id="q13">
+      <div class="question-title">Câu 13: Với \(a\) là số thực khác 0, \(\lim\limits_{x\to a}\dfrac{x^2-\left(a+1\right)x+a}{x^2-a^2}\) bằng</div>
+      <div class="options">
+        <label><input type="radio" name="q13" value="A"> A. \(a-1\)</label>
+        <label><input type="radio" name="q13" value="B"> B. \(a+1\)</label>
+        <label><input type="radio" name="q13" value="C"> C. \(\dfrac{a-1}{2a}\)</label>
+        <label><input type="radio" name="q13" value="D"> D. \(\dfrac{a+1}{2a}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: C</div>
+      <div class="explanation"><b>Lời giải:</b> \(\lim\limits_{x\to a}\dfrac{x^2-\left(a+1\right)x+a}{x^2-a^2}=\lim\limits_{x\to a}\dfrac{(x-a)(x-1)}{(x-a)(x+a)}=\lim\limits_{x\to a}\dfrac{x-1}{x+a}=\dfrac{a-1}{2a}\).</div>
+    </div>
+
+    <!-- Câu 14 -->
+    <div class="question-box" id="q14">
+      <div class="question-title">Câu 14: Tính \(\lim\limits_{x\to\frac{\pi}{4}}\dfrac{\sin x-\cos x}{\tan\left(x-\dfrac{\pi}{4}\right)}\).</div>
+      <div class="options">
+        <label><input type="radio" name="q14" value="A"> A. \(-\sqrt 2\)</label>
+        <label><input type="radio" name="q14" value="B"> B. \(\sqrt 2\)</label>
+        <label><input type="radio" name="q14" value="C"> C. \(1\)</label>
+        <label><input type="radio" name="q14" value="D"> D. \(-1\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> Ta có: \(\lim\limits_{x\to\frac{\pi}{4}}\dfrac{\sin x-\cos x}{\tan\left(x-\dfrac{\pi}{4}\right)}=\lim\limits_{x\to\frac{\pi}{4}}\dfrac{\sqrt 2\sin\left(x-\dfrac{\pi}{4}\right)\cos\left(x-\dfrac{\pi}{4}\right)}{\sin\left(x-\dfrac{\pi}{4}\right)}=\lim\limits_{x\to\frac{\pi}{4}}\sqrt 2\cos\left(x-\dfrac{\pi}{4}\right)=\sqrt 2\).</div>
+    </div>
+
+    <!-- Câu 15 -->
+    <div class="question-box" id="q15">
+      <div class="question-title">Câu 15: Hàm số nào dưới đây liên tục trên khoảng \(\left(-\infty ;+\infty\right)\)?</div>
+      <div class="options">
+        <label><input type="radio" name="q15" value="A"> A. \(y=x^3+\dfrac{1}{x^3}\)</label>
+        <label><input type="radio" name="q15" value="B"> B. \(y=\,\sqrt{x^2-\,16}\)</label>
+        <label><input type="radio" name="q15" value="C"> C. \(y=\dfrac{-3x+5}{x-8}\)</label>
+        <label><input type="radio" name="q15" value="D"> D. \(y=x^3-\,2x\,+7\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: D</div>
+      <div class="explanation"><b>Lời giải:</b> Hàm đa thức \(y=x^3-2x+7\) liên tục trên toàn bộ tập số thực \(\mathbb{R}\).</div>
+    </div>
+
+    <!-- Câu 16 -->
+    <div class="question-box" id="q16">
+      <div class="question-title">Câu 16: Cho hàm số \(f(x)=\left\{\begin{array}{l}\dfrac{x^2+3x-4}{x-1}\,\,\,\,\,\,\rm{khi}\,\,x > 1\\-2ax+1\,\,\,\,\,\,\,\,\,\,\,\,\rm{khi}\,\,x\le 1\end{array}\right.\). Xác định \(a\) để hàm số liên tục tại điểm \(x=1.\)</div>
+      <div class="options">
+        <label><input type="radio" name="q16" value="A"> A. \(a=-2\)</label>
+        <label><input type="radio" name="q16" value="B"> B. \(a=-1\)</label>
+        <label><input type="radio" name="q16" value="C"> C. \(a=3\)</label>
+        <label><input type="radio" name="q16" value="D"> D. \(a=2\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation"><b>Lời giải:</b> \(f(1)=1-2a\). \(\lim\limits_{x\to{1^+}}f(x)=\lim\limits_{x\to{1^+}}(x+4)=5\). Để hàm liên tục tại \(x=1 \Rightarrow 1-2a=5 \Leftrightarrow a=-2\).</div>
+    </div>
+
+    <!-- Câu 17 -->
+    <div class="question-box" id="q17">
+      <div class="question-title">Câu 17: Trong các khẳng định sau, khẳng định nào đúng?</div>
+      <div class="options">
+        <label><input type="radio" name="q17" value="A"> A. Qua 2 điểm phân biệt có duy nhất một mặt phẳng</label>
+        <label><input type="radio" name="q17" value="B"> B. Qua 3 điểm phân biệt bất kì có duy nhất một mặt phẳng</label>
+        <label><input type="radio" name="q17" value="C"> C. Qua 3 điểm không thẳng hàng có duy nhất một mặt phẳng</label>
+        <label><input type="radio" name="q17" value="D"> D. Qua 4 điểm phân biệt bất kì có duy nhất một mặt phẳng</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: C</div>
+      <div class="explanation"><b>Lời giải:</b> Tính chất cơ bản của hình học không gian: Qua 3 điểm không thẳng hàng xác định duy nhất một mặt phẳng.</div>
+    </div>
+
+    <!-- Câu 18 -->
+    <div class="question-box" id="q18">
+      <div class="question-title">Câu 18: Cho tứ diện \(ABCD\). Gọi \(G\) là trọng tâm của tam giác \(BCD\). Giao tuyến của mặt phẳng \(\left(ACD\right)\) và \(\left(GAB\right)\) là</div>
+      <div class="options">
+        <label><input type="radio" name="q18" value="A"> A. \(AM (M\) là trung điểm của \(AB)\)</label>
+        <label><input type="radio" name="q18" value="B"> B. \(AN (N\) là trung điểm của \(CD)\)</label>
+        <label><input type="radio" name="q18" value="C"> C. \(AH (H\) là hình chiếu của \(B\) trên \(CD)\)</label>
+        <label><input type="radio" name="q18" value="D"> D. \(AK (K\) là hình chiếu của \(C\) trên \(BD)\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> \(A\) là điểm chung thứ nhất. Gọi \(N\) là trung điểm \(CD \Rightarrow BG\) đi qua \(N \Rightarrow N \in (GAB)\). Mặt khác \(N \in (ACD)\). Vậy giao tuyến là \(AN\).</div>
+    </div>
+
+    <!-- Câu 19 -->
+    <div class="question-box" id="q19">
+      <div class="question-title">Câu 19: Cho hình chóp \(S.ABCD\) có đáy \(ABCD\) là hình bình hành tâm \(O\). Gọi \(I,\,\,J\) lần lượt là trung điểm của \(SA\) và \(SC\). Đường thẳng \(IJ\) song song với đường thẳng nào?</div>
+      <div class="options">
+        <label><input type="radio" name="q19" value="A"> A. \(BC\)</label>
+        <label><input type="radio" name="q19" value="B"> B. \(AC\)</label>
+        <label><input type="radio" name="q19" value="C"> C. \(SO\)</label>
+        <label><input type="radio" name="q19" value="D"> D. \(BD\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> \(IJ\) là đường trung bình của tam giác \(SAC \Rightarrow IJ \parallel AC\).</div>
+    </div>
+
+    <!-- Câu 20 (Có hình TikZ SVG) -->
+    <div class="question-box" id="q20">
+      <div class="question-title">Câu 20: Cho tứ diện \(ABCD\). Gọi \(M\) và \(N\) lần lượt là trung điểm của \(AB\), \(AD\). \(E\) là điểm trên cạnh \(CD\) với \(ED=3EC\). Thiết diện tạo bởi mặt phẳng \(\left(MNE\right)\) và tứ diện \(ABCD\) là</div>
+      <div class="svg-container">
+        <svg width="260" height="240" viewBox="-130 -160 260 240" xmlns="http://www.w3.org/2000/svg">
+          <!-- Coordinates mapping from TikZ -->
+          <!-- A(0,0), B(1.5,-2.6), C(-0.87,-4.9), D(-2.6,-1.5) -->
+          <!-- Scaled x40 and y inverted for SVG -->
+          <g transform="scale(1, -1) translate(0, 100)">
+            <line x1="0" y1="0" x2="-104" y2="-60" stroke="#000" stroke-width="1.5"/>
+            <line x1="-104" y1="-60" x2="-35" y2="-196" stroke="#000" stroke-width="1.5"/>
+            <line x1="-35" y1="-196" x2="60" y2="-104" stroke="#000" stroke-width="1.5"/>
+            <line x1="60" y1="-104" x2="0" y2="0" stroke="#000" stroke-width="1.5"/>
+            <line x1="0" y1="0" x2="-35" y2="-196" stroke="#000" stroke-width="1.5"/>
+            <line x1="-52" y1="-30" x2="-52" y2="-162" stroke="#000" stroke-width="1.5"/>
+            <line x1="30" y1="-52" x2="36" y2="-173" stroke="#000" stroke-width="1.5"/>
+            
+            <!-- Dashed lines -->
+            <line x1="-104" y1="-60" x2="60" y2="-104" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="-52" y1="-30" x2="30" y2="-52" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="-52" y1="-162" x2="36" y2="-173" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+            <!-- Points -->
+            <circle cx="0" cy="0" r="3" fill="#000"/><text x="-15" y="10" font-size="14" transform="scale(1,-1)">A</text>
+            <circle cx="60" cy="-104" r="3" fill="#000"/><text x="70" y="-100" font-size="14" transform="scale(1,-1)">B</text>
+            <circle cx="-35" cy="-196" r="3" fill="#000"/><text x="-35" y="-205" font-size="14" transform="scale(1,-1)">C</text>
+            <circle cx="-104" cy="-60" r="3" fill="#000"/><text x="-120" y="-55" font-size="14" transform="scale(1,-1)">D</text>
+            <circle cx="30" cy="-52" r="3" fill="#000"/><text x="40" y="-45" font-size="14" transform="scale(1,-1)">M</text>
+            <circle cx="-52" cy="-30" r="3" fill="#000"/><text x="-70" y="-25" font-size="14" transform="scale(1,-1)">N</text>
+            <circle cx="-52" cy="-162" r="3" fill="#000"/><text x="-70" y="-160" font-size="14" transform="scale(1,-1)">E</text>
+            <circle cx="36" cy="-173" r="3" fill="#000"/><text x="46" y="-170" font-size="14" transform="scale(1,-1)">F</text>
+          </g>
+        </svg>
+      </div>
+      <div class="options">
+        <label><input type="radio" name="q20" value="A"> A. Tam giác \(MNE\)</label>
+        <label><input type="radio" name="q20" value="B"> B. Tứ giác \(MNEF\) với điểm \(F\) bất kỳ trên cạnh \(BD\)</label>
+        <label><input type="radio" name="q20" value="C"> C. Hình bình hành \(MNEF\) với \(F\) là điểm trên cạnh \(BC\) thỏa mãn \(EF\parallel BD\)</label>
+        <label><input type="radio" name="q20" value="D"> D. Hình thang \(MNEF\) với \(F\) là điểm trên cạnh \(BC\) thỏa mãn \(EF\parallel BD\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: D</div>
+      <div class="explanation"><b>Lời giải:</b> Ta có \(MN \parallel BD\). Giao tuyến của \((MNE)\) với \((BCD)\) là đường thẳng qua \(E\) song song với \(BD\) cắt \(BC\) tại \(F\). Vì \(MN \parallel EF\) nên thiết diện \(MNEF\) là hình thang.</div>
+    </div>
+
+    <!-- Câu 21 -->
+    <div class="question-box" id="q21">
+      <div class="question-title">Câu 21: Trong không gian, cho đường thẳng \(a\) và mặt phẳng \((P)\). Có bao nhiêu vị trí tương đối của \(a\) và \((P)\)?</div>
+      <div class="options">
+        <label><input type="radio" name="q21" value="A"> A. \(2\)</label>
+        <label><input type="radio" name="q21" value="B"> B. \(3\)</label>
+        <label><input type="radio" name="q21" value="C"> C. \(1\)</label>
+        <label><input type="radio" name="q21" value="D"> D. \(4\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> Có 3 vị trí tương đối: Đường thẳng nằm trong mặt phẳng, đường thẳng song song với mặt phẳng, đường thẳng cắt mặt phẳng.</div>
+    </div>
+
+    <!-- Câu 22 (Có hình TikZ SVG) -->
+    <div class="question-box" id="q22">
+      <div class="question-title">Câu 22: Cho hình chóp tứ giác \(S.ABCD\). Gọi \(M\) và \(N\) lần lượt là trung điểm của \(SA\) và \(SC\). Khẳng định nào sau đây đúng?</div>
+      <div class="svg-container">
+        <svg width="280" height="220" viewBox="-20 -20 280 220" xmlns="http://www.w3.org/2000/svg">
+          <g transform="scale(1,-1) translate(0,-180)">
+            <!-- Solid Lines -->
+            <line x1="60" y1="120" x2="0" y2="0" stroke="#000" stroke-width="1.5"/>
+            <line x1="0" y1="0" x2="40" y2="-100" stroke="#000" stroke-width="1.5"/>
+            <line x1="40" y1="-100" x2="100" y2="-80" stroke="#000" stroke-width="1.5"/>
+            <line x1="100" y1="-80" x2="180" y2="0" stroke="#000" stroke-width="1.5"/>
+            <line x1="180" y1="0" x2="60" y2="120" stroke="#000" stroke-width="1.5"/>
+            <line x1="40" y1="-100" x2="60" y2="120" stroke="#000" stroke-width="1.5"/>
+            <line x1="100" y1="-80" x2="60" y2="120" stroke="#000" stroke-width="1.5"/>
+            
+            <!-- Dashed Lines -->
+            <line x1="100" y1="-80" x2="0" y2="0" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="0" y1="0" x2="180" y2="0" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="30" y1="60" x2="80" y2="20" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+            <!-- Points -->
+            <circle cx="60" cy="120" r="3" fill="#000"/><text x="55" y="-130" font-size="14" transform="scale(1,-1)">S</text>
+            <circle cx="0" cy="0" r="3" fill="#000"/><text x="-15" y="-5" font-size="14" transform="scale(1,-1)">A</text>
+            <circle cx="180" cy="0" r="3" fill="#000"/><text x="190" y="-5" font-size="14" transform="scale(1,-1)">B</text>
+            <circle cx="100" cy="-80" r="3" fill="#000"/><text x="105" y="95" font-size="14" transform="scale(1,-1)">C</text>
+            <circle cx="40" cy="-100" r="3" fill="#000"/><text x="35" y="115" font-size="14" transform="scale(1,-1)">D</text>
+            <circle cx="30" cy="60" r="3" fill="#000"/><text x="15" y="-60" font-size="14" transform="scale(1,-1)">M</text>
+            <circle cx="80" cy="20" r="3" fill="#000"/><text x="90" y="-20" font-size="14" transform="scale(1,-1)">N</text>
+          </g>
+        </svg>
+      </div>
+      <div class="options">
+        <label><input type="radio" name="q22" value="A"> A. \(MN\|\left(ABCD\right)\)</label>
+        <label><input type="radio" name="q22" value="B"> B. \(MN\|\left(SAB\right)\)</label>
+        <label><input type="radio" name="q22" value="C"> C. \(MN\|\left(SCD\right)\)</label>
+        <label><input type="radio" name="q22" value="D"> D. \(MN\|\left(SBC\right)\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation"><b>Lời giải:</b> \(MN\) là đường trung bình của \(\triangle SAC \Rightarrow MN \parallel AC\). Mà \(AC \subset (ABCD) \Rightarrow MN \parallel (ABCD)\).</div>
+    </div>
+
+    <!-- Câu 23 -->
+    <div class="question-box" id="q23">
+      <div class="question-title">Câu 23: Trong các mệnh đề sau, mệnh đề nào đúng?</div>
+      <div class="options">
+        <label><input type="radio" name="q23" value="A"> A. Hai mặt phẳng không cắt nhau thì song song</label>
+        <label><input type="radio" name="q23" value="B"> B. Hai mặt phẳng cùng song song với một đường thẳng thì cắt nhau</label>
+        <label><input type="radio" name="q23" value="C"> C. Qua một điểm nằm ngoài một mặt phẳng cho trước có duy nhất một mặt phẳng song song với mặt phẳng đó</label>
+        <label><input type="radio" name="q23" value="D"> D. Qua một điểm nằm ngoài một mặt phẳng cho trước có vô số mặt phẳng song song với mặt phẳng đó</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: C</div>
+      <div class="explanation"><b>Lời giải:</b> Định lý thừa nhận: Qua một điểm nằm ngoài một mặt phẳng cho trước có duy nhất một mặt phẳng song song với mặt phẳng đó.</div>
+    </div>
+
+    <!-- Câu 24 -->
+    <div class="question-box" id="q24">
+      <div class="question-title">Câu 24: Cho hình chóp \(S.ABCD\) có đáy \(ABCD\) là hình bình hành tâm \(O.\) Gọi \(M\), \(N\), \(P\) theo thứ tự là trung điểm của \(SA\), \(SD\) và \(AB\). Khẳng định nào sau đây đúng?</div>
+      <div class="options">
+        <label><input type="radio" name="q24" value="A"> A. \(\left(NOM\right)\) cắt \(\left(OPM\right)\)</label>
+        <label><input type="radio" name="q24" value="B"> B. \(\left(MON\right)\|\left(SBC\right)\)</label>
+        <label><input type="radio" name="q24" value="C"> C. \(\left(PON\right)\cap\left(MNP\right)=NP\)</label>
+        <label><input type="radio" name="q24" value="D"> D. \(\left(NMP\right)\|\left(SBD\right)\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation"><b>Lời giải:</b> \(MN \parallel AD \parallel BC\); \(MP \parallel SB \Rightarrow (MON) \equiv (MNPO) \parallel (SBC)\).</div>
+    </div>
+
+  </div>
+
+  <!-- PHẦN 2: TRẮC NGHIỆM ĐÚNG/SAI -->
+  <div class="quiz-card">
+    <h2>PHẦN II. TRẮC NGHIỆM ĐÚNG / SAI</h2>
+
+    <!-- Câu 25 (Đ/S 1 - Có hình SVG ĐT Lượng Giác) -->
+    <div class="question-box" id="q25">
+      <div class="question-title">Câu 1: Biểu diễn góc lượng giác trên đường tròn lượng giác. Khi đó:</div>
+      <table class="tf-table">
+        <tr><th>Mệnh đề</th><th>Nội dung</th><th>Đúng</th><th>Sai</th></tr>
+        <tr><td>a</td><td>\(36^\circ+k 360^\circ,$ $ k \in \mathbb{Z}\) là điểm \(M\) thuộc góc phần tư thứ II</td><td><input type="radio" name="q25_a" value="T"></td><td><input type="radio" name="q25_a" value="F"></td></tr>
+        <tr><td>b</td><td>\(-60^\circ+k 180^\circ,$ $ k \in \mathbb{Z}\) là các điểm \(M_1,$ $ M_2\) thuộc góc phần tư thứ II và IV</td><td><input type="radio" name="q25_a" value="T"></td><td><input type="radio" name="q25_b" value="F"></td></tr>
+        <tr><td>c</td><td>\(-\dfrac{\pi}{4}+k 2 \pi, $ $k \in \mathbb{Z}\) là \(M\) thuộc góc phần tư thứ III</td><td><input type="radio" name="q25_c" value="T"></td><td><input type="radio" name="q25_c" value="F"></td></tr>
+        <tr><td>d</td><td>\(-\dfrac{\pi}{6}+k \dfrac{\pi}{2},$ $ k \in \mathbb{Z}\) là bốn điểm \(M,$ $ N,$ $ P,$ $ Q\) thuộc góc phần tư thứ I, II, III, IV</td><td><input type="radio" name="q25_d" value="T"></td><td><input type="radio" name="q25_d" value="F"></td></tr>
+      </table>
+      <div class="correct-ans">Đáp án đúng: a - Sai, b - Đúng, c - Sai, d - Đúng</div>
+      <div class="explanation"><b>Lời giải:</b><br>
+      a. <b>Sai</b> (Thuộc góc phần tư thứ I).<br>
+      b. <b>Đúng</b> (Có 2 điểm biểu diễn ở góc II và IV).<br>
+      c. <b>Sai</b> (Thuộc góc phần tư thứ IV).<br>
+      d. <b>Đúng</b> (4 điểm biểu diễn lần lượt thuộc 4 góc phần tư).</div>
+    </div>
+
+    <!-- Câu 26 (Đ/S 2) -->
+    <div class="question-box" id="q26">
+      <div class="question-title">Câu 2: Cho các hàm số \(f(x)=\begin{cases}-\dfrac{x}{2}&\text{khi }x\le 1\\\dfrac{x^2-3x+2}{x^2-1}&\text{khi }x>1\end{cases}\), \(g(x)=x^2-3x+1\) và \(h(x)=\sin \dfrac{\pi x}{4}\).</div>
+      <table class="tf-table">
+        <tr><th>Mệnh đề</th><th>Nội dung</th><th>Đúng</th><th>Sai</th></tr>
+        <tr><td>a</td><td>Hàm số \(f(x)\) liên tục tại điểm \(x_0=1\)</td><td><input type="radio" name="q26_a" value="T"></td><td><input type="radio" name="q26_a" value="F"></td></tr>
+        <tr><td>b</td><td>Hàm số \(g(x)\) liên tục tại điểm \(x_0=1\)</td><td><input type="radio" name="q26_b" value="T"></td><td><input type="radio" name="q26_b" value="F"></td></tr>
+        <tr><td>c</td><td>Hàm số \(h(x)\) không liên tục tại điểm \(x_0=2\)</td><td><input type="radio" name="q26_c" value="T"></td><td><input type="radio" name="q26_c" value="F"></td></tr>
+        <tr><td>d</td><td>Hàm số \(y=f(x)\cdot g(x)\) không liên tục tại điểm \(x_0=1\)</td><td><input type="radio" name="q26_d" value="T"></td><td><input type="radio" name="q26_d" value="F"></td></tr>
+      </table>
+      <div class="correct-ans">Đáp án đúng: a - Đúng, b - Đúng, c - Sai, d - Sai</div>
+      <div class="explanation"><b>Lời giải:</b><br>
+      a. <b>Đúng</b> (\(f(1) = \lim_{x\to 1} f(x) = -1/2\)).<br>
+      b. <b>Đúng</b> (Hàm đa thức liên tục trên \(\mathbb{R}\)).<br>
+      c. <b>Sai</b> (\(h(2) = \sin(\pi/2) = 1 = \lim_{x\to 2} h(x)\) nên liên tục).<br>
+      d. <b>Sai</b> (Tích của 2 hàm liên tục tại \(x_0=1\) là hàm liên tục tại \(x_0=1\)).</div>
+    </div>
+
+    <!-- Câu 27 (Đ/S 3) -->
+    <div class="question-box" id="q27">
+      <div class="question-title">Câu 3: Cho dãy số \(\left(u_n\right)\) cho bởi công thức \(u_n = \dfrac{3n-1}{n+1}\).</div>
+      <table class="tf-table">
+        <tr><th>Mệnh đề</th><th>Nội dung</th><th>Đúng</th><th>Sai</th></tr>
+        <tr><td>a</td><td>Năm số hạng đầu là \(1;\dfrac{5}{3};2;\dfrac{12}{5};\dfrac{7}{3}\)</td><td><input type="radio" name="q27_a" value="T"></td><td><input type="radio" name="q27_a" value="F"></td></tr>
+        <tr><td>b</td><td>Số hạng \(u_{n+1} = \dfrac{3n+2}{n+2}\)</td><td><input type="radio" name="q27_b" value="T"></td><td><input type="radio" name="q27_b" value="F"></td></tr>
+        <tr><td>c</td><td>Dãy số \(\left(u_n\right)\) là dãy giảm</td><td><input type="radio" name="q27_c" value="T"></td><td><input type="radio" name="q27_c" value="F"></td></tr>
+        <tr><td>d</td><td>Dãy số \(\left(u_n\right)\) bị chặn</td><td><input type="radio" name="q27_d" value="T"></td><td><input type="radio" name="q27_d" value="F"></td></tr>
+      </table>
+      <div class="correct-ans">Đáp án đúng: a - Sai, b - Đúng, c - Sai, d - Đúng</div>
+      <div class="explanation"><b>Lời giải:</b><br>
+      a. <b>Sai</b> (\(u_4 = 11/5\)).<br>
+      b. <b>Đúng</b> (\(u_{n+1} = \frac{3(n+1)-1}{(n+1)+1} = \frac{3n+2}{n+2}\)).<br>
+      c. <b>Sai</b> (\(u_{n+1} - u_n = \frac{4}{(n+1)(n+2)} > 0\) là dãy tăng).<br>
+      d. <b>Đúng</b> (\(0 < u_n < 3\)).</div>
+    </div>
+
+    <!-- Câu 28 (Đ/S 4 - Có hình TikZ SVG Hình chóp) -->
+    <div class="question-box" id="q28">
+      <div class="question-title">Câu 4: Cho hình chóp \(S.ABCD\), đáy \(ABCD\) là hình bình hành có \(O\) là giao điểm của hai đường chéo. Cho \(M\) là trung điểm của \(SC\).</div>
+      <div class="svg-container">
+        <svg width="260" height="240" viewBox="-20 -20 260 240" xmlns="http://www.w3.org/2000/svg">
+          <g transform="scale(1,-1) translate(0,-180)">
+            <!-- Solid Lines -->
+            <line x1="90" y1="160" x2="0" y2="-60" stroke="#000" stroke-width="1.5"/>
+            <line x1="0" y1="-60" x2="140" y2="-60" stroke="#000" stroke-width="1.5"/>
+            <line x1="140" y1="-60" x2="190" y2="0" stroke="#000" stroke-width="1.5"/>
+            <line x1="190" y1="0" x2="90" y2="160" stroke="#000" stroke-width="1.5"/>
+            <line x1="0" y1="-60" x2="90" y2="160" stroke="#000" stroke-width="1.5"/>
+            <line x1="140" y1="-60" x2="90" y2="160" stroke="#000" stroke-width="1.5"/>
+            <line x1="115" y1="50" x2="190" y2="0" stroke="#000" stroke-width="1.5"/>
+
+            <!-- Dashed Lines -->
+            <line x1="0" y1="-60" x2="50" y2="0" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="50" y1="0" x2="190" y2="0" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="50" y1="0" x2="90" y2="160" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="50" y1="0" x2="140" y2="-60" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="0" y1="-60" x2="190" y2="0" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="95" y1="-30" x2="90" y2="160" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="95" y1="-30" x2="115" y2="50" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="50" y1="0" x2="115" y2="50" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+            <!-- Points -->
+            <circle cx="50" cy="0" r="3" fill="#000"/><text x="35" y="-5" font-size="14" transform="scale(1,-1)">A</text>
+            <circle cx="0" cy="-60" r="3" fill="#000"/><text x="-15" y="65" font-size="14" transform="scale(1,-1)">B</text>
+            <circle cx="140" cy="-60" r="3" fill="#000"/><text x="145" y="65" font-size="14" transform="scale(1,-1)">C</text>
+            <circle cx="190" cy="0" r="3" fill="#000"/><text x="200" y="-5" font-size="14" transform="scale(1,-1)">D</text>
+            <circle cx="90" cy="160" r="3" fill="#000"/><text x="85" y="-170" font-size="14" transform="scale(1,-1)">S</text>
+            <circle cx="95" cy="-30" r="3" fill="#000"/><text x="95" y="45" font-size="14" transform="scale(1,-1)">O</text>
+            <circle cx="115" cy="50" r="3" fill="#000"/><text x="125" y="-50" font-size="14" transform="scale(1,-1)">M</text>
+          </g>
+        </svg>
+      </div>
+      <table class="tf-table">
+        <tr><th>Mệnh đề</th><th>Nội dung</th><th>Đúng</th><th>Sai</th></tr>
+        <tr><td>a</td><td>Đường thẳng \(OM\) là giao tuyến của hai mặt phẳng \((SAC)\) và \((SBD)\)</td><td><input type="radio" name="q28_a" value="T"></td><td><input type="radio" name="q28_a" value="F"></td></tr>
+        <tr><td>b</td><td>Đường thẳng \(BC\) song song với mặt phẳng \((AMD)\)</td><td><input type="radio" name="q28_b" value="T"></td><td><input type="radio" name="q28_b" value="F"></td></tr>
+        <tr><td>c</td><td>Đường thẳng \(OM\) song song với mặt phẳng \((SAD)\)</td><td><input type="radio" name="q28_c" value="T"></td><td><input type="radio" name="q28_c" value="F"></td></tr>
+        <tr><td>d</td><td>Giao tuyến của hai mặt phẳng \((OMD)\) và \((SAD)\) là đường thẳng qua \(D\) và song song với \(SA\)</td><td><input type="radio" name="q28_d" value="T"></td><td><input type="radio" name="q28_d" value="F"></td></tr>
+      </table>
+      <div class="correct-ans">Đáp án đúng: a - Sai, b - Đúng, c - Đúng, d - Đúng</div>
+      <div class="explanation"><b>Lời giải:</b><br>
+      a. <b>Sai</b> (Giao tuyến là \(SO\)).<br>
+      b. <b>Đúng</b> (\(BC \parallel AD \subset (AMD)\)).<br>
+      c. <b>Đúng</b> (\(OM \parallel SA \subset (SAD)\)).<br>
+      d. <b>Đúng</b> (\(OM \parallel SA\), giao tuyến đi qua điểm chung \(D\) và song song với \(SA\)).</div>
+    </div>
+
+  </div>
+
+  <!-- PHẦN 3: TRẢ LỜI NGẮN -->
+  <div class="quiz-card">
+    <h2>PHẦN III. CÂU HỎI TRẢ LỜI NGẮN</h2>
+
+    <!-- Câu 29 -->
+    <div class="question-box" id="q29">
+      <div class="question-title">Câu 1: Cho góc \(\alpha\) thỏa mãn \(\tan \alpha=\dfrac{\sqrt{2}}{4}\) với \(\pi < \alpha < \dfrac{3\pi}{2}\). Khi đó giá trị của biểu thức \(P=\cos \left(\alpha+\dfrac{\pi}{6} \right)=\dfrac{a-b\sqrt{6}}{c}\). Tính \(a+b+c\).</div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q29_input" placeholder="Nhập số..."></div>
+      <div class="correct-ans">Đáp án đúng: 9</div>
+      <div class="explanation"><b>Lời giải:</b> Do \(\pi < \alpha < \frac{3\pi}{2} \Rightarrow \cos\alpha < 0 \Rightarrow \cos\alpha = -\frac{2\sqrt{2}}{3}\), \(\sin\alpha = -\frac{1}{3}\).<br>
+      \(P = \cos\alpha\cos\frac{\pi}{6} - \sin\alpha\sin\frac{\pi}{6} = \frac{1-2\sqrt{6}}{6} \Rightarrow a=1, b=2, c=6 \Rightarrow a+b+c = 9\).</div>
+    </div>
+
+    <!-- Câu 30 -->
+    <div class="question-box" id="q30">
+      <div class="question-title">Câu 2: Tìm tập xác định của hàm số \(y=\dfrac{2}{\sin \left(x+\dfrac{\pi}{3} \right)+\sin x}\) có dạng \(\mathbb{R}\backslash \left\{-\dfrac{a\pi}{b}+k\pi|k\in \mathbb{Z}\right\}\). Tính \(a\cdot b\).</div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q30_input" placeholder="Nhập số..."></div>
+      <div class="correct-ans">Đáp án đúng: 6</div>
+      <div class="explanation"><b>Lời giải:</b> Mẫu số \(\neq 0 \Leftrightarrow \sin\left(x+\frac{\pi}{6}\right) \neq 0 \Leftrightarrow x \neq -\frac{\pi}{6} + k\pi\). Vậy \(a=1, b=6 \Rightarrow a \cdot b = 6\).</div>
+    </div>
+
+    <!-- Câu 31 -->
+    <div class="question-box" id="q31">
+      <div class="question-title">Câu 3: Một nhà thi đấu có tất cả 25 hàng ghế dành cho khán giả. Hàng thứ nhất có 22 ghế, hàng thứ hai có 24 ghế, hàng thứ ba có 26 ghế,... Cứ như thế, số ghế ở hàng sau nhiều hơn hàng liền trước nó là 2 ghế. Tính tổng số ghế có trong nhà thi đấu.</div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q31_input" placeholder="Nhập số..."></div>
+      <div class="correct-ans">Đáp án đúng: 1150</div>
+      <div class="explanation"><b>Lời giải:</b> Cấp số cộng có \(u_1 = 22, d = 2, n = 25\).<br>
+      \(S_{25} = \frac{25}{2} \left[2(22) + 24(2)\right] = 1150\) ghế.</div>
+    </div>
+
+    <!-- Câu 32 -->
+    <div class="question-box" id="q32">
+      <div class="question-title">Câu 4: Nhằm giúp người dân tiết kiệm điện, một công ty điện lực đề xuất bán điện theo bậc thang 10 kWh/bậc. Giá bậc 1 là 1.500 đồng/kWh, mỗi bậc sau tăng 2,5% so với bậc trước. Tháng 1 gia đình ông Hưng dùng 330 kWh. Số tiền phải trả có dạng \(\overline{abcd11}\). Tính \(a+b+c+d\).</div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q32_input" placeholder="Nhập số..."></div>
+      <div class="correct-ans">Đáp án đúng: 20</div>
+      <div class="explanation"><b>Lời giải:</b> Tổng tiền \(10 S_{33} = 10 \cdot 1500 \cdot \dfrac{1-(1+2.5\%)^{33}}{1-(1+2.5\%)} \approx 755311\) đồng.<br>
+      Nên \(a=7, b=5, c=5, d=3 \Rightarrow a+b+c+d = 7+5+5+3 = 20\).</div>
+    </div>
+
+    <!-- Câu 33 (Có hình TikZ SVG Hình hộp) -->
+    <div class="question-box" id="q33">
+      <div class="question-title">Câu 5: Cho hình hộp \(ABCD.A'B'C'D'\). Trên các cạnh \(AA'\), \(BB'\), \(CC'\) lấy \(M, N, P\) sao cho \(\dfrac{A'M}{AA'} = \dfrac{1}{3}\); \(\dfrac{B'N}{BB'} = \dfrac{2}{3}\); \(\dfrac{C'P}{CC'} = \dfrac{1}{2}\). Mặt phẳng \((MNP)\) cắt \(DD'\) tại \(Q\). Tính tỉ số \(\dfrac{DD'}{D'Q}\).</div>
+      <div class="svg-container">
+        <svg width="280" height="260" viewBox="-30 -20 280 260" xmlns="http://www.w3.org/2000/svg">
+          <g transform="scale(1,-1) translate(0,-220)">
+            <!-- Solid Lines -->
+            <line x1="120" y1="50" x2="0" y2="50" stroke="#000" stroke-width="1.5"/>
+            <line x1="0" y1="50" x2="60" y2="0" stroke="#000" stroke-width="1.5"/>
+            <line x1="60" y1="0" x2="180" y2="0" stroke="#000" stroke-width="1.5"/>
+            <line x1="180" y1="0" x2="120" y2="50" stroke="#000" stroke-width="1.5"/>
+            <line x1="60" y1="0" x2="60" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="180" y1="0" x2="180" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="120" y1="50" x2="120" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="60" y1="170" x2="180" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="180" y1="170" x2="120" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="120" y1="170" x2="0" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="0" y1="170" x2="60" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="120" y1="145" x2="180" y2="85" stroke="#000" stroke-width="1.5"/>
+            <line x1="180" y1="85" x2="60" y2="57" stroke="#000" stroke-width="1.5"/>
+
+            <!-- Dashed Lines -->
+            <line x1="0" y1="50" x2="0" y2="170" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="0" y1="130" x2="60" y2="57" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="0" y1="130" x2="120" y2="145" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+            <line x1="0" y1="130" x2="180" y2="85" stroke="#000" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+            <!-- Points -->
+            <circle cx="0" cy="50" r="3" fill="#000"/><text x="-15" y="-55" font-size="14" transform="scale(1,-1)">A</text>
+            <circle cx="60" cy="0" r="3" fill="#000"/><text x="50" y="15" font-size="14" transform="scale(1,-1)">B</text>
+            <circle cx="180" cy="0" r="3" fill="#000"/><text x="190" y="15" font-size="14" transform="scale(1,-1)">C</text>
+            <circle cx="120" cy="50" r="3" fill="#000"/><text x="130" y="-55" font-size="14" transform="scale(1,-1)">D</text>
+            <circle cx="0" cy="170" r="3" fill="#000"/><text x="-15" y="-175" font-size="14" transform="scale(1,-1)">A'</text>
+            <circle cx="60" cy="170" r="3" fill="#000"/><text x="50" y="-175" font-size="14" transform="scale(1,-1)">B'</text>
+            <circle cx="180" cy="170" r="3" fill="#000"/><text x="190" y="-175" font-size="14" transform="scale(1,-1)">C'</text>
+            <circle cx="120" cy="170" r="3" fill="#000"/><text x="130" y="-175" font-size="14" transform="scale(1,-1)">D'</text>
+            <circle cx="0" cy="130" r="3" fill="#000"/><text x="-15" y="-130" font-size="14" transform="scale(1,-1)">M</text>
+            <circle cx="60" cy="57" r="3" fill="#000"/><text x="45" y="-60" font-size="14" transform="scale(1,-1)">N</text>
+            <circle cx="180" cy="85" r="3" fill="#000"/><text x="190" y="-90" font-size="14" transform="scale(1,-1)">P</text>
+            <circle cx="120" cy="145" r="3" fill="#000"/><text x="130" y="-145" font-size="14" transform="scale(1,-1)">Q</text>
+          </g>
+        </svg>
+      </div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q33_input" placeholder="Nhập số..."></div>
+      <div class="correct-ans">Đáp án đúng: 6</div>
+      <div class="explanation"><b>Lời giải:</b> Trong hình hộp: \(\dfrac{A'M}{AA'} + \dfrac{C'P}{CC'} = \dfrac{B'N}{BB'} + \dfrac{D'Q}{DD'}\) \(\Leftrightarrow \dfrac{1}{3} + \dfrac{1}{2} = \dfrac{2}{3} + \dfrac{D'Q}{DD'} \Rightarrow \dfrac{D'Q}{DD'} = \dfrac{1}{6} \Rightarrow \dfrac{DD'}{D'Q} = 6\).</div>
+    </div>
+
+    <button type="button" class="submit-btn" onclick="submitQuiz()">NỘP BÀI KIỂM TRA</button>
+  </div>
+
+</form>
+
+<script>
+  // DÁN GAS URL CỦA THẦY VÀO GIỮA HAI DẤU NGOẶC KÉP BÊN DƯỚI:
+  const GAS_URL = "THAY_BANG_GAS_URL_CUA_THAY";
+
+  const keyMcq = {
+    q1: 'D', q2: 'C', q3: 'A', q4: 'B', q5: 'B', q6: 'A',
+    q7: 'A', q8: 'B', q9: 'B', q10: 'C', q11: 'D', q12: 'C',
+    q13: 'C', q14: 'B', q15: 'D', q16: 'A', q17: 'C', q18: 'B',
+    q19: 'B', q20: 'D', q21: 'B', q22: 'A', q23: 'C', q24: 'B'
+  };
+
+  const keyTf = {
+    q25_a: 'F', q25_b: 'T', q25_c: 'F', q25_d: 'T',
+    q26_a: 'T', q26_b: 'T', q26_c: 'F', q26_d: 'F',
+    q27_a: 'F', q27_b: 'T', q27_c: 'F', q27_d: 'T',
+    q28_a: 'F', q28_b: 'T', q28_c: 'T', q28_d: 'T'
+  };
+
+  const keyShort = {
+    q29: '9',
+    q30: '6',
+    q31: '1150',
+    q32: '20',
+    q33: '6'
+  };
+
+  function submitQuiz() {
+    const name = document.getElementById('studentName').value.trim();
+    const className = document.getElementById('className').value.trim();
+
+    if (!name || !className) {
+      alert("Vui lòng điền đầy đủ Họ và tên cùng Lớp trước khi nộp bài!");
+      return;
+    }
+
+    let score = 0;
+
+    // 1. Chấm Phần I (24 câu MCQ, mỗi câu 0.25đ = 6.0đ)
+    for (let i = 1; i <= 24; i++) {
+      const qKey = 'q' + i;
+      const selected = document.querySelector(`input[name="${qKey}"]:checked`);
+      if (selected && selected.value === keyMcq[qKey]) {
+        score += 0.25;
       }
+    }
 
-      // Tính điểm sơ bộ (Ví dụ câu 1)
-      let score = 0;
-      const q1 = document.querySelector('input[name="q1"]:checked');
-      if (q1 && q1.value === "0.5") {
-        score = 10; // Giả sử tính thang điểm 10
+    // 2. Chấm Phần II (4 câu Đ/S, 16 ý nhỏ, mỗi ý đúng 0.125đ = 2.0đ)
+    for (let k in keyTf) {
+      const selected = document.querySelector(`input[name="${k}"]:checked`);
+      if (selected && selected.value === keyTf[k]) {
+        score += 0.125;
       }
+    }
 
-      statusDiv.style.color = "blue";
-      statusDiv.innerText = "Đang gửi kết quả...";
+    // 3. Chấm Phần III (5 câu ngắn, mỗi câu 0.4đ = 2.0đ)
+    for (let i = 29; i <= 33; i++) {
+      const val = document.getElementById(`q${i}_input`).value.trim();
+      const target = keyShort[`q${i}`];
+      if (Array.isArray(target)) {
+        if (target.includes(val)) score += 0.4;
+      } else {
+        if (val === target) score += 0.4;
+      }
+    }
 
-      // Gửi dữ liệu về Google Sheets thông qua Web App (doPost)
+    score = Math.round(score * 100) / 100;
+
+    // Hiển thị kết quả & Lời giải
+    const resDiv = document.getElementById('result-summary');
+    resDiv.style.display = 'block';
+    resDiv.innerHTML = `Chúc mừng <b>${name}</b> (Lớp ${className})!<br>Điểm số của bạn: <span style="color:#d9534f; font-size:24px;">${score} / 10</span>`;
+
+    document.querySelectorAll('.explanation, .correct-ans').forEach(el => el.style.display = 'block');
+
+    // Cuộn lên đầu trang xem điểm
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Gửi dữ liệu về Google Sheets
+    if (GAS_URL && GAS_URL !== "https://script.google.com/macros/s/AKfycbxC-6_V3J_b63AzTKAXV57OZV2SVVkT_ebSNAkgNlWYibAYZ81ZERUw4PzQFTWlh01oJA/exec") {
       const formData = new URLSearchParams();
       formData.append("name", name);
       formData.append("className", className);
@@ -81,19 +713,13 @@
 
       fetch(GAS_URL, {
         method: "POST",
-        mode: "no-cors", // Bỏ qua hạn chế CORS khi gửi từ GitHub Pages về Google Apps Script
+        mode: "no-cors",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData.toString()
-      })
-      .then(() => {
-        statusDiv.style.color = "green";
-        statusDiv.innerText = " Nộp bài thành công! Điểm của bạn đã được ghi nhận.";
-      })
-      .catch(err => {
-        statusDiv.style.color = "red";
-        statusDiv.innerText = " Lỗi khi nộp bài: " + err;
       });
     }
-  </script>
+  }
+</script>
+
 </body>
 </html>
