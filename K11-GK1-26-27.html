@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiểm Tra Định Kỳ Môn Toán 11 - Mã Đề 7169</title>
+  <!-- Nhúng MathJax hỗ trợ công thức Toán LaTeX -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    body { font-family: "Segoe UI", Arial, sans-serif; max-width: 850px; margin: 20px auto; padding: 20px; line-height: 1.6; background-color: #f4f6f9; color: #333; }
+    .quiz-card { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    h1, h2 { text-align: center; color: #1a73e8; }
+    .header-info { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #1a73e8; padding-bottom: 10px; }
+    .header-info h3 { margin: 5px 0; color: #2c3e50; }
+    .info-group { display: flex; gap: 15px; margin-bottom: 20px; }
+    .info-group input { flex: 1; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 15px; }
+    .question-box { background: #fafafa; border: 1px solid #e0e0e0; padding: 15px 20px; border-radius: 6px; margin-bottom: 20px; position: relative; }
+    .question-title { font-weight: bold; color: #2c3e50; margin-bottom: 10px; }
+    .options { display: flex; flex-direction: column; gap: 8px; margin-left: 10px; }
+    .options label { cursor: pointer; padding: 5px 8px; border-radius: 4px; transition: background 0.2s; }
+    .options label:hover { background-color: #eef5ff; }
+    .tf-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    .tf-table th, .tf-table td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    .tf-table td:nth-child(2) { text-align: left; }
+    input[type="text"].short-ans, textarea.essay-ans { width: 100%; max-width: 400px; padding: 8px; font-size: 15px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    textarea.essay-ans { height: 80px; resize: vertical; }
+    button.submit-btn { display: block; width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 20px; }
+    button.submit-btn:hover { background-color: #218838; }
+    #result-summary { display: none; background: #e8f4ea; border: 1px solid #c3e6cb; color: #155724; padding: 15px; border-radius: 6px; font-size: 18px; font-weight: bold; text-align: center; margin-bottom: 20px; }
+    .explanation { display: none; margin-top: 12px; padding: 12px; background-color: #f8f9fa; border-left: 4px solid #1a73e8; font-size: 14.5px; }
+    .correct-ans { color: #28a745; font-weight: bold; margin-top: 5px; display: none; }
+    .svg-container { text-align: center; margin: 15px 0; }
+    .svg-container svg { max-width: 100%; height: auto; }
+  </style>
+</head>
+<body>
+
+<div class="quiz-card">
+  <div class="header-info">
+    <h3>TRƯỜNG THPT A - TỔ TOÁN</h3>
+    <h1>KIỂM TRA ĐỊNH KỲ, NĂM HỌC 2026 - 2027</h1>
+    <h3>Môn: Toán, Lớp 11 — Thời gian: 90 phút</h3>
+    <p><b>MÃ ĐỀ THI: 7169</b></p>
+  </div>
+  <div class="info-group">
+    <input type="text" id="studentName" placeholder="Họ và tên thí sinh (*)" required>
+    <input type="text" id="className" placeholder="Lớp (*)" required>
+  </div>
+  <div id="result-summary"></div>
+</div>
+
+<form id="quizForm">
+
+  <!-- PHẦN I: TRẮC NGHIỆM 4 LỰA CHỌN -->
+  <div class="quiz-card">
+    <h2>PHẦN I. TRẮC NGHIỆM 4 LỰA CHỌN</h2>
+    <p><i>Thí sinh trả lời từ câu 1 đến câu 12. Mỗi câu hỏi chỉ chọn một phương án.</i></p>
+
+    <!-- Câu 1 -->
+    <div class="question-box" id="q1">
+      <div class="question-title">Câu 1: Cho hình chóp \(S.ABCD\) có đáy \(ABCD\) là hình bình hành. Gọi \(d\) là giao tuyến của hai mặt phẳng \((SAD)\) và \((SBC)\). Khẳng định nào sau đây là khẳng định đúng?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="A"> A. \(d\) qua \(S\) và song song với \(BC\)</label>
+        <label><input type="radio" name="q1" value="B"> B. \(d\) qua \(S\) và song song với \(AB\)</label>
+        <label><input type="radio" name="q1" value="C"> C. \(d\) qua \(S\) và song song với \(BD\)</label>
+        <label><input type="radio" name="q1" value="D"> D. \(d\) qua \(S\) và song song với \(DC\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation">
+        <b>Lời giải:</b><br>
+        Ta có \(S \in (SAD) \cap (SBC)\), \(AD \parallel BC \Rightarrow\) giao tuyến của hai mặt phẳng \((SAD)\) và \((SBC)\) là đường thẳng \(d\) qua \(S\) và song song với \(BC\).
+        <div class="svg-container">
+          <svg width="300" height="200" viewBox="0 0 300 200">
+            <line x1="100" y1="120" x2="50" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="50" y1="170" x2="200" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="200" y1="170" x2="250" y2="120" stroke="#000" stroke-width="1.5"/>
+            <line x1="70" y1="30" x2="50" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="70" y1="30" x2="200" y2="170" stroke="#000" stroke-width="1.5"/>
+            <line x1="70" y1="30" x2="250" y2="120" stroke="#000" stroke-width="1.5"/>
+            <line x1="10" y1="30" x2="260" y2="30" stroke="#000" stroke-width="1.5"/>
+            <line x1="70" y1="30" x2="100" y2="120" stroke="#000" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="100" y1="120" x2="50" y2="170" stroke="#000" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="100" y1="120" x2="250" y2="120" stroke="#000" stroke-width="1" stroke-dasharray="4,4"/>
+            <circle cx="70" cy="30" r="3" fill="#000"/><text x="70" y="20" font-size="12">S</text>
+            <circle cx="100" cy="120" r="3" fill="#000"/><text x="85" y="120" font-size="12">A</text>
+            <circle cx="50" cy="170" r="3" fill="#000"/><text x="40" y="185" font-size="12">B</text>
+            <circle cx="200" cy="170" r="3" fill="#000"/><text x="205" y="185" font-size="12">C</text>
+            <circle cx="250" cy="120" r="3" fill="#000"/><text x="255" y="125" font-size="12">D</text>
+            <text x="265" y="25" font-size="12" font-style="italic">d</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 2 -->
+    <div class="question-box" id="q2">
+      <div class="question-title">Câu 2: Rút gọn biểu thức \(\sin(a-17^\circ)\cos(a+13^\circ)-\sin(a+13^\circ)\cos(a-17^\circ)\), ta được</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="A"> A. \(\sin 2a\)</label>
+        <label><input type="radio" name="q2" value="B"> B. \(\dfrac{1}{2}\)</label>
+        <label><input type="radio" name="q2" value="C"> C. \(\cos 2a\)</label>
+        <label><input type="radio" name="q2" value="D"> D. \(-\dfrac{1}{2}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: D</div>
+      <div class="explanation">
+        <b>Lời giải:</b><br>
+        \(\sin(a-17^\circ)\cos(a+13^\circ)-\sin(a+13^\circ)\cos(a-17^\circ) = \sin[(a-17^\circ)-(a+13^\circ)] = \sin(-30^\circ) = -\dfrac{1}{2}\).
+      </div>
+    </div>
+
+    <!-- Câu 3 -->
+    <div class="question-box" id="q3">
+      <div class="question-title">Câu 3: Trong các dãy số sau, dãy số nào là dãy số giảm?</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="A"> A. \(u_n=\dfrac{2}{n^2}\)</label>
+        <label><input type="radio" name="q3" value="B"> B. \(u_n=\dfrac{2n-3}{n+1}\)</label>
+        <label><input type="radio" name="q3" value="C"> C. \(u_n=\dfrac{(-1)^n}{3^n}\)</label>
+        <label><input type="radio" name="q3" value="D"> D. \(u_n=\dfrac{n}{3}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation">
+        <b>Lời giải:</b><br>
+        Xét dãy số \(u_n=\dfrac{2}{n^2}\). Ta có \(u_n > 0\) và \(\dfrac{u_{n+1}}{u_n} = \left(\dfrac{n}{n+1}\right)^2 < 1, \forall n \in \mathbb{N}^*\). Do đó đây là dãy số giảm.
+      </div>
+    </div>
+
+    <!-- Câu 4 -->
+    <div class="question-box" id="q4">
+      <div class="question-title">Câu 4: Cho bốn điểm \(A, B, C, D\) không cùng nằm trong một mặt phẳng. Trên \(AB, AD\) lần lượt lấy các điểm \(M, N\) sao cho \(MN\) cắt \(BD\) tại \(I\). Điểm \(I\) không thuộc mặt phẳng nào sau đây?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="A"> A. \((BCD)\)</label>
+        <label><input type="radio" name="q4" value="B"> B. \((ACD)\)</label>
+        <label><input type="radio" name="q4" value="C"> C. \((ABD)\)</label>
+        <label><input type="radio" name="q4" value="D"> D. \((CMN)\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation">
+        <b>Lời giải:</b><br>
+        Ta có \(I \in BD \Rightarrow I \in (BCD)\) và \(I \in (ABD)\). Mặt khác \(I \in MN \Rightarrow I \in (CMN)\). Do đó \(I\) không thuộc \((ACD)\).
+        <div class="svg-container">
+          <svg width="280" height="200" viewBox="0 0 280 200">
+            <line x1="100" y1="20" x2="30" y2="130" stroke="#000" stroke-width="1.5"/>
+            <line x1="30" y1="130" x2="160" y2="180" stroke="#000" stroke-width="1.5"/>
+            <line x1="160" y1="180" x2="240" y2="130" stroke="#000" stroke-width="1.5"/>
+            <line x1="100" y1="20" x2="240" y2="130" stroke="#000" stroke-width="1.5"/>
+            <line x1="100" y1="20" x2="160" y2="180" stroke="#000" stroke-width="1.5"/>
+            <line x1="30" y1="130" x2="240" y2="130" stroke="#000" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="65" y1="75" x2="193" y2="93" stroke="#000" stroke-width="1" stroke-dasharray="4,4"/>
+            <line x1="193" y1="93" x2="260" y2="102" stroke="#000" stroke-width="1.5"/>
+            <circle cx="100" cy="20" r="3" fill="#000"/><text x="100" y="12" font-size="12">A</text>
+            <circle cx="30" cy="130" r="3" fill="#000"/><text x="15" y="135" font-size="12">B</text>
+            <circle cx="160" cy="180" r="3" fill="#000"/><text x="160" y="195" font-size="12">C</text>
+            <circle cx="240" cy="130" r="3" fill="#000"/><text x="245" y="135" font-size="12">D</text>
+            <circle cx="65" cy="75" r="3" fill="#000"/><text x="50" y="75" font-size="12">M</text>
+            <circle cx="193" cy="93" r="3" fill="#000"/><text x="195" y="85" font-size="12">N</text>
+            <circle cx="260" cy="102" r="3" fill="#000"/><text x="265" y="110" font-size="12">I</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Câu 5 -->
+    <div class="question-box" id="q5">
+      <div class="question-title">Câu 5: Cho hai góc nhọn \(a\) và \(b\), biết \(\cos a = \dfrac{5}{13}\), \(\cos b = \dfrac{3}{5}\). Khi đó giá trị \(\sin(a+b)\) bằng</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="A"> A. \(\dfrac{16}{65}\)</label>
+        <label><input type="radio" name="q5" value="B"> B. \(\dfrac{56}{65}\)</label>
+        <label><input type="radio" name="q5" value="C"> C. \(-\dfrac{56}{65}\)</label>
+        <label><input type="radio" name="q5" value="D"> D. \(-\dfrac{16}{65}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation">
+        <b>Lời giải:</b><br>
+        Vì \(a, b\) nhọn nên \(\sin a = \sqrt{1-\cos^2 a} = \dfrac{12}{13}\) và \(\sin b = \sqrt{1-\cos^2 b} = \dfrac{4}{5}\).<br>
+        \(\sin(a+b) = \sin a \cos b + \cos a \sin b = \dfrac{12}{13}\cdot\dfrac{3}{5} + \dfrac{5}{13}\cdot\dfrac{4}{5} = \dfrac{56}{65}\).
+      </div>
+    </div>
+
+    <!-- Câu 6 -->
+    <div class="question-box" id="q6">
+      <div class="question-title">Câu 6: Sau khi tổng kết cuối tháng, quản lý một quán trà sữa thống kê lợi nhuận ($) trong 20 ngày qua là: 4; 5; 6; 8; 9; 11; 13; 16; 16; 18; 20; 21; 25; 30; 31; 33; 36; 37; 40; 41. Khoảng tứ phân vị của mẫu số liệu trên là:</div>
+      <div class="options">
+        <label><input type="radio" name="q6" value="A"> A. \(26\)</label>
+        <label><input type="radio" name="q6" value="B"> B. \(22\)</label>
+        <label><input type="radio" name="q6" value="C"> C. \(24\)</label>
+        <label><input type="radio" name="q6" value="D"> D. \(20\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation">
+        <b>Lời giải:</b><br>
+        Mẫu số liệu có \(n=20\). Ta tính được các tứ phân vị: \(Q_1 = 10\), \(Q_3 = 32\).<br>
+        Khoảng tứ phân vị \(\Delta_Q = Q_3 - Q_1 = 32 - 10 = 22\).
+      </div>
+    </div>
+
+    <!-- Câu 7 -->
+    <div class="question-box" id="q7">
+      <div class="question-title">Câu 7: Tìm tất cả các giá trị của \(x\) để ba số \(2x-1, x, 2x+1\) theo thứ tự lập thành một cấp số nhân.</div>
+      <div class="options">
+        <label><input type="radio" name="q7" value="A"> A. \(x=\pm \sqrt{3}\)</label>
+        <label><input type="radio" name="q7" value="B"> B. \(x=\pm 3\)</label>
+        <label><input type="radio" name="q7" value="C"> C. \(x=\pm \dfrac{1}{3}\)</label>
+        <label><input type="radio" name="q7" value="D"> D. \(x=\pm \dfrac{\sqrt{3}}{3}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: D</div>
+      <div class="explanation">
+        <b>Lời giải:</b><br>
+        Ba số lập thành CSN \(\Leftrightarrow x^2 = (2x-1)(2x+1) \Leftrightarrow x^2 = 4x^2 - 1 \Leftrightarrow 3x^2 = 1 \Leftrightarrow x = \pm \dfrac{\sqrt{3}}{3}\).
+      </div>
+    </div>
+
+    <!-- Câu 8 -->
+    <div class="question-box" id="q8">
+      <div class="question-title">Câu 8: Cho ba mặt phẳng phân biệt \((P), (Q), (R)\) có \((P)\cap (Q)=d_1\), \((Q)\cap (R)=d_2\), \((P)\cap (R)=d_3\). Biết rằng \(d_1\) và \(d_2\) cắt nhau. Khi đó ba đường thẳng \(d_1, d_2, d_3\)</div>
+      <div class="options">
+        <label><input type="radio" name="q8" value="A"> A. đôi một cắt nhau</label>
+        <label><input type="radio" name="q8" value="B"> B. đôi một song song hoặc đồng quy</label>
+        <label><input type="radio" name="q8" value="C"> C. đồng quy</label>
+        <label><input type="radio" name="q8" value="D"> D. đôi một song song</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: C</div>
+      <div class="explanation">
+        <b>Lời giải:</b><br>
+        Theo định lý giao tuyến của ba mặt phẳng, do \(d_1\) và \(d_2\) cắt nhau nên cả ba đường thẳng đồng quy.
+      </div>
+    </div>
+
+    <!-- Câu 9 -->
+    <div class="question-box" id="q9">
+      <div class="question-title">Câu 9: Cho mặt phẳng \((P)\) và hai đường thẳng \(a, b\). Khẳng định nào sau đây đúng?</div>
+      <div class="options">
+        <label><input type="radio" name="q9" value="A"> A. Nếu \(a \parallel b\) và \(\begin{cases}b\subset (P)\\a\not\subset (P)\end{cases}\) thì \(a \parallel (P)\)</label>
+        <label><input type="radio" name="q9" value="B"> B. Nếu \(a \parallel (P)\) và \(b\subset (P)\) thì \(a \parallel b\)</label>
+        <label><input type="radio" name="q9" value="C"> C. Nếu \(a \parallel b\) và \(b\subset (P)\) thì \(a \parallel (P)\)</label>
+        <label><input type="radio" name="q9" value="D"> D. Nếu \(a \parallel (P)\) và \(b \parallel (P)\) thì \(a \parallel b\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation">
+        <b>Lời giải:</b> Theo định lý đường thẳng song song với mặt phẳng: nếu đường thẳng \(a \not\subset (P)\) và song song với \(b \subset (P)\) thì \(a \parallel (P)\).
+      </div>
+    </div>
+
+    <!-- Câu 10 -->
+    <div class="question-box" id="q10">
+      <div class="question-title">Câu 10: Giải phương trình \(\cot 2x=\cot 20^\circ \).</div>
+      <div class="options">
+        <label><input type="radio" name="q10" value="A"> A. \(x=20^\circ+k180^\circ, k\in\mathbb{Z}\)</label>
+        <label><input type="radio" name="q10" value="B"> B. \(x=10^\circ+k90^\circ, k\in\mathbb{Z}\)</label>
+        <label><input type="radio" name="q10" value="C"> C. \(x=10^\circ+k180^\circ, k\in\mathbb{Z}\)</label>
+        <label><input type="radio" name="q10" value="D"> D. \(x=20^\circ+k90^\circ, k\in\mathbb{Z}\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation">
+        <b>Lời giải:</b> \(\cot 2x=\cot 20^\circ \Leftrightarrow 2x = 20^\circ + k180^\circ \Leftrightarrow x = 10^\circ + k90^\circ (k\in\mathbb{Z})\).
+      </div>
+    </div>
+
+    <!-- Câu 11 -->
+    <div class="question-box" id="q11">
+      <div class="question-title">Câu 11: Cho cấp số cộng \((u_n)\) có \(u_1=-1\), công sai \(d=3\). Số hạng thứ \(675\) của cấp số cộng đã cho là</div>
+      <div class="options">
+        <label><input type="radio" name="q11" value="A"> A. \(-2022\)</label>
+        <label><input type="radio" name="q11" value="B"> B. \(2021\)</label>
+        <label><input type="radio" name="q11" value="C"> C. \(2024\)</label>
+        <label><input type="radio" name="q11" value="D"> D. \(2027\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: B</div>
+      <div class="explanation">
+        <b>Lời giải:</b> \(u_{675} = u_1 + 674d = -1 + 674 \cdot 3 = 2021\).
+      </div>
+    </div>
+
+    <!-- Câu 12 -->
+    <div class="question-box" id="q12">
+      <div class="question-title">Câu 12: Hàm số nào sau đây đồng biến trên khoảng \(\left(\dfrac{\pi}{2};\pi \right)\)?</div>
+      <div class="options">
+        <label><input type="radio" name="q12" value="A"> A. \(y=\tan x\)</label>
+        <label><input type="radio" name="q12" value="B"> B. \(y=\sin x\)</label>
+        <label><input type="radio" name="q12" value="C"> C. \(y=\cot x\)</label>
+        <label><input type="radio" name="q12" value="D"> D. \(y=\cos x\)</label>
+      </div>
+      <div class="correct-ans">Đáp án đúng: A</div>
+      <div class="explanation">
+        <b>Lời giải:</b> Hàm số \(y=\tan x\) đồng biến trên từng khoảng xác định, bao gồm khoảng \(\left(\dfrac{\pi}{2};\pi \right)\).
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PHẦN II: TRẮC NGHIỆM ĐÚNG/SAI -->
+  <div class="quiz-card">
+    <h2>PHẦN II. TRẮC NGHIỆM ĐÚNG / SAI</h2>
+    <p><i>Thí sinh chọn Đúng hoặc Sai cho mỗi ý a), b), c), d).</i></p>
+
+    <!-- Câu 1 (Đ/S) -->
+    <div class="question-box" id="q13">
+      <div class="question-title">Câu 1: Cho hình chóp \(S.ABCD\) có đáy là hình bình hành tâm \(O\), \(M\) thuộc \(SA\) sao cho \(2MA=SM\), \(N\) thuộc tia đối \(OS\) sao cho \(3ON=SO\), \(G\) là trọng tâm tam giác \(SCD\). Gọi \(K=SD\cap(GMN)\).</div>
+      <table class="tf-table">
+        <tr><th>Mệnh đề</th><th>Nội dung</th><th>Đúng</th><th>Sai</th></tr>
+        <tr><td>a</td><td>\(MN \parallel SC\)</td><td><input type="radio" name="q13_a" value="T"></td><td><input type="radio" name="q13_a" value="F"></td></tr>
+        <tr><td>b</td><td>\(\dfrac{AF}{AC}=\dfrac{2}{3}\) (với \(F=MN \cap AC\))</td><td><input type="radio" name="q13_b" value="T"></td><td><input type="radio" name="q13_b" value="F"></td></tr>
+        <tr><td>c</td><td>\(\dfrac{OE}{MA}=\dfrac{1}{2}\) (với \(OE \parallel SA, E \in MN\))</td><td><input type="radio" name="q13_c" value="T"></td><td><input type="radio" name="q13_c" value="F"></td></tr>
+        <tr><td>d</td><td>\(\dfrac{SK}{KD}=\dfrac{1}{2}\)</td><td><input type="radio" name="q13_d" value="T"></td><td><input type="radio" name="q13_d" value="F"></td></tr>
+      </table>
+      <div class="correct-ans">Đáp án đúng: a - Đúng, b - Sai, c - Đúng, d - Đúng</div>
+      <div class="explanation">
+        <b>Lời giải chi tiết:</b><br>
+        a. Đúng. \(\dfrac{AM}{SA}=\dfrac{AF}{AC}=\dfrac{1}{3} \Rightarrow MN \parallel SC\).<br>
+        b. Sai. \(\dfrac{AF}{AC}=\dfrac{1}{3}\).<br>
+        c. Đúng. \(OE \parallel SM \Rightarrow \dfrac{OE}{SM}=\dfrac{ON}{SN}=\dfrac{1}{4} \Rightarrow \dfrac{OE}{MA}=\dfrac{1}{2}\).<br>
+        d. Đúng. \(GK \parallel SC \Rightarrow \dfrac{DK}{SD}=\dfrac{DG}{DI}=\dfrac{2}{3} \Rightarrow \dfrac{SK}{KD}=\dfrac{1}{2}\).
+      </div>
+    </div>
+
+    <!-- Câu 2 (Đ/S) -->
+    <div class="question-box" id="q14">
+      <div class="question-title">Câu 2: Trong một hồ sen, số lá sen ngày hôm sau bằng 3 lần số lá sen ngày hôm trước. Biết ngày đầu có 1 lá sen thì tới ngày thứ 10 hồ đầy lá sen.</div>
+      <table class="tf-table">
+        <tr><th>Mệnh đề</th><th>Nội dung</th><th>Đúng</th><th>Sai</th></tr>
+        <tr><td>a</td><td>Số lá sen lập thành cấp số nhân \((u_n)\) với \(u_1=1\) và công bội \(q=3\)</td><td><input type="radio" name="q14_a" value="T"></td><td><input type="radio" name="q14_a" value="F"></td></tr>
+        <tr><td>b</td><td>Nếu ngày đầu có 9 lá sen thì tới ngày thứ 8 hồ sẽ đầy lá sen</td><td><input type="radio" name="q14_b" value="T"></td><td><input type="radio" name="q14_b" value="F"></td></tr>
+        <tr><td>c</td><td>Nếu ngày đầu có 3 lá sen thì tới ngày thứ 9 hồ sẽ đầy lá sen</td><td><input type="radio" name="q14_c" value="T"></td><td><input type="radio" name="q14_c" value="F"></td></tr>
+        <tr><td>d</td><td>Số lá sen lập thành cấp số cộng \((u_n)\) với \(u_1=1\) và công sai \(d=3\)</td><td><input type="radio" name="q14_d" value="T"></td><td><input type="radio" name="q14_d" value="F"></td></tr>
+      </table>
+      <div class="correct-ans">Đáp án đúng: a - Đúng, b - Đúng, c - Đúng, d - Sai</div>
+      <div class="explanation">
+        <b>Lời giải chi tiết:</b><br>
+        Dung tích hồ đầy là \(N = u_{10} = 3^9\).<br>
+        a. Đúng (định nghĩa cấp số nhân).<br>
+        b. Đúng: \(v_m = 9 \cdot 3^{m-1} = 3^{m+1} = 3^9 \Rightarrow m = 8\).<br>
+        c. Đúng: \(v_m = 3 \cdot 3^{m-1} = 3^m = 3^9 \Rightarrow m = 9\).<br>
+        d. Sai (đây là cấp số nhân).
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PHẦN III: TRẢ LỜI NGẮN -->
+  <div class="quiz-card">
+    <h2>PHẦN III. CÂU HỎI TRẢ LỜI NGẮN</h2>
+
+    <!-- Câu 15 -->
+    <div class="question-box" id="q15">
+      <div class="question-title">Câu 1: Cho hình chóp \(S.ABCD\) có đáy \(ABCD\) là hình bình hành tâm \(O\). Gọi \(M, N\) lần lượt trên \(SB, SC\) sao cho \(\dfrac{SN}{SC}=\dfrac{1}{2}\) và \(\dfrac{SM}{SB}=\dfrac{2}{3}\). Gọi \(P = SD \cap (AMN)\). Tính tỉ số \(\dfrac{SP}{SD}\) (kết quả làm tròn đến hàng phần trăm).</div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q15_input" placeholder="Nhập số thập phân..."></div>
+      <div class="correct-ans">Đáp án đúng: 0,67 (hoặc 0.67)</div>
+      <div class="explanation">
+        <b>Lời giải:</b> Gọi \(K = SO \cap AN\), \(P = SD \cap MK\). Ta có \(K\) là trọng tâm \(\triangle SAC \Rightarrow \dfrac{SK}{SO} = \dfrac{2}{3}\). Suy ra \(KM \parallel BO \Rightarrow \dfrac{SP}{SD} = \dfrac{SK}{SO} = \dfrac{2}{3} \approx 0{,}67\).
+      </div>
+    </div>
+
+    <!-- Câu 16 -->
+    <div class="question-box" id="q16">
+      <div class="question-title">Câu 2: Rút gọn biểu thức \(A = \dfrac{\sin x + \sin 2x + \sin 3x + \sin 4x}{\cos x + \cos 2x + \cos 3x + \cos 4x} = \tan ax\). Giá trị của \(a\) bằng bao nhiêu?</div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q16_input" placeholder="Nhập số..."></div>
+      <div class="correct-ans">Đáp án đúng: 2,5 (hoặc 2.5)</div>
+      <div class="explanation">
+        <b>Lời giải:</b> \(A = \dfrac{2\sin\frac{5x}{2}(\cos\frac{3x}{2}+\cos\frac{x}{2})}{2\cos\frac{5x}{2}(\cos\frac{3x}{2}+\cos\frac{x}{2})} = \tan\left(\dfrac{5x}{2}\right) \Rightarrow a = 2{,}5\).
+      </div>
+    </div>
+
+    <!-- Câu 17 -->
+    <div class="question-box" id="q17">
+      <div class="question-title">Câu 3: Hằng ngày mực nước kênh lên xuống theo thủy triều \(h(t)=3 \cos \left(\dfrac{\pi t}{12}+\dfrac{\pi}{4}\right)+14\) (mét). Thời điểm (giờ) nào trong ngày (\(0 \le t \le 24\)) mực nước trong kênh là cao nhất?</div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q17_input" placeholder="Nhập số..."></div>
+      <div class="correct-ans">Đáp án đúng: 21</div>
+      <div class="explanation">
+        <b>Lời giải:</b> \(h(t)\) max khi \(\cos \left(\dfrac{\pi t}{12}+\dfrac{\pi}{4}\right) = 1 \Rightarrow \dfrac{\pi t}{12}+\dfrac{\pi}{4} = k2\pi \Rightarrow t = -3 + 24k\). Với \(0 \le t \le 24 \Rightarrow k=1 \Rightarrow t=21\)h.
+      </div>
+    </div>
+
+    <!-- Câu 18 -->
+    <div class="question-box" id="q18">
+      <div class="question-title">Câu 4: Có bao nhiêu giá trị \(x \in [-\pi; \pi]\) để \(\sin x, \sin 2x, \sin 3x\) theo thứ tự lập thành cấp số cộng có công sai \(d \ne 0\)?</div>
+      <div>Đáp số: <input type="text" class="short-ans" id="q18_input" placeholder="Nhập số..."></div>
+      <div class="correct-ans">Đáp án đúng: 2</div>
+      <div class="explanation">
+        <b>Lời giải:</b> \(\sin x + \sin 3x = 2\sin 2x \Leftrightarrow 2\sin 2x(\cos x - 1) = 0 \Leftrightarrow x = \dfrac{k\pi}{2}\). Loại nghiệm cho \(d=0\), còn lại 2 nghiệm thỏa mãn.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PHẦN IV: TỰ LUẬN -->
+  <div class="quiz-card">
+    <h2>PHẦN IV. PHẦN TỰ LUẬN</h2>
+
+    <!-- Câu TL 1 -->
+    <div class="question-box" id="q19">
+      <div class="question-title">Câu 1: Giải phương trình \(\sin (2x - 40^\circ) = \dfrac{\sqrt{3}}{2}\) với \(-180^\circ \le x \le 180^\circ\). Tìm số nghiệm của phương trình.</div>
+      <div>Bài làm của học sinh:<br><textarea class="essay-ans" placeholder="Trình bày vắn tắt bài làm..."></textarea></div>
+      <div class="explanation">
+        <b>Lời giải tham khảo:</b> \(\sin (2x - 40^\circ) = \sin 60^\circ \Rightarrow x \in \{50^\circ + k180^\circ; 80^\circ + k180^\circ\}\). Các nghiệm thuộc \([-180^\circ; 180^\circ]\) là \(\{-130^\circ, 50^\circ, -100^\circ, 80^\circ\}\). Có 4 nghiệm.
+      </div>
+    </div>
+
+    <!-- Câu TL 2 -->
+    <div class="question-box" id="q20">
+      <div class="question-title">Câu 2: Bạn An thả quả bóng cao su từ độ cao 6m. Mỗi lần chạm đất, bóng nảy lên độ cao bằng 3/4 lần trước. Tính tổng quãng đường quả bóng di chuyển đến khi dừng hẳn.</div>
+      <div>Bài làm của học sinh:<br><textarea class="essay-ans" placeholder="Trình bày vắn tắt bài làm..."></textarea></div>
+      <div class="explanation">
+        <b>Lời giải tham khảo:</b> Quãng đường là tổng CSN lùi vô hạn với \(u_1 = 6, q = 3/4\). Tổng quãng đường \(S = \dfrac{6}{1 - 3/4} = 24\)m.
+      </div>
+    </div>
+
+    <!-- Câu TL 3 -->
+    <div class="question-box" id="q21">
+      <div class="question-title">Câu 3: Cho hình chóp \(S.ABCD\) có đáy \(ABCD\) là hình bình hành tâm \(O\). Gọi \(M, N, P\) lần lượt là trung điểm của \(BC, CD, SD\). Xác định giao điểm \(Q\) của \(SA\) với \((MNP)\) và tính tỉ số \(\dfrac{SQ}{SA}\).</div>
+      <div>Bài làm của học sinh:<br><textarea class="essay-ans" placeholder="Trình bày vắn tắt bài làm..."></textarea></div>
+      <div class="explanation">
+        <b>Lời giải tham khảo:</b> Trong \((ABCD)\), gọi \(E = MN \cap AC\). Kẻ \(EQ \parallel SC \Rightarrow Q = SA \cap (MNP)\). Ta có \(\dfrac{SQ}{SA} = \dfrac{CE}{CA} = \dfrac{1}{4} = 0{,}25\).
+      </div>
+    </div>
+
+    <button type="button" class="submit-btn" onclick="submitQuiz()">NỘP BÀI KIỂM TRA</button>
+  </div>
+
+</form>
+
+<script>
+  // 1. DÁN GAS URL CỦA THẦY VÀO GIỮA NGOẶC KÉP DƯỚI ĐÂY:
+  const GAS_URL = "THAY_BANG_GAS_URL_CUA_THAY";
+
+  const keyMcq = { q1: 'A', q2: 'D', q3: 'A', q4: 'B', q5: 'B', q6: 'B', q7: 'D', q8: 'C', q9: 'A', q10: 'B', q11: 'B', q12: 'A' };
+  const keyTf = {
+    q13_a: 'T', q13_b: 'F', q13_c: 'T', q13_d: 'T',
+    q14_a: 'T', q14_b: 'T', q14_c: 'T', q14_d: 'F'
+  };
+  const keyShort = { q15: ['0.67', '0,67'], q16: ['2.5', '2,5'], q17: '21', q18: '2' };
+
+  function submitQuiz() {
+    const name = document.getElementById('studentName').value.trim();
+    const className = document.getElementById('className').value.trim();
+
+    if (!name || !className) {
+      alert("Vui lòng điền đầy đủ Họ và tên cùng Lớp trước khi nộp bài!");
+      return;
+    }
+
+    let score = 0;
+
+    // Chấm Phần I (12 câu MCQ, mỗi câu 0.25đ = 3đ)
+    for (let i = 1; i <= 12; i++) {
+      const qKey = 'q' + i;
+      const selected = document.querySelector(`input[name="${qKey}"]:checked`);
+      if (selected && selected.value === keyMcq[qKey]) {
+        score += 0.25;
+      }
+    }
+
+    // Chấm Phần II (2 câu Đ/S, mỗi ý 0.25đ = 2đ)
+    for (let k in keyTf) {
+      const selected = document.querySelector(`input[name="${k}"]:checked`);
+      if (selected && selected.value === keyTf[k]) {
+        score += 0.25;
+      }
+    }
+
+    // Chấm Phần III (4 câu ngắn, mỗi câu 0.75đ = 3đ)
+    for (let i = 15; i <= 18; i++) {
+      const val = document.getElementById(`q${i}_input`).value.trim();
+      const target = keyShort[`q${i}`];
+      if (Array.isArray(target)) {
+        if (target.includes(val)) score += 0.75;
+      } else {
+        if (val === target) score += 0.75;
+      }
+    }
+
+    score = Math.round(score * 100) / 100;
+
+    // 2. HIỂN THỊ KẾT QUẢ CHO HỌC SINH TẠI ĐÂY (TRÊN TRANG WEB)
+    const resDiv = document.getElementById('result-summary');
+    resDiv.style.display = 'block';
+    resDiv.innerHTML = `Chúc mừng <b>${name}</b> (Lớp ${className})!<br>Điểm Trắc nghiệm của bạn: <span style="color:#d9534f; font-size:24px;">${score} / 8.0</span><br><small>(Phần Tự luận 2.0 điểm sẽ được thầy/cô chấm trực tiếp)</small>`;
+
+    document.querySelectorAll('.explanation, .correct-ans').forEach(el => el.style.display = 'block');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // 3. GỬI KẾT QUẢ VỀ GOOGLE SHEETS CỦA THẦY TẠI ĐÂY
+    if (GAS_URL && GAS_URL !== "https://script.google.com/macros/s/AKfycbxC-6_V3J_b63AzTKAXV57OZV2SVVkT_ebSNAkgNlWYibAYZ81ZERUw4PzQFTWlh01oJA/exec") {
+      const formData = new URLSearchParams();
+      formData.append("name", name);
+      formData.append("className", className);
+      formData.append("score", score.toString());
+
+      fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
+      });
+    }
+  }
+</script>
+
+</body>
+</html>
