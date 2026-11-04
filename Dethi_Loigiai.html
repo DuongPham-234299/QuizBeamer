@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Dethi_Loigiai</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: auto; padding: 15px; line-height: 1.6; padding-top: 70px; overflow-x: hidden; background: #fef8fb; }
+        .header-bar { position: fixed; top: 0; left: 0; width: 100%; background: #ad1457; color: white; padding: 10px 15px; z-index: 1000; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; box-shadow: 0 2px 6px rgba(173,20,87,0.2); }
+        .header-bar h2 { margin: 0; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 65%; }
+        #timer { font-size: 16px; font-weight: bold; background: #e53935; padding: 5px 10px; border-radius: 4px; white-space: nowrap; }
+        
+        .zalo-warning { background: #fdedf4; color: #7f0f40; padding: 10px; border: 1px solid #f7bad5; border-radius: 4px; margin-bottom: 15px; font-weight: bold; text-align: justify; font-size: 14px; }
+        
+        h3 { color: #7f0f40; border-bottom: 2px solid #f7bad5; padding-bottom: 5px; margin-top: 30px; text-transform: uppercase; font-size: 18px; }
+        .info-group { margin-bottom: 15px; }
+        .info-group input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #f7bad5; border-radius: 4px; font-size: 16px; background: #fff; }
+        .info-group input:focus { border-color: #ad1457; outline: none; box-shadow: 0 0 0 3px rgba(173,20,87,0.12); }
+        
+        .question { background: #fdedf4; padding: 15px; margin-bottom: 20px; border-radius: 5px; border: 1px solid #f7bad5; box-sizing: border-box; width: 100%; overflow-x: auto; }
+        .question-text { margin-bottom: 15px; word-wrap: break-word; } 
+        
+        mjx-container { max-width: 100%; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; }
+        
+        .options label { display: block; padding: 10px; margin: 8px 0; background: #ffffff; border: 1px solid #f7bad5; border-radius: 4px; cursor: pointer; transition: 0.3s; }
+        .options label:hover { background: #fbdfeb; border-color: #ad1457; }
+        
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 15px 0; }
+        .tf-table { width: 100%; border-collapse: collapse; background: #fff; min-width: 320px; }
+        .tf-table td { padding: 10px; border: 1px solid #f7bad5; }
+        .tf-radio-group { display: flex; gap: 10px; justify-content: center; }
+        .tf-radio-group label { cursor: pointer; font-weight: bold; padding: 5px; border-radius: 3px; transition: 0.3s; }
+        
+        .short-ans-group { display: flex; gap: 8px; margin-top: 5px; flex-wrap: wrap; }
+        .short-ans-box { width: 50px; height: 55px; font-size: 24px; text-align: center; border: 2px solid #ad1457; border-radius: 5px; box-sizing: border-box; font-weight: bold; color: #7f0f40; background: #fff; transition: 0.3s; }
+        .short-ans-box:focus { border-color: #520929; outline: none; box-shadow: 0 0 6px rgba(173,20,87,0.3); }
+        
+        .essay-input { width: 100%; padding: 12px; font-size: 16px; border: 2px solid #f7bad5; border-radius: 4px; box-sizing: border-box; height: 150px; resize: vertical; background: #fff; }
+        .essay-input:focus { border-color: #ad1457; outline: none; }
+        
+        .solution-box { display: none; margin-top: 15px; padding: 15px; background: #fce6f0; border-left: 5px solid #0288d1; border-radius: 4px; overflow-x: auto; }
+        
+        button.submit-btn { width: 100%; padding: 15px; background: #ad1457; color: white; border: none; border-radius: 4px; font-size: 18px; cursor: pointer; margin-top: 15px; font-weight: bold; margin-bottom: 5px; }
+        button.submit-btn:hover { background: #7f0f40; }
+        #result { display: none; margin-top: 20px; padding: 15px; border-radius: 4px; text-align: center; font-weight: bold; font-size: 18px; background: #fdedf4; color: #520929; border: 1px solid #f7bad5; margin-bottom: 20px;}
+        
+        #passwordPrompt { display: none; margin-top: 20px; padding: 20px; background: #fdedf4; border: 1px solid #f7bad5; border-radius: 5px; text-align: center; margin-bottom: 40px; }
+        #passwordPrompt h4 { color: #7f0f40; margin-top: 0; margin-bottom: 10px; }
+        #passwordPrompt input { padding: 10px; width: 60%; max-width: 250px; border: 1px solid #f7bad5; border-radius: 4px; font-size: 16px; }
+        #passwordPrompt button { width: auto; padding: 10px 20px; background: #ad1457; color: white; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; font-weight: bold; margin-top: 10px; margin-left: 10px; }
+        
+        /* --- SVG / ẢNH + KHUNG ZOOM DÙNG CHUNG (khung tự co giãn, không đặt chiều cao cố định) --- */
+        :root {
+            --zoom-accent: #ad1457; --zoom-accent-hover: #7f0f40;
+            --zoom-border: #f7bad5; --zoom-bar-bg: #fdedf4; --zoom-max-h: none;
+        }
+        svg { max-width: 100%; height: auto; display: block; margin: 10px auto; overflow: visible; }
+        svg text { font-family: Arial, sans-serif; }
+        img { max-width: 100%; height: auto; }
+        .zoom-container { display: flex; align-items: flex-start; gap: 10px; margin: 15px 0; }
+        .zoom-viewport {
+            flex: 1 1 auto; min-width: 0;
+            overflow: auto; -webkit-overflow-scrolling: touch;
+            border: 1px solid var(--zoom-border); border-radius: 4px; background: #fff;
+            box-sizing: border-box; padding: 4px;
+        }
+        /* chỉ giới hạn chiều cao và giữ cuộn bên trong khi ảnh đang được phóng to */
+        .zoom-viewport.can-pan { cursor: grab; max-height: var(--zoom-max-h); overscroll-behavior: contain; }
+        .zoom-viewport.dragging { cursor: grabbing; user-select: none; }
+        .zoom-toolbar { display: flex; flex-direction: column; gap: 5px; background: var(--zoom-bar-bg); padding: 5px; border-radius: 4px; border: 1px solid var(--zoom-border); flex-shrink: 0; }
+        .zoom-btn { background: var(--zoom-accent); color: #fff; border: none; padding: 6px 10px; font-size: 14px; border-radius: 4px; cursor: pointer; transition: background .2s, opacity .2s; white-space: nowrap; }
+        .zoom-btn:hover:not(:disabled) { background: var(--zoom-accent-hover); }
+        .zoom-btn:disabled { background: #ccc; cursor: not-allowed; opacity: .6; }
+        .zoom-media { display: block; margin: 0 auto; max-width: 100%; height: auto; user-select: none; -webkit-user-drag: none; }
+        .zoom-media.zoomed { width: var(--zw) !important; max-width: none !important; height: auto !important; }
+        /* --- BẢNG DÀI: bọc trong khung cuộn ngang, không làm tràn lề --- */
+        .table-scroll { display: block; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; margin: 10px 0; }
+        .table-scroll > table { margin: 0; max-width: 100%; border-collapse: collapse; }
+        .table-scroll th, .table-scroll td { overflow-wrap: break-word; }
+        /* .table-responsive do TeX2HTML tạo ra: trước đây chỉ mẫu làm bài có CSS này nên bảng rộng bị tràn ở trình chiếu / luyện tập */
+        .table-responsive { display: block; width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; margin: 15px 0; }
+        /* --- BẢNG RỘNG TRÊN ĐIỆN THOẠI: gợi ý vuốt ngang, cột đầu cố định, xem toàn màn hình --- */
+        .tbl-box { position: relative; margin: 12px 0; max-width: 100%; min-width: 0; }
+        .tbl-box > .tbl-wrap { position: relative; }
+        .tbl-box .table-responsive, .tbl-box .table-scroll { margin: 0; }
+        .tbl-hint { display: none; align-items: center; justify-content: space-between; gap: 8px; margin: 0 0 4px; font-size: 12.5px; color: #5f7b94; }
+        .tbl-box.has-scroll > .tbl-hint { display: flex; }
+        .tbl-open { font: inherit; font-size: 12.5px; padding: 4px 10px; border-radius: 14px; border: 1px solid var(--zoom-border); background: var(--zoom-bar-bg); color: var(--zoom-accent-hover); cursor: pointer; white-space: nowrap; }
+        .tbl-fade { display: none; position: absolute; top: 0; right: 0; bottom: 0; width: 30px; pointer-events: none; background: linear-gradient(to right, rgba(255,255,255,0), rgba(120,140,160,.28)); }
+        .tbl-box.has-scroll:not(.at-end) .tbl-fade { display: block; }
+        .tbl-box.has-scroll table.sticky-first tr > :first-child { position: sticky; left: 0; z-index: 2; background: #fff; box-shadow: 2px 0 4px -2px rgba(0,0,0,.35); }
+        @media (max-width: 600px) {
+            .tbl-box td, .tbl-box th { font-size: 14px; padding: 4px 7px !important; }
+        }
+        #tblOverlay { position: fixed; inset: 0; z-index: 99999; background: #fff; display: none; flex-direction: column; }
+        #tblOverlay.open { display: flex; }
+        .tbl-ov-bar { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--zoom-bar-bg); border-bottom: 1px solid var(--zoom-border); }
+        .tbl-ov-bar .ttl { flex: 1; min-width: 0; font-size: 13px; font-weight: bold; color: #333; }
+        .tbl-ov-body { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; padding: 10px; touch-action: pan-x pan-y; }
+        .tbl-ov-body table { margin: 0; width: auto; max-width: none; border-collapse: collapse; font-size: calc(15px * var(--tbl-s, 1)); }
+        .tbl-ov-body td, .tbl-ov-body th { font-size: inherit !important; padding: 5px 9px; }
+
+        
+        /* ===== Bổ sung của bộ chuyển đổi TeX2HTML (PyQt6) ===== */
+        .tp { margin: 6px 0; }
+        .center { text-align: center; }
+        .figure svg, .figure img { max-width: 100%; height: auto; }
+        .fig-error { color: #b00020; border: 1px dashed #b00020; padding: 6px 10px; text-align: center; margin: 8px 0; font-size: 14px; }
+        .fbox { border: 1px solid currentColor; padding: 0 4px; }
+        blockquote { margin: 8px 20px; }
+        img { max-width: 100%; height: auto; }
+        ul, ol { margin: 6px 0; padding-left: 24px; }
+        ul.desc, li.cl { list-style: none; }
+        li.cl .lbl { font-weight: bold; margin-right: .4em; }
+        ol[class^="paren-"] { list-style: none; counter-reset: pc; padding-left: 2.2em; }
+        ol[class^="paren-"] > li { counter-increment: pc; position: relative; margin: 4px 0; }
+        ol[class^="paren-"] > li::before { position: absolute; left: -2.2em; width: 2em; text-align: right; font-weight: bold; }
+        ol.paren-a > li::before { content: counter(pc, lower-alpha) ")"; }
+        ol.paren-A > li::before { content: counter(pc, upper-alpha) ")"; }
+        ol.paren-i > li::before { content: counter(pc, lower-roman) ")"; }
+        ol.paren-I > li::before { content: counter(pc, upper-roman) ")"; }
+        ol.paren-1 > li::before { content: counter(pc, decimal) ")"; }
+        table.tex-table { border-collapse: collapse; margin: 8px auto; }
+        table.tex-table td { padding: 4px 10px; }
+        table.tex-table.bordered td { border: 1px solid #555; }
+
+
+
+        .author-footer { margin: 30px 0 10px; padding-top: 10px; border-top: 1px solid #f7bad5; text-align: center; color: #5f7b94; font-size: 13px; }
+        .author-footer:empty { display: none; }
+    </style>
+    
+    <script>
+        window.MathJax = {
+          tex: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\\[','\\]']],
+            processEscapes: true,
+            macros: {"wideparen": ["\\overset{\\frown}{#1}", 1], "overarc": ["\\overset{\\frown}{#1}", 1], "phone": "", "footerinfo": "THPT chuyên Thoại Ngọc Hầu", "facenhom": "\\faFacebookSquare\\ THPT chuyên Thoại Ngọc Hầu", "khungct": ["\\tcboxmath[colback=mausection!5,colframe=mausection,boxsep=1pt,boxrule=1pt,arc is angular]{#1}", 1], "khung": ["\\tcbox[colback=mausection!5,colframe=mausection,boxsep=1pt,boxrule=1pt,arc is angular]{#1}", 1], "chongbang": "\\rule[-14pt]{0pt}{33pt}", "xuongdong": "\\break"}
+          },
+          options: { enableMenu: false }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+</head>
+<body>
+    <div class="header-bar">
+        <h2>Dethi_Loigiai</h2>
+        <div id="timer">Đang tải...</div>
+    </div>
+    
+    <div class="zalo-warning" id="zaloWarning">
+        ⚠️ CHÚ Ý: Nếu em đang mở bài này trực tiếp trên Zalo/Messenger, hãy bấm vào biểu tượng "Dấu 3 chấm" ở góc phải màn hình và chọn "Mở bằng trình duyệt" (Chrome/Safari) để không bị lỗi kết nối.
+    </div>
+
+    <div class="info-group">
+        <label>Họ và tên học sinh:</label>
+        <input type="text" id="studentName" placeholder="Nhập họ và tên..." required>
+    </div>
+    <div class="info-group">
+        <label>Lớp:</label>
+        <input type="text" id="studentClass" placeholder="Nhập lớp..." required>
+    </div>
+
+    <hr>
+    <form id="quizForm" onsubmit="return false;">
+        <h3>PHẦN 1. Câu trắc nghiệm nhiều phương án lựa chọn</h3>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 1:</b> Cho cấp số cộng $\left(u_n\right)$, biết $\left\{\begin{aligned}&amp;u_1=-1\\&amp;u_{n+1}=u_n+3,\,\forall n\in\mathbb{N^*}\end{aligned}\right.$. Công sai $d$ bằng</div></div><div class="options"><label><input type="radio" name="P1_Cau_1" value="A"> <b>A.</b> $3$</label><label><input type="radio" name="P1_Cau_1" value="B"> <b>B.</b> $-3$</label><label><input type="radio" name="P1_Cau_1" value="C"> <b>C.</b> $1$</label><label><input type="radio" name="P1_Cau_1" value="D"> <b>D.</b> $-1$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Theo định nghĩa cấp số cộng, ta có $u_{n+1}=u_n+d$.<br> Từ giả thiết $u_{n+1}=u_n+3$, suy ra công sai $d=3$.</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 2:</b> Cho $\alpha$ là một góc tuỳ ý. Khẳng định nào sau đây là đúng?</div></div><div class="options"><label><input type="radio" name="P1_Cau_2" value="A"> <b>A.</b> $\sin^2 2\alpha = \dfrac{1-\cos 4\alpha}{2}$</label><label><input type="radio" name="P1_Cau_2" value="B"> <b>B.</b> $\sin^2 2\alpha = \dfrac{1+\cos 4\alpha}{2}$</label><label><input type="radio" name="P1_Cau_2" value="C"> <b>C.</b> $\sin^2 2\alpha = \dfrac{1+\cos 2\alpha}{2}$</label><label><input type="radio" name="P1_Cau_2" value="D"> <b>D.</b> $\sin^2 2\alpha = \dfrac{1-\cos 2\alpha}{2}$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Công thức hạ bậc $\sin^2\theta = \dfrac{1-\cos 2\theta}{2}$.<br> Thay $\theta=2a$, ta có $\sin^2 2a = \dfrac{1-\cos 4a}{2}$.</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 3:</b> Nghiệm âm lớn nhất của phương trình $\sin x+\dfrac{\sqrt{3}}{2}=0$ là</div></div><div class="options"><label><input type="radio" name="P1_Cau_3" value="A"> <b>A.</b> $-\dfrac{2\pi}{3}$</label><label><input type="radio" name="P1_Cau_3" value="B"> <b>B.</b> $-\dfrac{\pi}{3}$</label><label><input type="radio" name="P1_Cau_3" value="C"> <b>C.</b> $-\dfrac{\pi}{6}$</label><label><input type="radio" name="P1_Cau_3" value="D"> <b>D.</b> $-\dfrac{\pi}{4}$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Ta có</div><div class="tp">\begin{align*}
+			\sin x+\dfrac{\sqrt{3}}{2}=0&amp;\Leftrightarrow \sin x=-\dfrac{\sqrt{3}}{2}\\
+			&amp;\Leftrightarrow \left[\begin{aligned}&amp;x=-\dfrac{\pi}{3}+k2\pi\\&amp;x=\dfrac{4\pi}{3}+k2\pi\end{aligned}\right.,k\in\mathbb{Z}.
+		\end{align*} Nghiệm âm lớn nhất của phương trình đã cho là $x=-\dfrac{\pi}{3}$ ứng với $k=0$.</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 4:</b> Cho $\cos \alpha = \dfrac{2}{5}$ với $\dfrac{3\pi}{2} &lt; \alpha &lt; 2\pi$. Tìm giá trị lượng giác $\sin \alpha$.</div></div><div class="options"><label><input type="radio" name="P1_Cau_4" value="A"> <b>A.</b> $\dfrac{21}{25}$</label><label><input type="radio" name="P1_Cau_4" value="B"> <b>B.</b> $\dfrac{\sqrt{21}}{5}$</label><label><input type="radio" name="P1_Cau_4" value="C"> <b>C.</b> $-\dfrac{21}{25}$</label><label><input type="radio" name="P1_Cau_4" value="D"> <b>D.</b> $-\dfrac{\sqrt{21}}{5}$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Vì $\dfrac{3\pi}{2} &lt; \alpha &lt; 2\pi$ nên $\sin \alpha &lt; 0$.<br> Ta có: $\sin^2 \alpha = 1 - \cos^2 \alpha = 1 - \left(\dfrac{2}{5}\right)^2 = \dfrac{21}{25}$.<br> Do $\sin \alpha &lt; 0 \Rightarrow \sin \alpha = -\sqrt{\dfrac{21}{25}} = -\dfrac{\sqrt{21}}{5}$.</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 5:</b> Cho hình tứ diện $ABCD$. Gọi $M$, $N$ lần lượt là trung điểm của $BC$ và $CD$ (tham khảo hình vẽ bên). Hai đường thẳng nào dưới đây là hai đường thẳng chéo nhau?</div><div class="tp"><div class="center"><div class="tp"><div class="table-responsive figure" style="text-align:center;margin:10px 0"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="151.254pt" height="148.98pt" viewBox="0 0 151.254 148.98" version="1.2"><defs><g><symbol overflow="visible" id="f1_glyph0-0"><path style="stroke:none;" d="" /></symbol><symbol overflow="visible" id="f1_glyph0-1"><path style="stroke:none;" d="M 1.766 -1.141 C 1.375 -0.469 0.984 -0.344 0.562 -0.312 C 0.438 -0.297 0.344 -0.297 0.344 -0.109 C 0.344 -0.047 0.391 0 0.469 0 C 0.75 0 1.047 -0.031 1.328 -0.031 C 1.656 -0.031 2 0 2.312 0 C 2.375 0 2.5 0 2.5 -0.188 C 2.5 -0.297 2.422 -0.312 2.344 -0.312 C 2.125 -0.328 1.875 -0.406 1.875 -0.656 C 1.875 -0.766 1.938 -0.875 2.016 -1.016 L 2.781 -2.281 L 5.266 -2.281 C 5.281 -2.078 5.422 -0.734 5.422 -0.641 C 5.422 -0.344 4.906 -0.312 4.703 -0.312 C 4.562 -0.312 4.469 -0.312 4.469 -0.109 C 4.469 0 4.594 0 4.609 0 C 5.016 0 5.438 -0.031 5.844 -0.031 C 6.094 -0.031 6.719 0 6.969 0 C 7.031 0 7.141 0 7.141 -0.203 C 7.141 -0.312 7.047 -0.312 6.922 -0.312 C 6.297 -0.312 6.297 -0.375 6.266 -0.656 L 5.672 -6.859 C 5.641 -7.047 5.641 -7.094 5.484 -7.094 C 5.312 -7.094 5.281 -7.031 5.219 -6.922 Z M 2.969 -2.594 L 4.906 -5.859 L 5.234 -2.594 Z M 2.969 -2.594 " /></symbol><symbol overflow="visible" id="f1_glyph0-2"><path style="stroke:none;" d="M 1.578 -0.766 C 1.484 -0.391 1.469 -0.312 0.688 -0.312 C 0.516 -0.312 0.422 -0.312 0.422 -0.109 C 0.422 0 0.5 0 0.688 0 L 4.219 0 C 5.781 0 6.953 -1.172 6.953 -2.141 C 6.953 -2.859 6.375 -3.422 5.422 -3.531 C 6.453 -3.719 7.484 -4.453 7.484 -5.406 C 7.484 -6.125 6.828 -6.766 5.641 -6.766 L 2.312 -6.766 C 2.125 -6.766 2.031 -6.766 2.031 -6.562 C 2.031 -6.453 2.125 -6.453 2.312 -6.453 C 2.328 -6.453 2.516 -6.453 2.688 -6.438 C 2.859 -6.422 2.953 -6.406 2.953 -6.281 C 2.953 -6.234 2.938 -6.219 2.906 -6.094 Z M 3.078 -3.625 L 3.688 -6.078 C 3.781 -6.422 3.797 -6.453 4.234 -6.453 L 5.516 -6.453 C 6.375 -6.453 6.594 -5.875 6.594 -5.438 C 6.594 -4.562 5.734 -3.625 4.531 -3.625 Z M 2.641 -0.312 C 2.5 -0.312 2.484 -0.312 2.422 -0.312 C 2.312 -0.328 2.281 -0.344 2.281 -0.422 C 2.281 -0.453 2.281 -0.469 2.344 -0.641 L 3.016 -3.406 L 4.891 -3.406 C 5.844 -3.406 6.031 -2.672 6.031 -2.25 C 6.031 -1.266 5.156 -0.312 3.984 -0.312 Z M 2.641 -0.312 " /></symbol><symbol overflow="visible" id="f1_glyph0-3"><path style="stroke:none;" d="M 7.531 -6.891 C 7.531 -6.922 7.516 -6.984 7.422 -6.984 C 7.391 -6.984 7.375 -6.969 7.266 -6.859 L 6.578 -6.109 C 6.484 -6.234 6.031 -6.984 4.938 -6.984 C 2.719 -6.984 0.5 -4.797 0.5 -2.5 C 0.5 -0.859 1.672 0.219 3.188 0.219 C 4.047 0.219 4.797 -0.172 5.312 -0.641 C 6.234 -1.453 6.406 -2.344 6.406 -2.375 C 6.406 -2.484 6.312 -2.484 6.297 -2.484 C 6.234 -2.484 6.188 -2.453 6.156 -2.375 C 6.078 -2.094 5.844 -1.391 5.156 -0.812 C 4.484 -0.25 3.859 -0.094 3.344 -0.094 C 2.453 -0.094 1.391 -0.609 1.391 -2.156 C 1.391 -2.719 1.609 -4.312 2.594 -5.484 C 3.203 -6.188 4.125 -6.672 5.016 -6.672 C 6.016 -6.672 6.609 -5.906 6.609 -4.766 C 6.609 -4.375 6.578 -4.359 6.578 -4.266 C 6.578 -4.156 6.688 -4.156 6.719 -4.156 C 6.859 -4.156 6.859 -4.188 6.906 -4.359 Z M 7.531 -6.891 " /></symbol><symbol overflow="visible" id="f1_glyph0-4"><path style="stroke:none;" d="M 1.578 -0.766 C 1.469 -0.391 1.453 -0.312 0.672 -0.312 C 0.5 -0.312 0.391 -0.312 0.391 -0.125 C 0.391 0 0.484 0 0.672 0 L 3.953 0 C 6.016 0 7.969 -2.094 7.969 -4.266 C 7.969 -5.656 7.125 -6.766 5.641 -6.766 L 2.312 -6.766 C 2.125 -6.766 2.016 -6.766 2.016 -6.578 C 2.016 -6.453 2.094 -6.453 2.297 -6.453 C 2.422 -6.453 2.609 -6.453 2.719 -6.438 C 2.875 -6.422 2.938 -6.391 2.938 -6.281 C 2.938 -6.234 2.938 -6.219 2.906 -6.094 Z M 3.719 -6.078 C 3.797 -6.422 3.828 -6.453 4.25 -6.453 L 5.312 -6.453 C 6.281 -6.453 7.109 -5.938 7.109 -4.625 C 7.109 -4.141 6.906 -2.516 6.062 -1.422 C 5.781 -1.062 5 -0.312 3.781 -0.312 L 2.656 -0.312 C 2.516 -0.312 2.5 -0.312 2.438 -0.312 C 2.344 -0.328 2.312 -0.344 2.312 -0.422 C 2.312 -0.453 2.312 -0.469 2.359 -0.641 Z M 3.719 -6.078 " /></symbol><symbol overflow="visible" id="f1_glyph0-5"><path style="stroke:none;" d="M 9.172 -6 C 9.266 -6.359 9.281 -6.453 10.031 -6.453 C 10.25 -6.453 10.344 -6.453 10.344 -6.656 C 10.344 -6.766 10.25 -6.766 10.078 -6.766 L 8.766 -6.766 C 8.516 -6.766 8.5 -6.766 8.375 -6.578 L 4.766 -0.938 L 4 -6.531 C 3.969 -6.766 3.938 -6.766 3.688 -6.766 L 2.328 -6.766 C 2.141 -6.766 2.031 -6.766 2.031 -6.578 C 2.031 -6.453 2.125 -6.453 2.312 -6.453 C 2.453 -6.453 2.625 -6.453 2.75 -6.438 C 2.906 -6.422 2.969 -6.391 2.969 -6.281 C 2.969 -6.234 2.953 -6.219 2.922 -6.094 L 1.672 -1.047 C 1.562 -0.656 1.391 -0.344 0.594 -0.312 C 0.547 -0.312 0.422 -0.297 0.422 -0.125 C 0.422 -0.031 0.469 0 0.562 0 C 0.875 0 1.219 -0.031 1.547 -0.031 C 1.875 -0.031 2.234 0 2.562 0 C 2.609 0 2.75 0 2.75 -0.203 C 2.75 -0.312 2.641 -0.312 2.562 -0.312 C 2 -0.312 1.891 -0.516 1.891 -0.75 C 1.891 -0.812 1.906 -0.859 1.938 -0.969 L 3.281 -6.375 L 4.141 -0.234 C 4.156 -0.109 4.172 0 4.297 0 C 4.391 0 4.453 -0.109 4.5 -0.172 L 8.516 -6.453 L 7.109 -0.766 C 7 -0.391 6.984 -0.312 6.203 -0.312 C 6.031 -0.312 5.922 -0.312 5.922 -0.125 C 5.922 0 6.047 0 6.078 0 C 6.344 0 7.031 -0.031 7.297 -0.031 C 7.703 -0.031 8.141 0 8.547 0 C 8.594 0 8.734 0 8.734 -0.203 C 8.734 -0.312 8.641 -0.312 8.453 -0.312 C 8.078 -0.312 7.812 -0.312 7.812 -0.484 C 7.812 -0.531 7.812 -0.547 7.859 -0.719 Z M 9.172 -6 " /></symbol><symbol overflow="visible" id="f1_glyph0-6"><path style="stroke:none;" d="M 7.484 -5.719 C 7.594 -6.125 7.766 -6.422 8.562 -6.453 C 8.609 -6.453 8.734 -6.469 8.734 -6.656 C 8.734 -6.672 8.734 -6.766 8.594 -6.766 C 8.266 -6.766 7.922 -6.734 7.594 -6.734 C 7.266 -6.734 6.922 -6.766 6.594 -6.766 C 6.531 -6.766 6.406 -6.766 6.406 -6.562 C 6.406 -6.453 6.516 -6.453 6.594 -6.453 C 7.156 -6.453 7.266 -6.234 7.266 -6.016 C 7.266 -6 7.234 -5.844 7.234 -5.812 L 6.125 -1.406 L 3.938 -6.578 C 3.859 -6.75 3.844 -6.766 3.609 -6.766 L 2.281 -6.766 C 2.094 -6.766 2 -6.766 2 -6.562 C 2 -6.453 2.094 -6.453 2.281 -6.453 C 2.328 -6.453 2.953 -6.453 2.953 -6.375 L 1.625 -1.047 C 1.531 -0.656 1.359 -0.344 0.562 -0.312 C 0.5 -0.312 0.391 -0.297 0.391 -0.109 C 0.391 -0.047 0.438 0 0.516 0 C 0.828 0 1.172 -0.031 1.5 -0.031 C 1.844 -0.031 2.203 0 2.531 0 C 2.578 0 2.703 0 2.703 -0.203 C 2.703 -0.297 2.609 -0.312 2.5 -0.312 C 1.938 -0.328 1.859 -0.547 1.859 -0.75 C 1.859 -0.812 1.859 -0.859 1.891 -0.969 L 3.203 -6.203 C 3.234 -6.141 3.234 -6.125 3.281 -6.016 L 5.75 -0.188 C 5.828 -0.016 5.859 0 5.938 0 C 6.047 0 6.047 -0.031 6.109 -0.203 Z M 7.484 -5.719 " /></symbol></g></defs><g id="f1_surface1"><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-dasharray:2.98883,2.98883;stroke-miterlimit:10;" d="M 19.047 -89.019 L 132.435 -89.019" transform="matrix(0.995092,0,0,-0.995092,0,0)" /><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 47.393 -18.156 L 19.047 -89.019 M 47.393 -18.156 L 132.435 -89.019 M 47.393 -18.156 L 75.739 -131.54 M 19.047 -89.019 L 75.739 -131.54 M 75.739 -131.54 L 132.435 -89.019" transform="matrix(0.995092,0,0,-0.995092,0,0)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 29.344 99.212 C 29.344 99.765 28.896 100.209 28.347 100.209 C 27.797 100.209 27.35 99.765 27.35 99.212 C 27.35 98.662 27.797 98.219 28.347 98.219 C 28.896 98.219 29.344 98.662 29.344 99.212 Z M 29.344 99.212 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 0.998 28.348 C 0.998 28.898 0.55 29.342 0.001 29.342 C -0.549 29.342 -0.996 28.898 -0.996 28.348 C -0.996 27.795 -0.549 27.351 0.001 27.351 C 0.55 27.351 0.998 27.795 0.998 28.348 Z M 0.998 28.348 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 114.382 28.348 C 114.382 28.898 113.939 29.342 113.389 29.342 C 112.836 29.342 112.392 28.898 112.392 28.348 C 112.392 27.795 112.836 27.351 113.389 27.351 C 113.939 27.351 114.382 27.795 114.382 28.348 Z M 114.382 28.348 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 57.69 -14.173 C 57.69 -13.623 57.242 -13.176 56.693 -13.176 C 56.143 -13.176 55.696 -13.623 55.696 -14.173 C 55.696 -14.722 56.143 -15.17 56.693 -15.17 C 57.242 -15.17 57.69 -14.722 57.69 -14.173 Z M 57.69 -14.173 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 57.69 28.348 C 57.69 28.898 57.242 29.342 56.693 29.342 C 56.143 29.342 55.696 28.898 55.696 28.348 C 55.696 27.795 56.143 27.351 56.693 27.351 C 57.242 27.351 57.69 27.795 57.69 28.348 Z M 57.69 28.348 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 86.036 7.088 C 86.036 7.637 85.593 8.081 85.039 8.081 C 84.489 8.081 84.046 7.637 84.046 7.088 C 84.046 6.538 84.489 6.091 85.039 6.091 C 85.593 6.091 86.036 6.538 86.036 7.088 Z M 86.036 7.088 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f1_glyph0-1" x="43.442" y="13.985" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f1_glyph0-2" x="6.855" y="91.971" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f1_glyph0-3" x="135.862" y="91.971" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f1_glyph0-4" x="71.125" y="141.749" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f1_glyph0-5" x="70.018" y="84.504" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f1_glyph0-6" x="107.654" y="120.594" /></g></g></svg></div></div></div></div></div><div class="options"><label><input type="radio" name="P1_Cau_5" value="A"> <b>A.</b> $AC$ và $AN$</label><label><input type="radio" name="P1_Cau_5" value="B"> <b>B.</b> $MN$ và $BD$</label><label><input type="radio" name="P1_Cau_5" value="C"> <b>C.</b> $BN$ và $AC$</label><label><input type="radio" name="P1_Cau_5" value="D"> <b>D.</b> $BM$ và $ND$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Đường thẳng $BN \subset (BCD)$ và $AC \cap (BCD) = C$.<br> Vì điểm $C \notin BN$ nên hai đường thẳng $BN$ và $AC$ chéo nhau.</div><div class="tp"><div class="center"><div class="tp"><div class="table-responsive figure" style="text-align:center;margin:10px 0"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="151.254pt" height="148.98pt" viewBox="0 0 151.254 148.98" version="1.2"><defs><g><symbol overflow="visible" id="f2_glyph0-0"><path style="stroke:none;" d="" /></symbol><symbol overflow="visible" id="f2_glyph0-1"><path style="stroke:none;" d="M 1.766 -1.141 C 1.375 -0.469 0.984 -0.344 0.562 -0.312 C 0.438 -0.297 0.344 -0.297 0.344 -0.109 C 0.344 -0.047 0.391 0 0.469 0 C 0.75 0 1.047 -0.031 1.328 -0.031 C 1.656 -0.031 2 0 2.312 0 C 2.375 0 2.5 0 2.5 -0.188 C 2.5 -0.297 2.422 -0.312 2.344 -0.312 C 2.125 -0.328 1.875 -0.406 1.875 -0.656 C 1.875 -0.766 1.938 -0.875 2.016 -1.016 L 2.781 -2.281 L 5.266 -2.281 C 5.281 -2.078 5.422 -0.734 5.422 -0.641 C 5.422 -0.344 4.906 -0.312 4.703 -0.312 C 4.562 -0.312 4.469 -0.312 4.469 -0.109 C 4.469 0 4.594 0 4.609 0 C 5.016 0 5.438 -0.031 5.844 -0.031 C 6.094 -0.031 6.719 0 6.969 0 C 7.031 0 7.141 0 7.141 -0.203 C 7.141 -0.312 7.047 -0.312 6.922 -0.312 C 6.297 -0.312 6.297 -0.375 6.266 -0.656 L 5.672 -6.859 C 5.641 -7.047 5.641 -7.094 5.484 -7.094 C 5.312 -7.094 5.281 -7.031 5.219 -6.922 Z M 2.969 -2.594 L 4.906 -5.859 L 5.234 -2.594 Z M 2.969 -2.594 " /></symbol><symbol overflow="visible" id="f2_glyph0-2"><path style="stroke:none;" d="M 1.578 -0.766 C 1.484 -0.391 1.469 -0.312 0.688 -0.312 C 0.516 -0.312 0.422 -0.312 0.422 -0.109 C 0.422 0 0.5 0 0.688 0 L 4.219 0 C 5.781 0 6.953 -1.172 6.953 -2.141 C 6.953 -2.859 6.375 -3.422 5.422 -3.531 C 6.453 -3.719 7.484 -4.453 7.484 -5.406 C 7.484 -6.125 6.828 -6.766 5.641 -6.766 L 2.312 -6.766 C 2.125 -6.766 2.031 -6.766 2.031 -6.562 C 2.031 -6.453 2.125 -6.453 2.312 -6.453 C 2.328 -6.453 2.516 -6.453 2.688 -6.438 C 2.859 -6.422 2.953 -6.406 2.953 -6.281 C 2.953 -6.234 2.938 -6.219 2.906 -6.094 Z M 3.078 -3.625 L 3.688 -6.078 C 3.781 -6.422 3.797 -6.453 4.234 -6.453 L 5.516 -6.453 C 6.375 -6.453 6.594 -5.875 6.594 -5.438 C 6.594 -4.562 5.734 -3.625 4.531 -3.625 Z M 2.641 -0.312 C 2.5 -0.312 2.484 -0.312 2.422 -0.312 C 2.312 -0.328 2.281 -0.344 2.281 -0.422 C 2.281 -0.453 2.281 -0.469 2.344 -0.641 L 3.016 -3.406 L 4.891 -3.406 C 5.844 -3.406 6.031 -2.672 6.031 -2.25 C 6.031 -1.266 5.156 -0.312 3.984 -0.312 Z M 2.641 -0.312 " /></symbol><symbol overflow="visible" id="f2_glyph0-3"><path style="stroke:none;" d="M 7.531 -6.891 C 7.531 -6.922 7.516 -6.984 7.422 -6.984 C 7.391 -6.984 7.375 -6.969 7.266 -6.859 L 6.578 -6.109 C 6.484 -6.234 6.031 -6.984 4.938 -6.984 C 2.719 -6.984 0.5 -4.797 0.5 -2.5 C 0.5 -0.859 1.672 0.219 3.188 0.219 C 4.047 0.219 4.797 -0.172 5.312 -0.641 C 6.234 -1.453 6.406 -2.344 6.406 -2.375 C 6.406 -2.484 6.312 -2.484 6.297 -2.484 C 6.234 -2.484 6.188 -2.453 6.156 -2.375 C 6.078 -2.094 5.844 -1.391 5.156 -0.812 C 4.484 -0.25 3.859 -0.094 3.344 -0.094 C 2.453 -0.094 1.391 -0.609 1.391 -2.156 C 1.391 -2.719 1.609 -4.312 2.594 -5.484 C 3.203 -6.188 4.125 -6.672 5.016 -6.672 C 6.016 -6.672 6.609 -5.906 6.609 -4.766 C 6.609 -4.375 6.578 -4.359 6.578 -4.266 C 6.578 -4.156 6.688 -4.156 6.719 -4.156 C 6.859 -4.156 6.859 -4.188 6.906 -4.359 Z M 7.531 -6.891 " /></symbol><symbol overflow="visible" id="f2_glyph0-4"><path style="stroke:none;" d="M 1.578 -0.766 C 1.469 -0.391 1.453 -0.312 0.672 -0.312 C 0.5 -0.312 0.391 -0.312 0.391 -0.125 C 0.391 0 0.484 0 0.672 0 L 3.953 0 C 6.016 0 7.969 -2.094 7.969 -4.266 C 7.969 -5.656 7.125 -6.766 5.641 -6.766 L 2.312 -6.766 C 2.125 -6.766 2.016 -6.766 2.016 -6.578 C 2.016 -6.453 2.094 -6.453 2.297 -6.453 C 2.422 -6.453 2.609 -6.453 2.719 -6.438 C 2.875 -6.422 2.938 -6.391 2.938 -6.281 C 2.938 -6.234 2.938 -6.219 2.906 -6.094 Z M 3.719 -6.078 C 3.797 -6.422 3.828 -6.453 4.25 -6.453 L 5.312 -6.453 C 6.281 -6.453 7.109 -5.938 7.109 -4.625 C 7.109 -4.141 6.906 -2.516 6.062 -1.422 C 5.781 -1.062 5 -0.312 3.781 -0.312 L 2.656 -0.312 C 2.516 -0.312 2.5 -0.312 2.438 -0.312 C 2.344 -0.328 2.312 -0.344 2.312 -0.422 C 2.312 -0.453 2.312 -0.469 2.359 -0.641 Z M 3.719 -6.078 " /></symbol><symbol overflow="visible" id="f2_glyph0-5"><path style="stroke:none;" d="M 9.172 -6 C 9.266 -6.359 9.281 -6.453 10.031 -6.453 C 10.25 -6.453 10.344 -6.453 10.344 -6.656 C 10.344 -6.766 10.25 -6.766 10.078 -6.766 L 8.766 -6.766 C 8.516 -6.766 8.5 -6.766 8.375 -6.578 L 4.766 -0.938 L 4 -6.531 C 3.969 -6.766 3.938 -6.766 3.688 -6.766 L 2.328 -6.766 C 2.141 -6.766 2.031 -6.766 2.031 -6.578 C 2.031 -6.453 2.125 -6.453 2.312 -6.453 C 2.453 -6.453 2.625 -6.453 2.75 -6.438 C 2.906 -6.422 2.969 -6.391 2.969 -6.281 C 2.969 -6.234 2.953 -6.219 2.922 -6.094 L 1.672 -1.047 C 1.562 -0.656 1.391 -0.344 0.594 -0.312 C 0.547 -0.312 0.422 -0.297 0.422 -0.125 C 0.422 -0.031 0.469 0 0.562 0 C 0.875 0 1.219 -0.031 1.547 -0.031 C 1.875 -0.031 2.234 0 2.562 0 C 2.609 0 2.75 0 2.75 -0.203 C 2.75 -0.312 2.641 -0.312 2.562 -0.312 C 2 -0.312 1.891 -0.516 1.891 -0.75 C 1.891 -0.812 1.906 -0.859 1.938 -0.969 L 3.281 -6.375 L 4.141 -0.234 C 4.156 -0.109 4.172 0 4.297 0 C 4.391 0 4.453 -0.109 4.5 -0.172 L 8.516 -6.453 L 7.109 -0.766 C 7 -0.391 6.984 -0.312 6.203 -0.312 C 6.031 -0.312 5.922 -0.312 5.922 -0.125 C 5.922 0 6.047 0 6.078 0 C 6.344 0 7.031 -0.031 7.297 -0.031 C 7.703 -0.031 8.141 0 8.547 0 C 8.594 0 8.734 0 8.734 -0.203 C 8.734 -0.312 8.641 -0.312 8.453 -0.312 C 8.078 -0.312 7.812 -0.312 7.812 -0.484 C 7.812 -0.531 7.812 -0.547 7.859 -0.719 Z M 9.172 -6 " /></symbol><symbol overflow="visible" id="f2_glyph0-6"><path style="stroke:none;" d="M 7.484 -5.719 C 7.594 -6.125 7.766 -6.422 8.562 -6.453 C 8.609 -6.453 8.734 -6.469 8.734 -6.656 C 8.734 -6.672 8.734 -6.766 8.594 -6.766 C 8.266 -6.766 7.922 -6.734 7.594 -6.734 C 7.266 -6.734 6.922 -6.766 6.594 -6.766 C 6.531 -6.766 6.406 -6.766 6.406 -6.562 C 6.406 -6.453 6.516 -6.453 6.594 -6.453 C 7.156 -6.453 7.266 -6.234 7.266 -6.016 C 7.266 -6 7.234 -5.844 7.234 -5.812 L 6.125 -1.406 L 3.938 -6.578 C 3.859 -6.75 3.844 -6.766 3.609 -6.766 L 2.281 -6.766 C 2.094 -6.766 2 -6.766 2 -6.562 C 2 -6.453 2.094 -6.453 2.281 -6.453 C 2.328 -6.453 2.953 -6.453 2.953 -6.375 L 1.625 -1.047 C 1.531 -0.656 1.359 -0.344 0.562 -0.312 C 0.5 -0.312 0.391 -0.297 0.391 -0.109 C 0.391 -0.047 0.438 0 0.516 0 C 0.828 0 1.172 -0.031 1.5 -0.031 C 1.844 -0.031 2.203 0 2.531 0 C 2.578 0 2.703 0 2.703 -0.203 C 2.703 -0.297 2.609 -0.312 2.5 -0.312 C 1.938 -0.328 1.859 -0.547 1.859 -0.75 C 1.859 -0.812 1.859 -0.859 1.891 -0.969 L 3.203 -6.203 C 3.234 -6.141 3.234 -6.125 3.281 -6.016 L 5.75 -0.188 C 5.828 -0.016 5.859 0 5.938 0 C 6.047 0 6.047 -0.031 6.109 -0.203 Z M 7.484 -5.719 " /></symbol></g></defs><g id="f2_surface1"><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-dasharray:2.98883,2.98883;stroke-miterlimit:10;" d="M 19.047 -89.019 L 132.435 -89.019 M 19.047 -89.019 L 104.085 -110.28" transform="matrix(0.995092,0,0,-0.995092,0,0)" /><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 47.393 -18.156 L 19.047 -89.019 M 47.393 -18.156 L 132.435 -89.019 M 47.393 -18.156 L 75.739 -131.54 M 19.047 -89.019 L 75.739 -131.54 M 75.739 -131.54 L 132.435 -89.019" transform="matrix(0.995092,0,0,-0.995092,0,0)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 29.344 99.212 C 29.344 99.765 28.896 100.209 28.347 100.209 C 27.797 100.209 27.35 99.765 27.35 99.212 C 27.35 98.662 27.797 98.219 28.347 98.219 C 28.896 98.219 29.344 98.662 29.344 99.212 Z M 29.344 99.212 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 0.998 28.348 C 0.998 28.898 0.55 29.342 0.001 29.342 C -0.549 29.342 -0.996 28.898 -0.996 28.348 C -0.996 27.795 -0.549 27.351 0.001 27.351 C 0.55 27.351 0.998 27.795 0.998 28.348 Z M 0.998 28.348 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 114.382 28.348 C 114.382 28.898 113.939 29.342 113.389 29.342 C 112.836 29.342 112.392 28.898 112.392 28.348 C 112.392 27.795 112.836 27.351 113.389 27.351 C 113.939 27.351 114.382 27.795 114.382 28.348 Z M 114.382 28.348 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 57.69 -14.173 C 57.69 -13.623 57.242 -13.176 56.693 -13.176 C 56.143 -13.176 55.696 -13.623 55.696 -14.173 C 55.696 -14.722 56.143 -15.17 56.693 -15.17 C 57.242 -15.17 57.69 -14.722 57.69 -14.173 Z M 57.69 -14.173 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 57.69 28.348 C 57.69 28.898 57.242 29.342 56.693 29.342 C 56.143 29.342 55.696 28.898 55.696 28.348 C 55.696 27.795 56.143 27.351 56.693 27.351 C 57.242 27.351 57.69 27.795 57.69 28.348 Z M 57.69 28.348 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 86.036 7.088 C 86.036 7.637 85.593 8.081 85.039 8.081 C 84.489 8.081 84.046 7.637 84.046 7.088 C 84.046 6.538 84.489 6.091 85.039 6.091 C 85.593 6.091 86.036 6.538 86.036 7.088 Z M 86.036 7.088 " transform="matrix(0.995092,0,0,-0.995092,18.952524,116.791365)" /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f2_glyph0-1" x="43.442" y="13.985" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f2_glyph0-2" x="6.855" y="91.971" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f2_glyph0-3" x="135.862" y="91.971" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f2_glyph0-4" x="71.125" y="141.749" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f2_glyph0-5" x="70.018" y="84.504" /></g><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f2_glyph0-6" x="107.654" y="120.594" /></g></g></svg></div></div></div></div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 6:</b> Cho tứ diện $ABCD$. Gọi $M$, $N$ lần lượt là trung điểm của các cạnh $AB$, $AD$. Giao tuyến của hai mặt phẳng $(MCD)$ và $(ABD)$ là đường thẳng:</div></div><div class="options"><label><input type="radio" name="P1_Cau_6" value="A"> <b>A.</b> $CD$</label><label><input type="radio" name="P1_Cau_6" value="B"> <b>B.</b> $ND$</label><label><input type="radio" name="P1_Cau_6" value="C"> <b>C.</b> $MD$</label><label><input type="radio" name="P1_Cau_6" value="D"> <b>D.</b> $MN$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> <div class="center"><div class="tp"><div class="table-responsive figure" style="text-align:center;margin:10px 0"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="116.973pt" height="136.929pt" viewBox="0 0 116.973 136.929" version="1.2"><defs><g><symbol overflow="visible" id="f3_glyph0-0"><path style="stroke:none;" d="" /></symbol><symbol overflow="visible" id="f3_glyph0-1"><path style="stroke:none;" d="M 1.781 -1.141 C 1.391 -0.484 1 -0.344 0.562 -0.312 C 0.438 -0.297 0.344 -0.297 0.344 -0.109 C 0.344 -0.047 0.391 0 0.484 0 C 0.75 0 1.062 -0.031 1.328 -0.031 C 1.656 -0.031 2.016 0 2.328 0 C 2.391 0 2.516 0 2.516 -0.188 C 2.516 -0.297 2.422 -0.312 2.359 -0.312 C 2.125 -0.328 1.891 -0.406 1.891 -0.656 C 1.891 -0.781 1.953 -0.891 2.031 -1.031 L 2.781 -2.297 L 5.281 -2.297 C 5.312 -2.094 5.438 -0.734 5.438 -0.641 C 5.438 -0.344 4.922 -0.312 4.734 -0.312 C 4.594 -0.312 4.484 -0.312 4.484 -0.109 C 4.484 0 4.609 0 4.625 0 C 5.031 0 5.469 -0.031 5.875 -0.031 C 6.125 -0.031 6.75 0 7 0 C 7.062 0 7.172 0 7.172 -0.203 C 7.172 -0.312 7.078 -0.312 6.953 -0.312 C 6.328 -0.312 6.328 -0.375 6.297 -0.672 L 5.688 -6.891 C 5.672 -7.094 5.672 -7.125 5.5 -7.125 C 5.344 -7.125 5.312 -7.062 5.25 -6.953 Z M 2.969 -2.609 L 4.938 -5.891 L 5.25 -2.609 Z M 2.969 -2.609 " /></symbol><symbol overflow="visible" id="f3_glyph0-2"><path style="stroke:none;" d="M 1.594 -0.781 C 1.5 -0.391 1.469 -0.312 0.688 -0.312 C 0.516 -0.312 0.422 -0.312 0.422 -0.109 C 0.422 0 0.5 0 0.688 0 L 4.234 0 C 5.812 0 6.984 -1.172 6.984 -2.156 C 6.984 -2.859 6.406 -3.438 5.438 -3.547 C 6.484 -3.75 7.531 -4.484 7.531 -5.422 C 7.531 -6.156 6.875 -6.797 5.672 -6.797 L 2.328 -6.797 C 2.141 -6.797 2.047 -6.797 2.047 -6.594 C 2.047 -6.484 2.125 -6.484 2.312 -6.484 C 2.344 -6.484 2.531 -6.484 2.703 -6.469 C 2.875 -6.453 2.969 -6.438 2.969 -6.312 C 2.969 -6.266 2.953 -6.234 2.922 -6.125 Z M 3.094 -3.641 L 3.719 -6.109 C 3.797 -6.453 3.828 -6.484 4.25 -6.484 L 5.531 -6.484 C 6.406 -6.484 6.625 -5.906 6.625 -5.469 C 6.625 -4.594 5.766 -3.641 4.547 -3.641 Z M 2.641 -0.312 C 2.516 -0.312 2.484 -0.312 2.422 -0.312 C 2.328 -0.328 2.297 -0.344 2.297 -0.422 C 2.297 -0.453 2.297 -0.469 2.344 -0.641 L 3.031 -3.422 L 4.922 -3.422 C 5.875 -3.422 6.062 -2.688 6.062 -2.266 C 6.062 -1.281 5.172 -0.312 4 -0.312 Z M 2.641 -0.312 " /></symbol><symbol overflow="visible" id="f3_glyph0-3"><path style="stroke:none;" d="M 7.562 -6.922 C 7.562 -6.953 7.547 -7.016 7.453 -7.016 C 7.422 -7.016 7.422 -7 7.312 -6.891 L 6.609 -6.125 C 6.516 -6.266 6.062 -7.016 4.953 -7.016 C 2.734 -7.016 0.5 -4.812 0.5 -2.516 C 0.5 -0.859 1.672 0.219 3.188 0.219 C 4.062 0.219 4.812 -0.172 5.344 -0.641 C 6.266 -1.453 6.438 -2.359 6.438 -2.391 C 6.438 -2.484 6.344 -2.484 6.312 -2.484 C 6.266 -2.484 6.203 -2.469 6.188 -2.391 C 6.094 -2.094 5.875 -1.391 5.188 -0.812 C 4.5 -0.266 3.875 -0.094 3.359 -0.094 C 2.453 -0.094 1.406 -0.609 1.406 -2.156 C 1.406 -2.734 1.609 -4.344 2.609 -5.5 C 3.219 -6.203 4.156 -6.703 5.031 -6.703 C 6.047 -6.703 6.641 -5.938 6.641 -4.781 C 6.641 -4.391 6.609 -4.375 6.609 -4.281 C 6.609 -4.188 6.719 -4.188 6.766 -4.188 C 6.891 -4.188 6.891 -4.203 6.938 -4.375 Z M 7.562 -6.922 " /></symbol><symbol overflow="visible" id="f3_glyph0-4"><path style="stroke:none;" d="M 1.578 -0.781 C 1.484 -0.391 1.469 -0.312 0.672 -0.312 C 0.5 -0.312 0.391 -0.312 0.391 -0.125 C 0.391 0 0.484 0 0.672 0 L 3.969 0 C 6.047 0 8 -2.094 8 -4.281 C 8 -5.688 7.156 -6.797 5.656 -6.797 L 2.312 -6.797 C 2.125 -6.797 2.016 -6.797 2.016 -6.609 C 2.016 -6.484 2.109 -6.484 2.312 -6.484 C 2.438 -6.484 2.625 -6.484 2.734 -6.469 C 2.891 -6.453 2.953 -6.422 2.953 -6.312 C 2.953 -6.266 2.953 -6.234 2.922 -6.125 Z M 3.734 -6.109 C 3.828 -6.453 3.844 -6.484 4.266 -6.484 L 5.328 -6.484 C 6.312 -6.484 7.141 -5.969 7.141 -4.641 C 7.141 -4.156 6.938 -2.531 6.094 -1.438 C 5.797 -1.062 5.016 -0.312 3.797 -0.312 L 2.672 -0.312 C 2.531 -0.312 2.516 -0.312 2.453 -0.312 C 2.344 -0.328 2.312 -0.344 2.312 -0.422 C 2.312 -0.453 2.312 -0.469 2.375 -0.641 Z M 3.734 -6.109 " /></symbol><symbol overflow="visible" id="f3_glyph0-5"><path style="stroke:none;" d="M 9.219 -6.031 C 9.312 -6.391 9.328 -6.484 10.078 -6.484 C 10.297 -6.484 10.391 -6.484 10.391 -6.688 C 10.391 -6.797 10.297 -6.797 10.125 -6.797 L 8.812 -6.797 C 8.547 -6.797 8.547 -6.797 8.422 -6.609 L 4.781 -0.938 L 4.016 -6.562 C 3.984 -6.797 3.969 -6.797 3.703 -6.797 L 2.344 -6.797 C 2.156 -6.797 2.047 -6.797 2.047 -6.609 C 2.047 -6.484 2.125 -6.484 2.328 -6.484 C 2.453 -6.484 2.641 -6.484 2.75 -6.469 C 2.922 -6.453 2.969 -6.422 2.969 -6.312 C 2.969 -6.266 2.969 -6.234 2.938 -6.125 L 1.672 -1.062 C 1.578 -0.656 1.406 -0.344 0.594 -0.312 C 0.547 -0.312 0.422 -0.297 0.422 -0.125 C 0.422 -0.031 0.484 0 0.562 0 C 0.875 0 1.219 -0.031 1.547 -0.031 C 1.891 -0.031 2.25 0 2.578 0 C 2.625 0 2.75 0 2.75 -0.203 C 2.75 -0.312 2.641 -0.312 2.578 -0.312 C 2.016 -0.312 1.906 -0.516 1.906 -0.75 C 1.906 -0.812 1.906 -0.859 1.938 -0.969 L 3.297 -6.406 L 4.156 -0.234 C 4.188 -0.109 4.188 0 4.312 0 C 4.422 0 4.484 -0.109 4.531 -0.172 L 8.547 -6.484 L 8.562 -6.484 L 7.141 -0.781 C 7.031 -0.391 7.016 -0.312 6.234 -0.312 C 6.062 -0.312 5.953 -0.312 5.953 -0.125 C 5.953 0 6.078 0 6.094 0 C 6.375 0 7.062 -0.031 7.328 -0.031 C 7.75 -0.031 8.172 0 8.578 0 C 8.641 0 8.766 0 8.766 -0.203 C 8.766 -0.312 8.672 -0.312 8.484 -0.312 C 8.125 -0.312 7.844 -0.312 7.844 -0.484 C 7.844 -0.531 7.844 -0.547 7.891 -0.734 Z M 9.219 -6.031 " /></symbol><symbol overflow="visible" id="f3_glyph0-6"><path style="stroke:none;" d="M 7.531 -5.75 C 7.625 -6.156 7.797 -6.453 8.594 -6.484 C 8.656 -6.484 8.766 -6.5 8.766 -6.688 C 8.766 -6.703 8.766 -6.797 8.641 -6.797 C 8.312 -6.797 7.969 -6.766 7.641 -6.766 C 7.297 -6.766 6.953 -6.797 6.625 -6.797 C 6.562 -6.797 6.438 -6.797 6.438 -6.594 C 6.438 -6.484 6.547 -6.484 6.625 -6.484 C 7.188 -6.484 7.297 -6.266 7.297 -6.047 C 7.297 -6.016 7.281 -5.875 7.266 -5.844 L 6.156 -1.406 L 3.953 -6.609 C 3.875 -6.781 3.859 -6.797 3.641 -6.797 L 2.297 -6.797 C 2.094 -6.797 2.016 -6.797 2.016 -6.594 C 2.016 -6.484 2.094 -6.484 2.297 -6.484 C 2.344 -6.484 2.969 -6.484 2.969 -6.406 L 1.625 -1.062 C 1.531 -0.656 1.359 -0.344 0.562 -0.312 C 0.5 -0.312 0.391 -0.297 0.391 -0.109 C 0.391 -0.047 0.438 0 0.516 0 C 0.844 0 1.188 -0.031 1.516 -0.031 C 1.844 -0.031 2.203 0 2.531 0 C 2.594 0 2.719 0 2.719 -0.203 C 2.719 -0.297 2.625 -0.312 2.516 -0.312 C 1.938 -0.328 1.859 -0.547 1.859 -0.75 C 1.859 -0.812 1.875 -0.859 1.906 -0.969 L 3.219 -6.234 C 3.25 -6.172 3.25 -6.156 3.297 -6.047 L 5.781 -0.188 C 5.859 -0.016 5.875 0 5.969 0 C 6.078 0 6.078 -0.031 6.125 -0.203 Z M 7.531 -5.75 " /></symbol></g></defs><g id="f3_surface1"><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 49.487 -19.362 L 15.469 -78.283 M 49.487 -19.362 L 106.184 -78.283 M 49.487 -19.362 L 38.149 -117.565 M 15.469 -78.283 L 38.149 -117.565 L 106.184 -78.283 M 38.149 -117.565 L 32.482 -48.822" transform="matrix(0.999482,0,0,-0.999482,0,0)" /><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-dasharray:2.98883,2.98883;stroke-miterlimit:10;" d="M 15.469 -78.283 L 106.184 -78.283 M 15.469 -78.283 L 32.482 -48.822 L 106.184 -78.283" transform="matrix(0.999482,0,0,-0.999482,0,0)" /><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 50.258 19.352 C 50.258 18.914 49.902 18.555 49.461 18.555 C 49.023 18.555 48.664 18.914 48.664 19.352 C 48.664 19.793 49.023 20.148 49.461 20.148 C 49.902 20.148 50.258 19.793 50.258 19.352 Z M 50.258 19.352 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f3_glyph0-1" x="45.728" y="13.69" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 16.258 78.242 C 16.258 77.805 15.902 77.445 15.461 77.445 C 15.023 77.445 14.664 77.805 14.664 78.242 C 14.664 78.684 15.023 79.039 15.461 79.039 C 15.902 79.039 16.258 78.684 16.258 78.242 Z M 16.258 78.242 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f3_glyph0-2" x="6.902" y="89.498" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 106.926 78.242 C 106.926 77.805 106.57 77.445 106.129 77.445 C 105.691 77.445 105.332 77.805 105.332 78.242 C 105.332 78.684 105.691 79.039 106.129 79.039 C 106.57 79.039 106.926 78.684 106.926 78.242 Z M 106.926 78.242 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f3_glyph0-3" x="102.214" y="90.712" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 38.926 117.504 C 38.926 117.062 38.57 116.707 38.129 116.707 C 37.688 116.707 37.332 117.062 37.332 117.504 C 37.332 117.945 37.688 118.301 38.129 118.301 C 38.57 118.301 38.926 117.945 38.926 117.504 Z M 38.926 117.504 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f3_glyph0-4" x="33.868" y="129.973" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 33.258 48.797 C 33.258 48.355 32.902 48 32.465 48 C 32.023 48 31.668 48.355 31.668 48.797 C 31.668 49.238 32.023 49.594 32.465 49.594 C 32.902 49.594 33.258 49.238 33.258 48.797 Z M 33.258 48.797 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f3_glyph0-5" x="18.023" y="52.2" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 44.594 68.43 C 44.594 67.988 44.238 67.633 43.797 67.633 C 43.355 67.633 43 67.988 43 68.43 C 43 68.867 43.355 69.223 43.797 69.223 C 44.238 69.223 44.594 68.867 44.594 68.43 Z M 44.594 68.43 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f3_glyph0-6" x="48.32" y="71.831" /></g></g></svg></div></div></div> Ta có $M\in AB$, $AB\subset (ABD)$ nên $M\in(ABD)\cap (MCD)$.<br> Ta lại có $D\in (ABD)\cap (MCD)$ nên $MD=(ABD)\cap (MCD)$.</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 7:</b> Trong các dãy số $\left(u_n\right), n \in \mathbb{N}^*$ sau đây, dãy số nào là một cấp số nhân?</div></div><div class="options"><label><input type="radio" name="P1_Cau_7" value="A"> <b>A.</b> $2,4,-8,16,-32,64$</label><label><input type="radio" name="P1_Cau_7" value="B"> <b>B.</b> $-2,4,-8,16,-32,64$</label><label><input type="radio" name="P1_Cau_7" value="C"> <b>C.</b> $-2,4,8,16,-32,64$</label><label><input type="radio" name="P1_Cau_7" value="D"> <b>D.</b> $2,4,8,16,-32,64$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Dễ thấy dãy số $-2,4,-8,16,-32,64$ là cấp số nhân có công bội $q=-2$</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 8:</b> Tìm tập xác định $\mathscr{D}$ của hàm số $y=\dfrac{2024}{\sin x}$.</div></div><div class="options"><label><input type="radio" name="P1_Cau_8" value="A"> <b>A.</b> $\mathscr{D}=\mathbb{R}$</label><label><input type="radio" name="P1_Cau_8" value="B"> <b>B.</b> $\mathscr{D}=\mathbb{R}\setminus \{0\}$</label><label><input type="radio" name="P1_Cau_8" value="C"> <b>C.</b> $\mathscr{D}=\mathbb{R}\setminus \{k\pi, k\in \mathbb{Z}\}$</label><label><input type="radio" name="P1_Cau_8" value="D"> <b>D.</b> $\mathscr{D}=\mathbb{R}\setminus \left\{\dfrac{\pi}{2}+k\pi, k\in \mathbb{Z}\right\}$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Điều kiện $\sin x\neq 0\Leftrightarrow x\neq k\pi$, $k\in \mathbb{Z}$.<br> Tập xác định của hàm số là $\mathscr{D}=\mathbb{R}\setminus \{k\pi, k\in \mathbb{Z}\}$.</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 9:</b> Rút gọn biểu thức $P=\dfrac{\sin x+\sin 3x}{\cos^2x}$ (với điều kiện biểu thức có nghĩa), ta được $P=a\sin x$. Khi đó:</div></div><div class="options"><label><input type="radio" name="P1_Cau_9" value="A"> <b>A.</b> $a=2$</label><label><input type="radio" name="P1_Cau_9" value="B"> <b>B.</b> $a=-4$</label><label><input type="radio" name="P1_Cau_9" value="C"> <b>C.</b> $a=-2$</label><label><input type="radio" name="P1_Cau_9" value="D"> <b>D.</b> $a=4$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> $P=\dfrac{\sin x+\sin 3x}{\cos^2x}=\dfrac{2\sin2x\cos x}{\cos^2x}=\dfrac{4\sin x \cos^2x}{\cos^2x}=4\sin x$.</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 10:</b> Tổng của cấp số nhân lùi vô hạn $M=1+\dfrac{1}{4}+\dfrac{1}{4^2}+\ldots+\dfrac{1}{4^n}+\ldots$ bằng</div></div><div class="options"><label><input type="radio" name="P1_Cau_10" value="A"> <b>A.</b> $\dfrac{6}{5}$</label><label><input type="radio" name="P1_Cau_10" value="B"> <b>B.</b> $\dfrac{3}{4}$</label><label><input type="radio" name="P1_Cau_10" value="C"> <b>C.</b> $\dfrac{4}{3}$</label><label><input type="radio" name="P1_Cau_10" value="D"> <b>D.</b> $\dfrac{5}{4}$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Tổng của cấp số nhân lùi vô hạn là $M=\dfrac{1}{1-\tfrac{1}{4}}=\dfrac{4}{3}$.</div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 11:</b> Cho tứ diện $ABCD$. Gọi hai điểm $M$, $N$ lần lượt là trung điểm của các cạnh $AC$, $AD$. Đuờng thẳng $MN$ song song với mặt phẳng</div></div><div class="options"><label><input type="radio" name="P1_Cau_11" value="A"> <b>A.</b> $(BCD)$</label><label><input type="radio" name="P1_Cau_11" value="B"> <b>B.</b> $(ACD)$</label><label><input type="radio" name="P1_Cau_11" value="C"> <b>C.</b> $(ABC)$</label><label><input type="radio" name="P1_Cau_11" value="D"> <b>D.</b> $(ABD)$</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Do $MN$ là đường trung bình của $\triangle ACD \Rightarrow MN \parallel CD$ mà $MN \nsubseteq (BCD) \Rightarrow MN \parallel (BCD)$.</div><div class="tp"><div class="center"><div class="tp"><div class="table-responsive figure" style="text-align:center;margin:10px 0"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="133.189pt" height="148.6pt" viewBox="0 0 133.189 148.6" version="1.2"><defs><g><symbol overflow="visible" id="f4_glyph0-0"><path style="stroke:none;" d="" /></symbol><symbol overflow="visible" id="f4_glyph0-1"><path style="stroke:none;" d="M 1.578 -0.766 C 1.484 -0.391 1.469 -0.312 0.688 -0.312 C 0.516 -0.312 0.422 -0.312 0.422 -0.109 C 0.422 0 0.5 0 0.688 0 L 4.219 0 C 5.781 0 6.953 -1.172 6.953 -2.141 C 6.953 -2.859 6.375 -3.422 5.422 -3.531 C 6.453 -3.719 7.484 -4.453 7.484 -5.406 C 7.484 -6.125 6.828 -6.766 5.641 -6.766 L 2.312 -6.766 C 2.125 -6.766 2.031 -6.766 2.031 -6.562 C 2.031 -6.453 2.125 -6.453 2.312 -6.453 C 2.328 -6.453 2.516 -6.453 2.688 -6.438 C 2.859 -6.422 2.953 -6.406 2.953 -6.281 C 2.953 -6.234 2.938 -6.219 2.906 -6.094 Z M 3.078 -3.625 L 3.688 -6.078 C 3.781 -6.422 3.797 -6.453 4.234 -6.453 L 5.516 -6.453 C 6.375 -6.453 6.594 -5.875 6.594 -5.438 C 6.594 -4.562 5.734 -3.625 4.531 -3.625 Z M 2.641 -0.312 C 2.5 -0.312 2.484 -0.312 2.422 -0.312 C 2.312 -0.328 2.281 -0.344 2.281 -0.422 C 2.281 -0.453 2.281 -0.469 2.344 -0.641 L 3.016 -3.406 L 4.891 -3.406 C 5.844 -3.406 6.031 -2.672 6.031 -2.25 C 6.031 -1.266 5.156 -0.312 3.984 -0.312 Z M 2.641 -0.312 " /></symbol><symbol overflow="visible" id="f4_glyph0-2"><path style="stroke:none;" d="M 1.578 -0.766 C 1.469 -0.391 1.453 -0.312 0.672 -0.312 C 0.5 -0.312 0.391 -0.312 0.391 -0.125 C 0.391 0 0.484 0 0.672 0 L 3.953 0 C 6.016 0 7.969 -2.094 7.969 -4.266 C 7.969 -5.656 7.125 -6.766 5.641 -6.766 L 2.312 -6.766 C 2.125 -6.766 2.016 -6.766 2.016 -6.578 C 2.016 -6.453 2.094 -6.453 2.297 -6.453 C 2.422 -6.453 2.609 -6.453 2.719 -6.438 C 2.875 -6.422 2.938 -6.391 2.938 -6.281 C 2.938 -6.234 2.938 -6.219 2.906 -6.094 Z M 3.719 -6.078 C 3.797 -6.422 3.828 -6.453 4.25 -6.453 L 5.312 -6.453 C 6.281 -6.453 7.109 -5.938 7.109 -4.625 C 7.109 -4.141 6.906 -2.516 6.062 -1.422 C 5.781 -1.062 5 -0.312 3.781 -0.312 L 2.656 -0.312 C 2.516 -0.312 2.5 -0.312 2.438 -0.312 C 2.344 -0.328 2.312 -0.344 2.312 -0.422 C 2.312 -0.453 2.312 -0.469 2.359 -0.641 Z M 3.719 -6.078 " /></symbol><symbol overflow="visible" id="f4_glyph0-3"><path style="stroke:none;" d="M 7.531 -6.891 C 7.531 -6.922 7.516 -6.984 7.422 -6.984 C 7.391 -6.984 7.375 -6.969 7.266 -6.859 L 6.578 -6.109 C 6.484 -6.234 6.031 -6.984 4.938 -6.984 C 2.719 -6.984 0.5 -4.797 0.5 -2.5 C 0.5 -0.859 1.672 0.219 3.188 0.219 C 4.047 0.219 4.797 -0.172 5.312 -0.641 C 6.234 -1.453 6.406 -2.344 6.406 -2.375 C 6.406 -2.484 6.312 -2.484 6.297 -2.484 C 6.234 -2.484 6.188 -2.453 6.156 -2.375 C 6.078 -2.094 5.844 -1.391 5.156 -0.812 C 4.484 -0.25 3.859 -0.094 3.344 -0.094 C 2.453 -0.094 1.391 -0.609 1.391 -2.156 C 1.391 -2.719 1.609 -4.312 2.594 -5.484 C 3.203 -6.188 4.125 -6.672 5.016 -6.672 C 6.016 -6.672 6.609 -5.906 6.609 -4.766 C 6.609 -4.375 6.578 -4.359 6.578 -4.266 C 6.578 -4.156 6.688 -4.156 6.719 -4.156 C 6.859 -4.156 6.859 -4.188 6.906 -4.359 Z M 7.531 -6.891 " /></symbol><symbol overflow="visible" id="f4_glyph0-4"><path style="stroke:none;" d="M 1.766 -1.141 C 1.375 -0.469 0.984 -0.344 0.562 -0.312 C 0.438 -0.297 0.344 -0.297 0.344 -0.109 C 0.344 -0.047 0.391 0 0.469 0 C 0.75 0 1.047 -0.031 1.328 -0.031 C 1.656 -0.031 2 0 2.312 0 C 2.375 0 2.5 0 2.5 -0.188 C 2.5 -0.297 2.422 -0.312 2.344 -0.312 C 2.125 -0.328 1.875 -0.406 1.875 -0.656 C 1.875 -0.766 1.938 -0.875 2.016 -1.016 L 2.781 -2.281 L 5.266 -2.281 C 5.281 -2.078 5.422 -0.734 5.422 -0.641 C 5.422 -0.344 4.906 -0.312 4.703 -0.312 C 4.562 -0.312 4.469 -0.312 4.469 -0.109 C 4.469 0 4.594 0 4.609 0 C 5.016 0 5.438 -0.031 5.844 -0.031 C 6.094 -0.031 6.719 0 6.969 0 C 7.031 0 7.141 0 7.141 -0.203 C 7.141 -0.312 7.047 -0.312 6.922 -0.312 C 6.297 -0.312 6.297 -0.375 6.266 -0.656 L 5.672 -6.859 C 5.641 -7.047 5.641 -7.094 5.484 -7.094 C 5.312 -7.094 5.281 -7.031 5.219 -6.922 Z M 2.969 -2.594 L 4.906 -5.859 L 5.234 -2.594 Z M 2.969 -2.594 " /></symbol><symbol overflow="visible" id="f4_glyph0-5"><path style="stroke:none;" d="M 9.172 -6 C 9.266 -6.359 9.281 -6.453 10.031 -6.453 C 10.25 -6.453 10.344 -6.453 10.344 -6.656 C 10.344 -6.766 10.25 -6.766 10.078 -6.766 L 8.766 -6.766 C 8.516 -6.766 8.5 -6.766 8.375 -6.578 L 4.766 -0.938 L 4 -6.531 C 3.969 -6.766 3.938 -6.766 3.688 -6.766 L 2.328 -6.766 C 2.141 -6.766 2.031 -6.766 2.031 -6.578 C 2.031 -6.453 2.125 -6.453 2.312 -6.453 C 2.453 -6.453 2.625 -6.453 2.75 -6.438 C 2.906 -6.422 2.969 -6.391 2.969 -6.281 C 2.969 -6.234 2.953 -6.219 2.922 -6.094 L 1.672 -1.047 C 1.562 -0.656 1.391 -0.344 0.594 -0.312 C 0.547 -0.312 0.422 -0.297 0.422 -0.125 C 0.422 -0.031 0.469 0 0.562 0 C 0.875 0 1.219 -0.031 1.547 -0.031 C 1.875 -0.031 2.234 0 2.562 0 C 2.609 0 2.75 0 2.75 -0.203 C 2.75 -0.312 2.641 -0.312 2.562 -0.312 C 2 -0.312 1.891 -0.516 1.891 -0.75 C 1.891 -0.812 1.906 -0.859 1.938 -0.969 L 3.281 -6.375 L 4.141 -0.234 C 4.156 -0.109 4.172 0 4.297 0 C 4.391 0 4.453 -0.109 4.5 -0.172 L 8.516 -6.453 L 7.109 -0.766 C 7 -0.391 6.984 -0.312 6.203 -0.312 C 6.031 -0.312 5.922 -0.312 5.922 -0.125 C 5.922 0 6.047 0 6.078 0 C 6.344 0 7.031 -0.031 7.297 -0.031 C 7.703 -0.031 8.141 0 8.547 0 C 8.594 0 8.734 0 8.734 -0.203 C 8.734 -0.312 8.641 -0.312 8.453 -0.312 C 8.078 -0.312 7.812 -0.312 7.812 -0.484 C 7.812 -0.531 7.812 -0.547 7.859 -0.719 Z M 9.172 -6 " /></symbol><symbol overflow="visible" id="f4_glyph0-6"><path style="stroke:none;" d="M 7.484 -5.719 C 7.594 -6.125 7.766 -6.422 8.562 -6.453 C 8.609 -6.453 8.734 -6.469 8.734 -6.656 C 8.734 -6.672 8.734 -6.766 8.594 -6.766 C 8.266 -6.766 7.922 -6.734 7.594 -6.734 C 7.266 -6.734 6.922 -6.766 6.594 -6.766 C 6.531 -6.766 6.406 -6.766 6.406 -6.562 C 6.406 -6.453 6.516 -6.453 6.594 -6.453 C 7.156 -6.453 7.266 -6.234 7.266 -6.016 C 7.266 -6 7.234 -5.844 7.234 -5.812 L 6.125 -1.406 L 3.938 -6.578 C 3.859 -6.75 3.844 -6.766 3.609 -6.766 L 2.281 -6.766 C 2.094 -6.766 2 -6.766 2 -6.562 C 2 -6.453 2.094 -6.453 2.281 -6.453 C 2.328 -6.453 2.953 -6.453 2.953 -6.375 L 1.625 -1.047 C 1.531 -0.656 1.359 -0.344 0.562 -0.312 C 0.5 -0.312 0.391 -0.297 0.391 -0.109 C 0.391 -0.047 0.438 0 0.516 0 C 0.828 0 1.172 -0.031 1.5 -0.031 C 1.844 -0.031 2.203 0 2.531 0 C 2.578 0 2.703 0 2.703 -0.203 C 2.703 -0.297 2.609 -0.312 2.5 -0.312 C 1.938 -0.328 1.859 -0.547 1.859 -0.75 C 1.859 -0.812 1.859 -0.859 1.891 -0.969 L 3.203 -6.203 C 3.234 -6.141 3.234 -6.125 3.281 -6.016 L 5.75 -0.188 C 5.828 -0.016 5.859 0 5.938 0 C 6.047 0 6.047 -0.031 6.109 -0.203 Z M 7.484 -5.719 " /></symbol></g></defs><g id="f4_surface1"><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 16.872 -94.663 L 56.557 -134.352 L 116.085 -94.663 M 43.604 -75.425 L 73.37 -55.579 M 16.872 -94.663 L 30.654 -16.498 L 116.085 -94.663 M 56.557 -134.352 L 30.654 -16.498" transform="matrix(0.993948,0,0,-0.993948,0,0)" /><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-dasharray:2.98883,2.98883;stroke-miterlimit:10;" d="M 16.872 -94.663 L 116.085 -94.663" transform="matrix(0.993948,0,0,-0.993948,0,0)" /><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 17.461 94.09 C 17.461 93.707 17.152 93.398 16.77 93.398 C 16.387 93.398 16.074 93.707 16.074 94.09 C 16.074 94.473 16.387 94.785 16.77 94.785 C 17.152 94.785 17.461 94.473 17.461 94.09 Z M 17.461 94.09 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f4_glyph0-1" x="6.847" y="97.475" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 116.074 94.09 C 116.074 93.707 115.766 93.398 115.383 93.398 C 115 93.398 114.691 93.707 114.691 94.09 C 114.691 94.473 115 94.785 115.383 94.785 C 115.766 94.785 116.074 94.473 116.074 94.09 Z M 116.074 94.09 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f4_glyph0-2" x="117.062" y="97.475" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 56.906 133.539 C 56.906 133.156 56.598 132.844 56.215 132.844 C 55.832 132.844 55.52 133.156 55.52 133.539 C 55.52 133.922 55.832 134.23 56.215 134.23 C 56.598 134.23 56.906 133.922 56.906 133.539 Z M 56.906 133.539 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f4_glyph0-3" x="48.137" y="141.104" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 31.16 16.398 C 31.16 16.016 30.852 15.703 30.469 15.703 C 30.086 15.703 29.773 16.016 29.773 16.398 C 29.773 16.781 30.086 17.09 30.469 17.09 C 30.852 17.09 31.16 16.781 31.16 16.398 Z M 31.16 16.398 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f4_glyph0-4" x="26.754" y="13.865" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 44.035 74.969 C 44.035 74.586 43.723 74.273 43.34 74.273 C 42.957 74.273 42.648 74.586 42.648 74.969 C 42.648 75.352 42.957 75.66 43.34 75.66 C 43.723 75.66 44.035 75.352 44.035 74.969 Z M 44.035 74.969 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f4_glyph0-5" x="32.171" y="79.378" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 73.617 55.242 C 73.617 54.859 73.309 54.551 72.926 54.551 C 72.543 54.551 72.234 54.859 72.234 55.242 C 72.234 55.625 72.543 55.938 72.926 55.938 C 73.309 55.938 73.617 55.625 73.617 55.242 Z M 73.617 55.242 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f4_glyph0-6" x="73.531" y="55.669" /></g></g></svg></div></div></div></div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 12:</b> Cho hai đường thẳng $a$, $b$ chéo nhau. Một đường thẳng $c$ song song với $a$. Khẳng định nào sau đây đúng?</div></div><div class="options"><label><input type="radio" name="P1_Cau_12" value="A"> <b>A.</b> $b$ và $c$ song song</label><label><input type="radio" name="P1_Cau_12" value="B"> <b>B.</b> $b$ và $c$ chéo nhau hoặc cắt nhau</label><label><input type="radio" name="P1_Cau_12" value="C"> <b>C.</b> $b$ và $c$ cắt nhau</label><label><input type="radio" name="P1_Cau_12" value="D"> <b>D.</b> $b$ và $c$ chéo nhau</label></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> Cho hai đường thẳng $a$, $b$ chéo nhau. Một đường thẳng $c$ song song với $a$ thì $b$ và $c$ chéo nhau hoặc cắt nhau.</div></div></div>
+<h3>PHẦN 2. Câu trắc nghiệm đúng sai</h3>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 1:</b> Nhà hát lớn ở một thành phố có $20$ hàng ghế dành cho khán giả. Hàng thứ nhất có $20$ ghế, hàng thứ hai có $21$ ghế, hàng thứ ba có $22$ ghế,...Cứ thế, số ghế ở hàng sau nhiều hơn số ghế ở hàng ngay trước là $1$ ghế. Trong một buổi hòa nhạc, ban tổ chức đã bán hết số vé phát ra và số tiền bán vé thu được là $177\;000\;000$ đồng.</div></div><div class="options"><div class="table-responsive"><table class="tf-table"><tr><td><b>a.</b> Số ghế ở mỗi hàng lập thành một cấp số cộng có $u_1=20$ và công sai $d=2$</td><td style="width: 120px;"><div class="tf-radio-group"><label><input type="radio" name="P2_Cau_1_a" value="Đúng"> Đ</label><label><input type="radio" name="P2_Cau_1_a" value="Sai"> S</label></div></td></tr><tr><td><b>b.</b> Hàng ghế thứ năm có $24$ ghế</td><td style="width: 120px;"><div class="tf-radio-group"><label><input type="radio" name="P2_Cau_1_b" value="Đúng"> Đ</label><label><input type="radio" name="P2_Cau_1_b" value="Sai"> S</label></div></td></tr><tr><td><b>c.</b> Tổng số ghế trong nhà hát nhiều hơn $600$</td><td style="width: 120px;"><div class="tf-radio-group"><label><input type="radio" name="P2_Cau_1_c" value="Đúng"> Đ</label><label><input type="radio" name="P2_Cau_1_c" value="Sai"> S</label></div></td></tr><tr><td><b>d.</b> Giá tiền của mỗi vé bán ra là $300\;000$ đồng (biết số vé bán ra bằng số ghế dành cho khán giả của nhà hát và các vé là đồng giá)</td><td style="width: 120px;"><div class="tf-radio-group"><label><input type="radio" name="P2_Cau_1_d" value="Đúng"> Đ</label><label><input type="radio" name="P2_Cau_1_d" value="Sai"> S</label></div></td></tr></table></div></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> <ol class="paren-a"><li><b>Sai.</b> Vì số ghế ở hàng sau nhiều hơn số ghế ở hàng ngay trước là $1$ ghế nên số ghế ở mỗi hàng lập thành một cấp số cộng có $u_1=20$ và công sai $d=1$.</li><li><b>Đúng.</b> Số ghế ở hàng thứ năm là $u_5=u_1+4d=20+4 \cdot1 =24$ ghế.</li><li><b>Sai.</b> Vì nhà hát có $20$ hàng ghế nên tổng số ghế trong nhà hát là $$S_{20}=\dfrac{20}{2} \left(2 \cdot 20+ (20-1) \cdot 1\right)=590$$ Vậy nhà hát có $590$ ghế.</li><li><b>Đúng.</b> Vì số tiền bán vé là $177\;000\;000$ đồng và nhà hát có $590$ ghế nên giá tiền của mối vé bán ra là $\dfrac{177\;000\;000}{590}=300 \; 000$ đồng.</li></ol></div></div></div>
+<div class="question"><div class="question-text"><div class="tp"><b>Câu 2:</b> Cho hình chóp $S.ABCD$ có đáy $ABCD$ là hình bình hành. Khi đó</div></div><div class="options"><div class="table-responsive"><table class="tf-table"><tr><td><b>a.</b> Giao tuyến của $(SAB)$ và $(SCD)$ là đường thẳng đi qua $S$ và song song với $AB$</td><td style="width: 120px;"><div class="tf-radio-group"><label><input type="radio" name="P2_Cau_2_a" value="Đúng"> Đ</label><label><input type="radio" name="P2_Cau_2_a" value="Sai"> S</label></div></td></tr><tr><td><b>b.</b> Giao tuyến $(SAD)$ và $(SBC)$ là đường thẳng đi qua $S$ và song song với $AB$</td><td style="width: 120px;"><div class="tf-radio-group"><label><input type="radio" name="P2_Cau_2_b" value="Đúng"> Đ</label><label><input type="radio" name="P2_Cau_2_b" value="Sai"> S</label></div></td></tr><tr><td><b>c.</b> Gọi $M$ thuộc đoạn $SC$, giao tuyến của $(ABM)$ và $(SCD)$ là đường thẳng đi qua $M$ và song song với $AB$</td><td style="width: 120px;"><div class="tf-radio-group"><label><input type="radio" name="P2_Cau_2_c" value="Đúng"> Đ</label><label><input type="radio" name="P2_Cau_2_c" value="Sai"> S</label></div></td></tr><tr><td><b>d.</b> Gọi $N$ thuộc đoạn $SB$, giao điểm của $SA$ với $(NCD)$ là giao điểm của $SA$ với đường thẳng $d$ đi qua $N$ và song song với $BC$</td><td style="width: 120px;"><div class="tf-radio-group"><label><input type="radio" name="P2_Cau_2_d" value="Đúng"> Đ</label><label><input type="radio" name="P2_Cau_2_d" value="Sai"> S</label></div></td></tr></table></div></div><div class="solution-box"><div class="tp"><b>Lời giải chi tiết:</b> <div class="center"><div class="tp"><div class="table-responsive figure" style="text-align:center;margin:10px 0"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="164.711pt" height="155.028pt" viewBox="0 0 164.711 155.028" version="1.2"><defs><g><symbol overflow="visible" id="f5_glyph0-0"><path style="stroke:none;" d="" /></symbol><symbol overflow="visible" id="f5_glyph0-1"><path style="stroke:none;" d="M 5.109 -6.766 C 5.109 -6.781 5.109 -6.875 4.984 -6.875 C 4.828 -6.875 3.891 -6.781 3.719 -6.766 C 3.641 -6.75 3.594 -6.703 3.594 -6.578 C 3.594 -6.453 3.672 -6.453 3.828 -6.453 C 4.297 -6.453 4.312 -6.391 4.312 -6.297 L 4.297 -6.094 L 3.688 -3.75 C 3.516 -4.109 3.234 -4.375 2.781 -4.375 C 1.625 -4.375 0.391 -2.922 0.391 -1.469 C 0.391 -0.547 0.938 0.109 1.719 0.109 C 1.906 0.109 2.406 0.062 3 -0.641 C 3.078 -0.219 3.422 0.109 3.906 0.109 C 4.25 0.109 4.484 -0.125 4.641 -0.438 C 4.797 -0.797 4.938 -1.391 4.938 -1.422 C 4.938 -1.516 4.844 -1.516 4.812 -1.516 C 4.719 -1.516 4.703 -1.469 4.672 -1.344 C 4.5 -0.688 4.328 -0.109 3.922 -0.109 C 3.656 -0.109 3.625 -0.359 3.625 -0.562 C 3.625 -0.797 3.641 -0.875 3.688 -1.047 Z M 3.047 -1.172 C 3 -1 3 -0.984 2.859 -0.812 C 2.422 -0.266 2.016 -0.109 1.734 -0.109 C 1.234 -0.109 1.094 -0.656 1.094 -1.047 C 1.094 -1.531 1.422 -2.75 1.641 -3.203 C 1.953 -3.797 2.391 -4.156 2.797 -4.156 C 3.438 -4.156 3.578 -3.344 3.578 -3.281 C 3.578 -3.234 3.562 -3.172 3.547 -3.125 Z M 3.047 -1.172 " /></symbol><symbol overflow="visible" id="f5_glyph0-2"><path style="stroke:none;" d="M 1.766 -1.141 C 1.375 -0.469 0.984 -0.344 0.562 -0.312 C 0.438 -0.297 0.344 -0.297 0.344 -0.109 C 0.344 -0.047 0.391 0 0.469 0 C 0.75 0 1.047 -0.031 1.328 -0.031 C 1.656 -0.031 2 0 2.312 0 C 2.375 0 2.5 0 2.5 -0.188 C 2.5 -0.297 2.422 -0.312 2.344 -0.312 C 2.125 -0.328 1.875 -0.406 1.875 -0.656 C 1.875 -0.766 1.938 -0.875 2.016 -1.016 L 2.781 -2.281 L 5.266 -2.281 C 5.281 -2.078 5.422 -0.734 5.422 -0.641 C 5.422 -0.344 4.906 -0.312 4.703 -0.312 C 4.562 -0.312 4.469 -0.312 4.469 -0.109 C 4.469 0 4.594 0 4.609 0 C 5.016 0 5.438 -0.031 5.844 -0.031 C 6.094 -0.031 6.719 0 6.969 0 C 7.031 0 7.141 0 7.141 -0.203 C 7.141 -0.312 7.047 -0.312 6.922 -0.312 C 6.297 -0.312 6.297 -0.375 6.266 -0.656 L 5.672 -6.859 C 5.641 -7.047 5.641 -7.094 5.484 -7.094 C 5.312 -7.094 5.281 -7.031 5.219 -6.922 Z M 2.969 -2.594 L 4.906 -5.859 L 5.234 -2.594 Z M 2.969 -2.594 " /></symbol><symbol overflow="visible" id="f5_glyph0-3"><path style="stroke:none;" d="M 1.578 -0.766 C 1.484 -0.391 1.469 -0.312 0.688 -0.312 C 0.516 -0.312 0.422 -0.312 0.422 -0.109 C 0.422 0 0.5 0 0.688 0 L 4.219 0 C 5.781 0 6.953 -1.172 6.953 -2.141 C 6.953 -2.859 6.375 -3.422 5.422 -3.531 C 6.453 -3.719 7.484 -4.453 7.484 -5.406 C 7.484 -6.125 6.828 -6.766 5.641 -6.766 L 2.312 -6.766 C 2.125 -6.766 2.031 -6.766 2.031 -6.562 C 2.031 -6.453 2.125 -6.453 2.312 -6.453 C 2.328 -6.453 2.516 -6.453 2.688 -6.438 C 2.859 -6.422 2.953 -6.406 2.953 -6.281 C 2.953 -6.234 2.938 -6.219 2.906 -6.094 Z M 3.078 -3.625 L 3.688 -6.078 C 3.781 -6.422 3.797 -6.453 4.234 -6.453 L 5.516 -6.453 C 6.375 -6.453 6.594 -5.875 6.594 -5.438 C 6.594 -4.562 5.734 -3.625 4.531 -3.625 Z M 2.641 -0.312 C 2.5 -0.312 2.484 -0.312 2.422 -0.312 C 2.312 -0.328 2.281 -0.344 2.281 -0.422 C 2.281 -0.453 2.281 -0.469 2.344 -0.641 L 3.016 -3.406 L 4.891 -3.406 C 5.844 -3.406 6.031 -2.672 6.031 -2.25 C 6.031 -1.266 5.156 -0.312 3.984 -0.312 Z M 2.641 -0.312 " /></symbol><symbol overflow="visible" id="f5_glyph0-4"><path style="stroke:none;" d="M 7.531 -6.891 C 7.531 -6.922 7.516 -6.984 7.422 -6.984 C 7.391 -6.984 7.375 -6.969 7.266 -6.859 L 6.578 -6.109 C 6.484 -6.234 6.031 -6.984 4.938 -6.984 C 2.719 -6.984 0.5 -4.797 0.5 -2.5 C 0.5 -0.859 1.672 0.219 3.188 0.219 C 4.047 0.219 4.797 -0.172 5.312 -0.641 C 6.234 -1.453 6.406 -2.344 6.406 -2.375 C 6.406 -2.484 6.312 -2.484 6.297 -2.484 C 6.234 -2.484 6.188 -2.453 6.156 -2.375 C 6.078 -2.094 5.844 -1.391 5.156 -0.812 C 4.484 -0.25 3.859 -0.094 3.344 -0.094 C 2.453 -0.094 1.391 -0.609 1.391 -2.156 C 1.391 -2.719 1.609 -4.312 2.594 -5.484 C 3.203 -6.188 4.125 -6.672 5.016 -6.672 C 6.016 -6.672 6.609 -5.906 6.609 -4.766 C 6.609 -4.375 6.578 -4.359 6.578 -4.266 C 6.578 -4.156 6.688 -4.156 6.719 -4.156 C 6.859 -4.156 6.859 -4.188 6.906 -4.359 Z M 7.531 -6.891 " /></symbol><symbol overflow="visible" id="f5_glyph0-5"><path style="stroke:none;" d="M 1.578 -0.766 C 1.469 -0.391 1.453 -0.312 0.672 -0.312 C 0.5 -0.312 0.391 -0.312 0.391 -0.125 C 0.391 0 0.484 0 0.672 0 L 3.953 0 C 6.016 0 7.969 -2.094 7.969 -4.266 C 7.969 -5.656 7.125 -6.766 5.641 -6.766 L 2.312 -6.766 C 2.125 -6.766 2.016 -6.766 2.016 -6.578 C 2.016 -6.453 2.094 -6.453 2.297 -6.453 C 2.422 -6.453 2.609 -6.453 2.719 -6.438 C 2.875 -6.422 2.938 -6.391 2.938 -6.281 C 2.938 -6.234 2.938 -6.219 2.906 -6.094 Z M 3.719 -6.078 C 3.797 -6.422 3.828 -6.453 4.25 -6.453 L 5.312 -6.453 C 6.281 -6.453 7.109 -5.938 7.109 -4.625 C 7.109 -4.141 6.906 -2.516 6.062 -1.422 C 5.781 -1.062 5 -0.312 3.781 -0.312 L 2.656 -0.312 C 2.516 -0.312 2.5 -0.312 2.438 -0.312 C 2.344 -0.328 2.312 -0.344 2.312 -0.422 C 2.312 -0.453 2.312 -0.469 2.359 -0.641 Z M 3.719 -6.078 " /></symbol><symbol overflow="visible" id="f5_glyph0-6"><path style="stroke:none;" d="M 6.391 -6.891 C 6.391 -6.922 6.375 -6.984 6.281 -6.984 C 6.234 -6.984 6.219 -6.969 6.109 -6.828 L 5.625 -6.266 C 5.375 -6.734 4.859 -6.984 4.203 -6.984 C 2.953 -6.984 1.766 -5.844 1.766 -4.641 C 1.766 -3.844 2.281 -3.391 2.797 -3.234 L 3.859 -2.969 C 4.219 -2.875 4.766 -2.719 4.766 -1.906 C 4.766 -1.016 3.953 -0.094 2.984 -0.094 C 2.344 -0.094 1.25 -0.312 1.25 -1.531 C 1.25 -1.766 1.297 -2.016 1.312 -2.078 C 1.312 -2.109 1.328 -2.125 1.328 -2.141 C 1.328 -2.234 1.266 -2.25 1.203 -2.25 C 1.156 -2.25 1.141 -2.234 1.109 -2.203 C 1.062 -2.172 0.516 0.094 0.516 0.125 C 0.516 0.172 0.562 0.219 0.625 0.219 C 0.672 0.219 0.688 0.203 0.797 0.062 L 1.281 -0.5 C 1.719 0.078 2.391 0.219 2.969 0.219 C 4.312 0.219 5.484 -1.094 5.484 -2.328 C 5.484 -3.016 5.141 -3.344 5 -3.484 C 4.766 -3.719 4.609 -3.75 3.734 -3.984 C 3.516 -4.047 3.156 -4.141 3.078 -4.156 C 2.797 -4.25 2.469 -4.531 2.469 -5.062 C 2.469 -5.859 3.266 -6.703 4.203 -6.703 C 5.016 -6.703 5.625 -6.281 5.625 -5.172 C 5.625 -4.859 5.594 -4.672 5.594 -4.609 C 5.594 -4.609 5.594 -4.516 5.703 -4.516 C 5.812 -4.516 5.812 -4.547 5.859 -4.719 Z M 6.391 -6.891 " /></symbol><symbol overflow="visible" id="f5_glyph0-7"><path style="stroke:none;" d="M 9.172 -6 C 9.266 -6.359 9.281 -6.453 10.031 -6.453 C 10.25 -6.453 10.344 -6.453 10.344 -6.656 C 10.344 -6.766 10.25 -6.766 10.078 -6.766 L 8.766 -6.766 C 8.516 -6.766 8.5 -6.766 8.375 -6.578 L 4.766 -0.938 L 4 -6.531 C 3.969 -6.766 3.938 -6.766 3.688 -6.766 L 2.328 -6.766 C 2.141 -6.766 2.031 -6.766 2.031 -6.578 C 2.031 -6.453 2.125 -6.453 2.312 -6.453 C 2.453 -6.453 2.625 -6.453 2.75 -6.438 C 2.906 -6.422 2.969 -6.391 2.969 -6.281 C 2.969 -6.234 2.953 -6.219 2.922 -6.094 L 1.672 -1.047 C 1.562 -0.656 1.391 -0.344 0.594 -0.312 C 0.547 -0.312 0.422 -0.297 0.422 -0.125 C 0.422 -0.031 0.469 0 0.562 0 C 0.875 0 1.219 -0.031 1.547 -0.031 C 1.875 -0.031 2.234 0 2.562 0 C 2.609 0 2.75 0 2.75 -0.203 C 2.75 -0.312 2.641 -0.312 2.562 -0.312 C 2 -0.312 1.891 -0.516 1.891 -0.75 C 1.891 -0.812 1.906 -0.859 1.938 -0.969 L 3.281 -6.375 L 4.141 -0.234 C 4.156 -0.109 4.172 0 4.297 0 C 4.391 0 4.453 -0.109 4.5 -0.172 L 8.516 -6.453 L 7.109 -0.766 C 7 -0.391 6.984 -0.312 6.203 -0.312 C 6.031 -0.312 5.922 -0.312 5.922 -0.125 C 5.922 0 6.047 0 6.078 0 C 6.344 0 7.031 -0.031 7.297 -0.031 C 7.703 -0.031 8.141 0 8.547 0 C 8.594 0 8.734 0 8.734 -0.203 C 8.734 -0.312 8.641 -0.312 8.453 -0.312 C 8.078 -0.312 7.812 -0.312 7.812 -0.484 C 7.812 -0.531 7.812 -0.547 7.859 -0.719 Z M 9.172 -6 " /></symbol><symbol overflow="visible" id="f5_glyph0-8"><path style="stroke:none;" d="M 7.484 -5.719 C 7.594 -6.125 7.766 -6.422 8.562 -6.453 C 8.609 -6.453 8.734 -6.469 8.734 -6.656 C 8.734 -6.672 8.734 -6.766 8.594 -6.766 C 8.266 -6.766 7.922 -6.734 7.594 -6.734 C 7.266 -6.734 6.922 -6.766 6.594 -6.766 C 6.531 -6.766 6.406 -6.766 6.406 -6.562 C 6.406 -6.453 6.516 -6.453 6.594 -6.453 C 7.156 -6.453 7.266 -6.234 7.266 -6.016 C 7.266 -6 7.234 -5.844 7.234 -5.812 L 6.125 -1.406 L 3.938 -6.578 C 3.859 -6.75 3.844 -6.766 3.609 -6.766 L 2.281 -6.766 C 2.094 -6.766 2 -6.766 2 -6.562 C 2 -6.453 2.094 -6.453 2.281 -6.453 C 2.328 -6.453 2.953 -6.453 2.953 -6.375 L 1.625 -1.047 C 1.531 -0.656 1.359 -0.344 0.562 -0.312 C 0.5 -0.312 0.391 -0.297 0.391 -0.109 C 0.391 -0.047 0.438 0 0.516 0 C 0.828 0 1.172 -0.031 1.5 -0.031 C 1.844 -0.031 2.203 0 2.531 0 C 2.578 0 2.703 0 2.703 -0.203 C 2.703 -0.297 2.609 -0.312 2.5 -0.312 C 1.938 -0.328 1.859 -0.547 1.859 -0.75 C 1.859 -0.812 1.859 -0.859 1.891 -0.969 L 3.203 -6.203 C 3.234 -6.141 3.234 -6.125 3.281 -6.016 L 5.75 -0.188 C 5.828 -0.016 5.859 0 5.938 0 C 6.047 0 6.047 -0.031 6.109 -0.203 Z M 7.484 -5.719 " /></symbol></g></defs><g id="f5_surface1"><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f5_glyph0-1" x="15.097" y="85.832" /></g><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-miterlimit:10;" d="M 82.612 -18.797 L 11.289 -136.232 M 82.612 -18.797 L 110.505 -136.232 M 82.612 -18.797 L 153.932 -99.79 M 11.289 -136.232 L 110.505 -136.232 L 153.932 -99.79 M 100.741 -95.128 L 11.289 -136.232 M 61.213 -54.028 L 110.505 -136.232 M 17.787 -90.47 L 61.213 -54.028 M 91.362 -28.726 L 104.644 -17.586" transform="matrix(0.993769,0,0,-0.993769,0,0)" /><path style="fill:none;stroke-width:0.3985;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:1;stroke-dasharray:2.98883,2.98883;stroke-miterlimit:10;" d="M 82.612 -18.797 L 54.72 -99.79 M 11.289 -136.232 L 54.72 -99.79 L 153.932 -99.79 M 100.741 -95.128 L 54.72 -99.79 M 61.213 -54.028 L 153.932 -99.79 M 61.213 -54.028 L 91.362 -28.726" transform="matrix(0.993769,0,0,-0.993769,0,0)" /><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 55.367 99.168 C 55.367 98.621 54.926 98.176 54.379 98.176 C 53.832 98.176 53.387 98.621 53.387 99.168 C 53.387 99.715 53.832 100.156 54.379 100.156 C 54.926 100.156 55.367 99.715 55.367 99.168 Z M 55.367 99.168 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f5_glyph0-2" x="50.665" y="111.001" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 12.211 135.383 C 12.211 134.836 11.766 134.391 11.219 134.391 C 10.672 134.391 10.23 134.836 10.23 135.383 C 10.23 135.93 10.672 136.371 11.219 136.371 C 11.766 136.371 12.211 135.93 12.211 135.383 Z M 12.211 135.383 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f5_glyph0-3" x="7.216" y="147.216" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 110.805 135.383 C 110.805 134.836 110.363 134.391 109.816 134.391 C 109.27 134.391 108.824 134.836 108.824 135.383 C 108.824 135.93 109.27 136.371 109.816 136.371 C 110.363 136.371 110.805 135.93 110.805 135.383 Z M 110.805 135.383 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f5_glyph0-4" x="105.922" y="147.216" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 153.965 99.168 C 153.965 98.621 153.52 98.176 152.973 98.176 C 152.426 98.176 151.984 98.621 151.984 99.168 C 151.984 99.715 152.426 100.156 152.973 100.156 C 153.52 100.156 153.965 99.715 153.965 99.168 Z M 153.965 99.168 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f5_glyph0-5" x="148.736" y="111.001" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 83.086 18.68 C 83.086 18.133 82.645 17.688 82.098 17.688 C 81.551 17.688 81.105 18.133 81.105 18.68 C 81.105 19.227 81.551 19.668 82.098 19.668 C 82.645 19.668 83.086 19.227 83.086 18.68 Z M 83.086 18.68 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f5_glyph0-6" x="78.775" y="13.612" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 101.102 94.535 C 101.102 93.988 100.66 93.547 100.113 93.547 C 99.566 93.547 99.125 93.988 99.125 94.535 C 99.125 95.082 99.566 95.527 100.113 95.527 C 100.66 95.527 101.102 95.082 101.102 94.535 Z M 101.102 94.535 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f5_glyph0-7" x="100.746" y="91.943" /></g><path style=" stroke:none;fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:1;" d="M 61.824 53.691 C 61.824 53.145 61.379 52.699 60.832 52.699 C 60.285 52.699 59.844 53.145 59.844 53.691 C 59.844 54.238 60.285 54.68 60.832 54.68 C 61.379 54.68 61.824 54.238 61.824 53.691 Z M 61.824 53.691 " /><g style="fill:rgb(0%,0%,0%);fill-opacity:1;"><use xlink:href="#f5_glyph0-8" x="50.339" y="51.098" /></g></g></svg></div></div></div> <ol class="paren-a"><li><b>Đúng</b>.<br> Ta có $\left\{\begin{aligned}&amp;S\in (SAB)\cap (SCD)\\&amp;AB \parallel CD\\&amp;AB\subset (SAB)\\&amp; CD\subset (SCD).\end{aligned}\right.$<br> Suy ra giao tuyến của $(SAB)$ và $(SCD)$ là đường thẳng đi qua $S$ và song song với $AB$.</li><li><b>Sai</b>.<br> Ta có $\left\{\begin{aligned}&amp;S\in (SAD)\cap (SBC)\\&amp;AD \parallel BC\\&amp;AD\subset (SAD)\\&amp; BC\subset (SBC).\end{aligned}\right.$<br> Suy ra giao tuyến của $(SAD)$ và $(SBC)$ là đường thẳng đi qua $S$ và song song với $AD$.</li><li><b>Đúng</b>.<br> Ta có $\left\{\begin{aligned}&amp;M\in (ABM)\cap (SCD)\\&amp;AB \parallel CD\\&amp;AB\subset (ABM)\\&amp; CD\subset (SCD).\end{aligned}\right.$<br> Suy ra giao tuyến của $(ABM)$ và $(SCD)$ là đường thẳng đi qua $S$ và song song với $AB$.</li><li><b>Sai</b>.<br> Gọi $d$ là đường thẳng đi qua $N$ và song song với $AB$.<br> Ta có $\left\{\begin{aligned}&amp;d\subset (SAB)\\&amp;SA\cap AB = A\\&amp;d\parallel AB.\end{aligned}\right.$<br> Suy ra đường thẳng $d$ cắt $SA$.<br> Mà $AB \parallel CD$ nên $d \subset (NCD)$.<br> Suy ra giao điểm của $SA$ với $(NCD)$ là giao điểm của $SA$ với đường thẳng $d$ đi qua $N$ và song song với $AB$.</li></ol></div></div></div>
+        <button type="button" class="submit-btn" id="submitBtn" onclick="submitQuiz()">Nộp Bài</button>
+        <button type="button" class="submit-btn" id="viewSolBtn" onclick="showPasswordPrompt()" style="background: #17a2b8;">Xem Đáp Án & Lời Giải</button>
+    </form>
+    
+    <div id="result"></div>
+    
+    <div id="passwordPrompt">
+        <h4>Mở Khóa Lời Giải</h4>
+        <p style="color: #856404; font-size: 14px; margin-top: 0;">Nhập mật khẩu từ Giáo viên để xem đáp án chi tiết.</p>
+        <input type="password" id="solPassword" placeholder="Nhập mật khẩu...">
+        <button type="button" onclick="checkPassword()">Xem</button>
+    </div>
+
+    <footer class="author-footer">Liên hệ Phạm Hải Dương - 0944411656 để chuyển latex sang HTML tự động</footer>
+
+    <script>
+        const ua = navigator.userAgent || navigator.vendor || window.opera;
+        if ((ua.indexOf("FBAN") === -1) && (ua.indexOf("FBAV") === -1) && (ua.indexOf("Zalo") === -1)) {
+            document.getElementById("zaloWarning").style.display = "none";
+        }
+
+        const GAS_URL = ""; 
+        const correctAnswers = {"P1_Cau_1": "A", "P1_Cau_2": "A", "P1_Cau_3": "B", "P1_Cau_4": "D", "P1_Cau_5": "C", "P1_Cau_6": "C", "P1_Cau_7": "B", "P1_Cau_8": "C", "P1_Cau_9": "D", "P1_Cau_10": "C", "P1_Cau_11": "A", "P1_Cau_12": "B", "P2_Cau_1_a": "Sai", "P2_Cau_1_b": "Đúng", "P2_Cau_1_c": "Sai", "P2_Cau_1_d": "Đúng", "P2_Cau_2_a": "Đúng", "P2_Cau_2_b": "Sai", "P2_Cau_2_c": "Đúng", "P2_Cau_2_d": "Sai"};
+        let isSubmitted = false;
+        
+        function moveNext(current, nextId) {
+            if (current.value.length > 1) current.value = current.value.slice(0, 1);
+            if (current.value.length === 1 && nextId) document.getElementById(nextId).focus();
+        }
+        function movePrev(e, current, prevId) {
+            if (e.key === "Backspace" && current.value === "" && prevId) document.getElementById(prevId).focus();
+        }
+
+        // =====================================================================
+        // LƯU TRẠNG THÁI (tải lại trang không mất bài, không reset đồng hồ)
+        // Thêm ?reset=1 vào đường dẫn để xóa trạng thái khi giáo viên muốn thử lại.
+        // =====================================================================
+        function hashStr(str) { let h = 5381; for (let i = 0; i < str.length; i++) h = ((h << 5) + h + str.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
+        const STORE_KEY = 'quizstate:v2:' + location.pathname + '|' + document.title + '|' + hashStr(JSON.stringify(correctAnswers) + '|' + 90);
+        if (/[?&]reset=1(&|$)/.test(location.search)) { try { localStorage.removeItem(STORE_KEY); } catch (e) {} }
+
+        function loadState() { try { return JSON.parse(localStorage.getItem(STORE_KEY) || 'null'); } catch (e) { return null; } }
+        let state = loadState() || {};
+        function saveState(patch) {
+            Object.assign(state, patch);
+            try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}   // bị chặn lưu (chế độ riêng tư...) thì chạy bằng bộ nhớ tạm
+        }
+        function newId() { return (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now().toString(36) + Math.random().toString(36).slice(2, 10)); }
+
+        const DURATION_MS = 90 * 60 * 1000;
+        if (!state.endTime) saveState({ endTime: Date.now() + DURATION_MS });
+        if (!state.attemptId) saveState({ attemptId: newId() });
+
+        function formFields() { return Array.from(document.querySelectorAll('#studentName, #studentClass, #quizForm input, #quizForm textarea')); }
+        function collectAnswers() { return formFields().map(el => (el.type === 'radio' || el.type === 'checkbox') ? (el.checked ? 1 : 0) : el.value); }
+        function restoreAnswers(arr) {
+            const f = formFields();
+            if (!Array.isArray(arr) || arr.length !== f.length) return;
+            f.forEach((el, i) => { if (el.type === 'radio' || el.type === 'checkbox') el.checked = !!arr[i]; else el.value = arr[i]; });
+        }
+
+        let saveTimer;
+        function scheduleSave() {
+            if (isSubmitted) return;
+            clearTimeout(saveTimer);
+            saveTimer = setTimeout(() => saveState({ answers: collectAnswers() }), 250);
+        }
+        document.addEventListener('input', scheduleSave);
+        document.addEventListener('change', scheduleSave);
+        window.addEventListener('pagehide', () => { if (!isSubmitted) saveState({ answers: collectAnswers() }); });
+
+        const resDiv = document.getElementById('result');
+        function showResult(html) { resDiv.style.display = 'block'; resDiv.innerHTML = html; }
+        function lockForm() {
+            document.getElementById('submitBtn').style.display = 'none';
+            document.querySelectorAll('#quizForm input, #quizForm textarea, #studentName, #studentClass').forEach(el => el.disabled = true);
+        }
+        const scoreSpan = s => `<span style="font-size: 24px; color: red;">${s}</span>`;
+
+        // Gửi kết quả; mất mạng thì giữ lại và tự gửi lại (khi có mạng, hoặc mỗi 15 giây)
+        let sending = false;
+        function sendPayload() {
+            const finalScoreString = state.finalScore;
+            if (!GAS_URL) {
+                saveState({ sent: true });
+                showResult(`Đã chấm xong (chưa cấu hình nơi nhận kết quả).<br>Điểm của bạn: ${scoreSpan(finalScoreString)}`);
+                return;
+            }
+            if (sending) return;
+            sending = true;
+            fetch(GAS_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                keepalive: true,
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams(state.payload)
+            }).then(() => {
+                sending = false;
+                saveState({ sent: true });
+                showResult(`Nộp bài thành công!<br>Điểm của bạn: ${scoreSpan(finalScoreString)}`);
+            }).catch(() => {
+                sending = false;
+                showResult(`Đã chấm xong nhưng <b>chưa gửi được</b> kết quả (mạng yếu).<br>Em hãy giữ nguyên trang này, bài sẽ tự gửi lại khi có mạng.<br>Điểm của bạn: ${scoreSpan(finalScoreString)}`);
+            });
+        }
+        function retryPending() { if (state.submitted && !state.sent) sendPayload(); }
+        window.addEventListener('online', retryPending);
+        setInterval(retryPending, 15000);
+
+        // Đồng hồ tính theo giờ kết thúc nên không lệch khi tab ở nền hoặc điện thoại khóa màn hình
+        const timerEl = document.getElementById("timer");
+        let timeoutFired = false;
+        const countdown = setInterval(tick, 500);
+        document.addEventListener('visibilitychange', tick);
+        function tick() {
+            if (isSubmitted) { clearInterval(countdown); return; }
+            const remain = Math.ceil((state.endTime - Date.now()) / 1000);
+            if (remain <= 0) {
+                if (timeoutFired) return;
+                timeoutFired = true;
+                clearInterval(countdown);
+                timerEl.innerHTML = "HẾT GIỜ!";
+                alert("Đã hết thời gian làm bài. Hệ thống tự động nộp bài!");
+                submitQuiz(true);
+            } else {
+                const m = Math.floor(remain / 60), s = remain % 60;
+                timerEl.innerHTML = m.toString().padStart(2, '0') + ":" + s.toString().padStart(2, '0');
+            }
+        }
+
+        // Khôi phục khi mở lại trang
+        restoreAnswers(state.answers);
+        if (state.submitted) {
+            isSubmitted = true;
+            lockForm();
+            timerEl.innerHTML = "ĐÃ NỘP BÀI";
+            if (state.sent) showResult(`Nộp bài thành công!<br>Điểm của bạn: ${scoreSpan(state.finalScore)}`);
+            else { showResult('Đang gửi lại kết quả...'); retryPending(); }
+        } else {
+            tick();
+        }
+
+        function submitQuiz(autoSubmit = false) {
+            if (isSubmitted) return;
+            const name = document.getElementById('studentName').value.trim();
+            const className = document.getElementById('studentClass').value.trim();
+            
+            if (!autoSubmit && (!name || !className)) {
+                alert("Vui lòng nhập đầy đủ Họ tên và Lớp trước khi nộp!");
+                return;
+            }
+
+            isSubmitted = true;
+            if (typeof timerEl !== 'undefined' && timerEl) {
+                timerEl.innerHTML = "ĐÃ NỘP BÀI";
+            }
+            
+            const form = document.getElementById('quizForm');
+            let score = 0;
+            
+            let payload = {
+                'name': name || "Vô danh (Hết giờ)",
+                'className': className || "N/A"
+            };
+
+            for (let i = 1; i <= 12; i++) {
+                const qName = `P1_Cau_${i}`;
+                const selected = form.querySelector(`input[name="${qName}"]:checked`);
+                let ans = selected ? selected.value : "K";
+                const correctVal = correctAnswers[qName];
+                
+                let isCorrect = (selected && selected.value === correctVal);
+                if (isCorrect) score += 0.25;
+                
+                let statusStr = isCorrect ? "Đúng" : (selected ? "Sai" : "K");
+                payload[qName] = `${ans} (${statusStr})`;
+            }
+
+            const labels_tf = ['a', 'b', 'c', 'd'];
+            for (let i = 1; i <= 2; i++) {
+                let correctCount = 0;
+                let questionDetail = [];
+                
+                labels_tf.forEach(l => {
+                    const qName = `P2_Cau_${i}_${l}`;
+                    if (correctAnswers[qName]) {
+                        const selected = form.querySelector(`input[name="${qName}"]:checked`);
+                        let ans = selected ? selected.value : "K";
+                        const correctVal = correctAnswers[qName];
+                        let isSubCorrect = (selected && selected.value === correctVal);
+                        if (isSubCorrect) correctCount++;
+                        
+                        let subStatus = isSubCorrect ? "Đ" : (selected ? "S" : "-");
+                        questionDetail.push(`${l}:${ans}(${subStatus})`);
+                    }
+                });
+                
+                let p2ScoreEarned = 0;
+                if (correctCount === 1) p2ScoreEarned = 0.1;
+                else if (correctCount === 2) p2ScoreEarned = 0.25;
+                else if (correctCount === 3) p2ScoreEarned = 0.5;
+                else if (correctCount === 4) p2ScoreEarned = 1.0;
+                
+                score += p2ScoreEarned;
+                payload[`P2_Cau_${i}`] = `[${correctCount} ý đúng] ${questionDetail.join(' ')}`;
+            }
+
+            for (let i = 1; i <= 0; i++) {
+                const qName = `P3_Cau_${i}`;
+                if (correctAnswers[qName]) {
+                    let ans = "";
+                    for (let j = 1; j <= 12; j++) {
+                        const box = document.getElementById(`${qName}_${j}`);
+                        if (box && box.value) ans += box.value;
+                    }
+                    
+                    let studentAns = ans.replace(/,/g, '.').replace(/\s+/g, '');
+                    let trueAns = correctAnswers[qName].replace(/,/g, '.').replace(/\s+/g, '');
+                    let isCorrect = (studentAns === trueAns && studentAns !== "");
+                    
+                    if (isCorrect) score += 0.5;
+                    
+                    let statusStr = isCorrect ? "Đúng" : (studentAns !== "" ? "Sai" : "K");
+                    payload[qName] = `${studentAns || 'Bỏ trống'} (${statusStr})`;
+                }
+            }
+
+            const finalScoreString = `${score.toFixed(2)}/5`;
+            payload['score'] = score.toFixed(2);
+            payload['maxScore'] = '5';
+            payload['attemptId'] = state.attemptId;   // để Apps Script bỏ các lần gửi trùng
+
+            lockForm();
+            saveState({ answers: collectAnswers(), submitted: true, sent: false, payload: payload, finalScore: finalScoreString });
+            showResult('Đã chấm xong, đang gửi kết quả...');
+            sendPayload();
+        }
+
+        function showPasswordPrompt() {
+            document.getElementById('passwordPrompt').style.display = 'block';
+            document.getElementById('viewSolBtn').style.display = 'none';
+            document.getElementById('passwordPrompt').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function checkPassword() {
+            const entered = document.getElementById('solPassword').value;
+            if (entered === "0947306694") {
+                document.getElementById('passwordPrompt').style.display = 'none';
+                revealSolutions();
+            } else {
+                alert("Mật khẩu không chính xác! Vui lòng liên hệ Giáo viên.");
+            }
+        }
+
+        function revealSolutions() {
+            isSubmitted = true;
+            
+            document.getElementById('submitBtn').style.display = 'none';
+            const allInputs = document.querySelectorAll('#quizForm input, #quizForm textarea');
+            allInputs.forEach(input => input.disabled = true);
+
+            const form = document.getElementById('quizForm');
+            
+            for (let i = 1; i <= 12; i++) {
+                const qName = `P1_Cau_${i}`;
+                const correctVal = correctAnswers[qName];
+                const allRadios = form.querySelectorAll(`input[name="${qName}"]`);
+                allRadios.forEach(radio => {
+                    const lbl = radio.closest('label');
+                    if (radio.value === correctVal) {
+                        lbl.style.backgroundColor = '#d4edda';
+                        lbl.style.borderColor = '#28a745';
+                    } else if (radio.checked) {
+                        lbl.style.backgroundColor = '#f8d7da';
+                        lbl.style.borderColor = '#dc3545';
+                    } else {
+                        lbl.style.opacity = '0.5';
+                    }
+                });
+            }
+
+            const labels_tf = ['a', 'b', 'c', 'd'];
+            for (let i = 1; i <= 2; i++) {
+                labels_tf.forEach(l => {
+                    const qName = `P2_Cau_${i}_${l}`;
+                    if (correctAnswers[qName]) {
+                        const correctVal = correctAnswers[qName];
+                        const allRadios = form.querySelectorAll(`input[name="${qName}"]`);
+                        allRadios.forEach(radio => {
+                            const lbl = radio.closest('label');
+                            if (radio.value === correctVal) {
+                                lbl.style.backgroundColor = '#d4edda';
+                                lbl.style.color = '#155724';
+                            } else if (radio.checked) {
+                                lbl.style.backgroundColor = '#f8d7da';
+                                lbl.style.color = '#721c24';
+                            } else {
+                                lbl.style.opacity = '0.5';
+                            }
+                        });
+                    }
+                });
+            }
+
+            for (let i = 1; i <= 0; i++) {
+                const qName = `P3_Cau_${i}`;
+                if (correctAnswers[qName]) {
+                    let ans = "";
+                    let boxes = [];
+                    for (let j = 1; j <= 12; j++) {
+                        const box = document.getElementById(`${qName}_${j}`);
+                        if (box) {
+                            boxes.push(box);
+                            if (box.value) ans += box.value;
+                        }
+                    }
+                    
+                    let studentAns = ans.replace(/,/g, '.').replace(/\s+/g, '');
+                    let trueAns = correctAnswers[qName].replace(/,/g, '.').replace(/\s+/g, '');
+                    let isCorrect = (studentAns === trueAns && studentAns !== "");
+                    
+                    boxes.forEach(box => {
+                        if (isCorrect) {
+                            box.style.backgroundColor = '#d4edda';
+                            box.style.borderColor = '#28a745';
+                            box.style.color = '#155724';
+                        } else {
+                            box.style.backgroundColor = '#f8d7da';
+                            box.style.borderColor = '#dc3545';
+                            box.style.color = '#721c24';
+                        }
+                    });
+
+                    const group = document.querySelector(`#${qName}_1`).closest('.options');
+                    let correctDiv = document.createElement('div');
+                    correctDiv.style.marginTop = '10px';
+                    correctDiv.innerHTML = `<span style="color:#28a745; font-weight:bold; font-size:16px;">Đáp án đúng: ${correctAnswers[qName]}</span>`;
+                    group.appendChild(correctDiv);
+                }
+            }
+
+            const solutions = document.querySelectorAll('.solution-box');
+            solutions.forEach(box => box.style.display = 'block');
+
+            // Chuẩn hóa lại SVG vừa hiện ra (lúc này mới đo được kích thước)
+            initMedia();
+            if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise().then(initMedia);
+        }
+
+        const MEDIA_SCOPE = '.question, .solution-box';
+        // =====================================================================
+        // XỬ LÝ SVG / ẢNH (dùng chung cho quiz và trình chiếu)
+        // Mỗi template khai báo trước: const MEDIA_SCOPE = '.vung-chua-hinh, ...';
+        // =====================================================================
+        const MEDIA_SVG_SEL = MEDIA_SCOPE.split(',').map(s => s.trim() + ' svg').join(', ');
+        const MEDIA_ALL_SEL = MEDIA_SCOPE.split(',').map(s => s.trim()).flatMap(s => [s + ' svg', s + ' img']).join(', ');
+
+        // Chỉ nhận số thuần hoặc "px"; "10cm", "50%", "auto"... trả về NaN để không đọc sai đơn vị
+        function svgNum(v) {
+            if (v == null) return NaN;
+            const m = String(v).trim().match(/^([0-9]*\.?[0-9]+)(px)?$/i);
+            return m ? parseFloat(m[1]) : NaN;
+        }
+
+        // Đổi id trong từng SVG thành duy nhất để các hình không dùng nhầm clipPath/marker/gradient của nhau
+        let __svgSeq = 0;
+        function uniquifySvgIds(svg) {
+            if (svg.dataset.idsDone) return;
+            svg.dataset.idsDone = '1';
+            const withId = svg.querySelectorAll('[id]');
+            if (!withId.length) return;
+            const prefix = 'svg' + (++__svgSeq) + '_';
+            const map = {};
+            withId.forEach(n => { map[n.id] = prefix + n.id; });
+            const ids = Object.keys(map);
+            const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const urlRe = /url\(\s*(['"]?)#([^)'"\s]+)\1\s*\)/g;
+            const fixUrls = str => str.replace(urlRe, (m, q, id) => map[id] ? `url(${q}#${map[id]}${q})` : m);
+
+            svg.querySelectorAll('*').forEach(n => {
+                if (n.tagName.toLowerCase() === 'style') {
+                    let css = fixUrls(n.textContent);
+                    css = css.replace(new RegExp('#(' + ids.map(esc).join('|') + ')(?![\\w-])', 'g'), '#' + prefix + '$1');
+                    n.textContent = css;
+                    return;
+                }
+                Array.from(n.attributes).forEach(a => {
+                    if (a.name === 'id' || a.value.indexOf('#') < 0) return;
+                    if ((a.name === 'href' || a.name === 'xlink:href') && a.value.charAt(0) === '#') {
+                        const id = a.value.slice(1);
+                        if (map[id]) n.setAttribute(a.name, '#' + map[id]);
+                    } else {
+                        const nv = fixUrls(a.value);
+                        if (nv !== a.value) n.setAttribute(a.name, nv);
+                    }
+                });
+            });
+            withId.forEach(n => { n.id = map[n.id]; });
+        }
+
+        // Chuẩn hóa SVG: id duy nhất + thêm viewBox nếu thiếu để SVG co giãn đúng
+        function normalizeSvgs() {
+            document.querySelectorAll(MEDIA_SVG_SEL).forEach(svg => {
+                if (svg.closest('mjx-container')) return;
+                uniquifySvgIds(svg);
+                if (svg.dataset.normalized) return;
+                const w = svgNum(svg.getAttribute('width'));
+                const h = svgNum(svg.getAttribute('height'));
+
+                if (!svg.hasAttribute('viewBox')) {
+                    if (w > 0 && h > 0) {
+                        svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+                    } else {
+                        try {   // đang bị ẩn thì getBBox lỗi -> sẽ thử lại khi phần chứa nó hiện ra
+                            const b = svg.getBBox();
+                            if (b.width && b.height)
+                                svg.setAttribute('viewBox', `${b.x - 2} ${b.y - 2} ${b.width + 4} ${b.height + 4}`);
+                        } catch (e) { return; }
+                    }
+                }
+                if (svg.hasAttribute('viewBox')) {
+                    if (w > 0) { svg.style.width = '100%'; svg.style.maxWidth = w + 'px'; }  // kích thước gốc làm trần
+                    svg.removeAttribute('height');
+                    svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+                    svg.dataset.normalized = '1';
+                }
+            });
+        }
+
+        // Zoom: phóng to bằng cách tăng chiều rộng thật, khung tự cao theo, cuộn bằng thanh cuộn gốc
+        const __zoomRefresh = new Set();
+        let __zoomResizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(__zoomResizeTimer);
+            __zoomResizeTimer = setTimeout(() => __zoomRefresh.forEach(fn => fn()), 150);
+        });
+
+        function setupImageZoom() {
+            document.querySelectorAll(MEDIA_ALL_SEL).forEach(el => {
+                if (el.closest('.zoom-container') || el.closest('mjx-container') || el.classList.contains('no-zoom')) return;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'zoom-container';
+                const viewport = document.createElement('div');
+                viewport.className = 'zoom-viewport';
+                el.parentNode.insertBefore(wrapper, el);
+                viewport.appendChild(el);
+                wrapper.appendChild(viewport);
+                el.classList.add('zoom-media');
+
+                let scale = 1;
+                const STEP = 0.25, MIN = 1, MAX = 4;
+
+                const toolbar = document.createElement('div');
+                toolbar.className = 'zoom-toolbar';
+                const mk = (txt, title) => {
+                    const b = document.createElement('button');
+                    b.type = 'button'; b.className = 'zoom-btn'; b.innerHTML = txt; b.title = title;
+                    b.setAttribute('aria-label', title);
+                    return b;
+                };
+                const btnIn = mk('➕', 'Phóng to'), btnOut = mk('➖', 'Thu nhỏ'), btnReset = mk('↺', 'Mặc định');
+
+                function apply(newScale) {
+                    const cx = viewport.scrollWidth ? (viewport.scrollLeft + viewport.clientWidth / 2) / viewport.scrollWidth : 0.5;
+                    const cy = viewport.scrollHeight ? (viewport.scrollTop + viewport.clientHeight / 2) / viewport.scrollHeight : 0.5;
+
+                    scale = Math.min(MAX, Math.max(MIN, Math.round(newScale * 100) / 100));
+
+                    el.classList.remove('zoomed');
+                    el.style.removeProperty('--zw');
+                    const base = el.getBoundingClientRect().width;   // chiều rộng vừa khung hiện tại
+                    if (scale > 1 && base > 0) {
+                        el.style.setProperty('--zw', (base * scale) + 'px');
+                        el.classList.add('zoomed');
+                        viewport.scrollLeft = cx * viewport.scrollWidth - viewport.clientWidth / 2;
+                        viewport.scrollTop = cy * viewport.scrollHeight - viewport.clientHeight / 2;
+                    }
+                    viewport.classList.toggle('can-pan', el.classList.contains('zoomed'));
+                    btnIn.disabled = scale >= MAX;
+                    btnOut.disabled = scale <= MIN;
+                }
+
+                btnIn.onclick = () => apply(scale + STEP);
+                btnOut.onclick = () => apply(scale - STEP);
+                btnReset.onclick = () => apply(1);
+                __zoomRefresh.add(() => { if (scale > 1) apply(scale); });
+
+                // Ctrl + lăn chuột để zoom, nhấp đúp để phóng to/reset
+                viewport.addEventListener('wheel', e => {
+                    if (!e.ctrlKey) return;
+                    e.preventDefault();
+                    apply(scale + (e.deltaY < 0 ? STEP : -STEP));
+                }, { passive: false });
+                viewport.addEventListener('dblclick', () => apply(scale > 1 ? 1 : 2));
+
+                // Kéo thả bằng chuột (cảm ứng dùng cuộn gốc của trình duyệt)
+                let dragging = false, sx = 0, sy = 0, sl = 0, st = 0;
+                viewport.addEventListener('pointerdown', e => {
+                    if (e.pointerType !== 'mouse' || !el.classList.contains('zoomed')) return;
+                    dragging = true; sx = e.clientX; sy = e.clientY; sl = viewport.scrollLeft; st = viewport.scrollTop;
+                    viewport.setPointerCapture(e.pointerId);
+                    viewport.classList.add('dragging');
+                });
+                viewport.addEventListener('pointermove', e => {
+                    if (!dragging) return;
+                    viewport.scrollLeft = sl - (e.clientX - sx);
+                    viewport.scrollTop = st - (e.clientY - sy);
+                });
+                const stop = () => { dragging = false; viewport.classList.remove('dragging'); };
+                viewport.addEventListener('pointerup', stop);
+                viewport.addEventListener('pointercancel', stop);
+
+                toolbar.append(btnIn, btnOut, btnReset);
+                wrapper.appendChild(toolbar);
+                apply(1);
+            });
+        }
+
+        // Bọc từng <table> trong khung cuộn ngang (bỏ qua bảng của MathJax hoặc bảng đã được bọc)
+        const MEDIA_TABLE_SEL = MEDIA_SCOPE.split(',').map(s => s.trim() + ' table').join(', ');
+        function wrapTables() {
+            document.querySelectorAll(MEDIA_TABLE_SEL).forEach(t => {
+                if (t.closest('mjx-container, .table-scroll, .table-responsive, #tblOverlay')) return;
+                if (!t.parentNode) return;
+                const w = document.createElement('div');
+                w.className = 'table-scroll';
+                t.parentNode.insertBefore(w, t);
+                w.appendChild(t);
+            });
+        }
+
+        // ---- Bảng rộng: gợi ý vuốt ngang, cột đầu cố định, nút xem toàn màn hình ----
+        const __tblRefresh = [];
+        window.addEventListener('resize', () => __tblRefresh.forEach(fn => fn()));
+        function tblState(box, sc) {
+            const over = sc.scrollWidth > sc.clientWidth + 2;
+            box.classList.toggle('has-scroll', over);
+            box.classList.toggle('at-end', !over || sc.scrollLeft + sc.clientWidth >= sc.scrollWidth - 2);
+        }
+        function enhanceTables() {
+            document.querySelectorAll('.table-responsive, .table-scroll').forEach(sc => {
+                if (sc.dataset.tblDone || sc.closest('#tblOverlay')) return;
+                const table = sc.querySelector('table');
+                if (!table || !sc.parentNode) return;
+                sc.dataset.tblDone = '1';
+                const box = document.createElement('div'); box.className = 'tbl-box';
+                const hint = document.createElement('div'); hint.className = 'tbl-hint';
+                const msg = document.createElement('span'); msg.textContent = '\u2194 Vuốt ngang để xem thêm';
+                const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'tbl-open'; btn.textContent = '\u26F6 Xem toàn màn hình';
+                btn.addEventListener('click', e => { e.stopPropagation(); openTableOverlay(table); });
+                hint.append(msg, btn);
+                const wrap = document.createElement('div'); wrap.className = 'tbl-wrap';
+                const fade = document.createElement('div'); fade.className = 'tbl-fade';
+                sc.parentNode.insertBefore(box, sc);
+                box.append(hint, wrap);
+                wrap.append(sc, fade);
+                const first = table.rows[0];
+                if (first && first.cells.length >= 4 && first.cells[0].colSpan === 1 && first.cells[0].rowSpan === 1) table.classList.add('sticky-first');
+                const upd = () => tblState(box, sc);
+                sc.addEventListener('scroll', upd, { passive: true });
+                if (window.ResizeObserver) new ResizeObserver(upd).observe(table);
+                __tblRefresh.push(upd);
+                upd();
+            });
+        }
+        let tblOv = null, tblScale = 1;
+        function closeTableOverlay() {
+            if (!tblOv) return;
+            tblOv.classList.remove('open');
+            document.documentElement.style.overflow = '';
+        }
+        function openTableOverlay(table) {
+            if (!tblOv) {
+                tblOv = document.createElement('div'); tblOv.id = 'tblOverlay';
+                tblOv.innerHTML = '<div class="tbl-ov-bar"><span class="ttl">Kéo để xem; A+ / A\u2212 đổi cỡ chữ</span>'
+                    + '<button type="button" class="zoom-btn" data-a="-">A\u2212</button><button type="button" class="zoom-btn" data-a="+">A+</button>'
+                    + '<button type="button" class="zoom-btn" data-a="x">\u2715 Đóng</button></div><div class="tbl-ov-body"></div>';
+                document.body.appendChild(tblOv);
+                tblOv.addEventListener('click', e => {
+                    const b = e.target.closest('button[data-a]');
+                    if (!b) return;
+                    if (b.dataset.a === 'x') { closeTableOverlay(); return; }
+                    tblScale = Math.min(2.6, Math.max(0.6, tblScale + (b.dataset.a === '+' ? 0.2 : -0.2)));
+                    tblOv.style.setProperty('--tbl-s', tblScale);
+                });
+                window.addEventListener('keydown', e => {                 // đang xem bảng: không để phím chuyển câu / slide
+                    if (!tblOv.classList.contains('open')) return;
+                    e.stopImmediatePropagation();
+                    if (e.key === 'Escape') closeTableOverlay();
+                }, true);
+            }
+            const body = tblOv.querySelector('.tbl-ov-body');
+            body.innerHTML = '';
+            const c = table.cloneNode(true);
+            c.querySelectorAll('[id]').forEach(n => n.removeAttribute('id'));
+            c.classList.remove('sticky-first');
+            body.appendChild(c);
+            tblScale = 1;
+            tblOv.style.setProperty('--tbl-s', 1);
+            tblOv.classList.add('open');
+            document.documentElement.style.overflow = 'hidden';
+            body.scrollTo(0, 0);
+        }
+
+        function initMedia() { wrapTables(); enhanceTables(); normalizeSvgs(); setupImageZoom(); }
+
+        window.addEventListener('load', () => setTimeout(initMedia, 300));
+
+    </script>
+</body>
+</html>
